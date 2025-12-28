@@ -1,0 +1,65 @@
+\documentclass{ctexart}
+\usepackage{xcolor}
+\usepackage{geometry}   %%调整页面间距
+\geometry{a4paper,left=1.25in,right=1.25in,top=1in,bottom=1in}   %%设置页面边距为符合MS Word样式的大小
+
+\usepackage{tcolorbox}  %% 使用tcolorbox排版好看的代码块
+\tcbuselibrary{skins}
+\tcbuselibrary{minted}
+
+\usepackage{minted}  %%%调用minted以排版代码块
+\usemintedstyle{paraiso-dark}   %%设置example3-1中代码样式
+
+
+\begin{document}
+
+\textbf{example3-1} 使用minted环境设置paraiso-dark样式，更多样式可参见texdoc minted\\
+    \begin{minted}[bgcolor=black,linenos=true]{python}
+    import torch
+    import numpy as np
+    from matplotlib import pyplot as plt
+    import random
+    #创建输入和输出随机张量
+    #x = torch.randn(N, D_in)
+    #y = torch.randn(N, D_out)
+    datanp = np.loadtxt('res.csv', delimiter=',')
+    \end{minted}
+
+\textbf{example3-2}使用tcolerbx配合minted引擎，使用\textbf{tcblisting}环境绘制更好看的高亮代码块\\
+    \begin{tcblisting}{  %%配置tcblisting环境
+        listing engine=minted,
+        boxrule=0.1mm,
+        colback=green!5!white,   %%调整背景颜色
+        colframe=orange!75!black,   %%调整边框颜色
+        listing only,
+        left=5mm,enhanced,sharp corners=all,
+        overlay={
+                \begin{tcbclipinterior}
+                    \fill[red!20!blue!20!white] (frame.south west)
+                    rectangle ([xshift=5mm]frame.north west);
+                \end{tcbclipinterior}
+            },
+        minted language=python,
+        minted style=tango,
+        minted options={fontsize=\small,breaklines,autogobble,linenos,numbersep=3mm}
+        } %%下面插入代码
+        import MySQLdb
+        # 打开数据库连接
+        db = MySQLdb.connect("localhost", "testuser", "test123", "TESTDB", charset='utf8')
+        # 使用cursor()方法获取操作游标 
+        cursor = db.cursor()
+        # 如果数据表已经存在使用 execute() 方法删除表。
+        cursor.execute("DROP TABLE IF EXISTS EMPLOYEE")
+        # 创建数据表SQL语句
+        sql = """CREATE TABLE EMPLOYEE (
+                FIRST_NAME  CHAR(20) NOT NULL,
+                LAST_NAME  CHAR(20),
+                AGE INT,  
+                SEX CHAR(1),
+                INCOME FLOAT )"""
+        cursor.execute(sql)
+        # 关闭数据库连接
+        db.close()
+    \end{tcblisting}
+
+\end{document}

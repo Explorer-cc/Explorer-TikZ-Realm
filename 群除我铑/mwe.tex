@@ -1,0 +1,39 @@
+\documentclass{article}
+\usepackage[fontset=fandol]{ctex}
+\usepackage{libertine}
+\usepackage{chemfig}
+\usepackage{xcolor}
+\newcommand{\mySb}{\textcolor{gray}{Sb}}
+\newcommand{\myRh}{\textcolor{teal}{Rh}}
+
+\begin{document}
+\chemfig{%
+    Rh*6(-Rh=Rh-Sb-Rh-Rh=)
+}
+
+\chemfig{%
+    Rh*6(-Rh=Rh-Sb
+    *6(-Rh-Rh=Rh-Rh=Rh)
+    -Rh-Rh=)
+}
+
+\chemfig{%
+    Rh*6(-Rh=Rh
+    *6(-Rh=Rh-Rh=Rh)
+    -Sb
+    *6(-Rh-Rh=Rh-Rh=Rh)
+    -Rh
+    -Rh=)
+}
+
+\chemfig{%
+    \myRh*6(-\myRh=\myRh
+    *6(-\myRh=\myRh-\myRh=\myRh)
+    -\mySb
+    *6(-\myRh-\myRh=\myRh-\myRh=\myRh)
+    -\myRh
+    -\myRh=)
+}
+
+
+\end{document}

@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+    \PYG{k+kn}{import} \PYG{n+nn}{torch}
+    \PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k}{as} \PYG{n+nn}{np}
+    \PYG{k+kn}{from} \PYG{n+nn}{matplotlib} \PYG{k+kn}{import} \PYG{n}{pyplot} \PYG{k}{as} \PYG{n}{plt}
+    \PYG{k+kn}{import} \PYG{n+nn}{random}
+    \PYG{c+c1}{\PYGZsh{}创建输入和输出随机张量}
+    \PYG{c+c1}{\PYGZsh{}x = torch.randn(N, D\PYGZus{}in)}
+    \PYG{c+c1}{\PYGZsh{}y = torch.randn(N, D\PYGZus{}out)}
+    \PYG{n}{datanp} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{loadtxt}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}res.csv\PYGZsq{}}\PYG{p}{,} \PYG{n}{delimiter}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{},\PYGZsq{}}\PYG{p}{)}
+\end{Verbatim}

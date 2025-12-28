@@ -1,0 +1,24 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import} \PYG{n+nn}{MySQLdb}
+\PYG{c+c1}{\PYGZsh{} 打开数据库连接}
+\PYG{n}{db} \PYG{o}{=} \PYG{n}{MySQLdb}\PYG{o}{.}\PYG{n}{connect}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}localhost\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}testuser\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}test123\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}TESTDB\PYGZdq{}}\PYG{p}{,} \PYG{n}{charset}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}utf8\PYGZsq{}} \PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} 使用cursor()方法获取操作游标}
+\PYG{n}{cursor} \PYG{o}{=} \PYG{n}{db}\PYG{o}{.}\PYG{n}{cursor}\PYG{p}{()}
+
+\PYG{c+c1}{\PYGZsh{} 如果数据表已经存在使用 execute() 方法删除表。}
+\PYG{n}{cursor}\PYG{o}{.}\PYG{n}{execute}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}DROP TABLE IF EXISTS EMPLOYEE\PYGZdq{}}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} 创建数据表SQL语句}
+\PYG{n}{sql} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}\PYGZdq{}\PYGZdq{}CREATE TABLE EMPLOYEE (}
+\PYG{l+s+s2}{        FIRST\PYGZus{}NAME  CHAR(20) NOT NULL,}
+\PYG{l+s+s2}{        LAST\PYGZus{}NAME  CHAR(20),}
+\PYG{l+s+s2}{        AGE INT,}
+\PYG{l+s+s2}{        SEX CHAR(1),}
+\PYG{l+s+s2}{        INCOME FLOAT )\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+\PYG{n}{cursor}\PYG{o}{.}\PYG{n}{execute}\PYG{p}{(}\PYG{n}{sql}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} 关闭数据库连接}
+\PYG{n}{db}\PYG{o}{.}\PYG{n}{close}\PYG{p}{()}
+
+\end{Verbatim}

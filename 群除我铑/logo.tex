@@ -1,0 +1,21 @@
+\documentclass[tikz,border=5pt]{standalone}
+\usepackage[fontset=fandol]{ctex}
+\usepackage{libertine}
+\usepackage{chemfig}
+\usepackage{xcolor}
+\newcommand{\mySb}{\textcolor{gray}{Sb}}
+\newcommand{\myRh}{\textcolor{teal}{Rh}}
+\begin{document}
+\begin{tikzpicture}
+    \node {%
+        \chemfig{%
+            \myRh*6(-\myRh=\myRh
+            *6(-\myRh=\myRh-\myRh=\myRh)-\mySb
+            *6(-\myRh-\myRh=\myRh-\myRh=\myRh)
+            -\myRh
+            -\myRh=)
+        }
+    };
+    \node[font=\bfseries] at (0,-2.5) {群除我铑};
+\end{tikzpicture}
+\end{document}

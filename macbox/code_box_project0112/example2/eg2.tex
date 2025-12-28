@@ -1,0 +1,72 @@
+\documentclass{ctexart}
+\usepackage{geometry}   %%调整页面间距
+\geometry{a4paper,left=1.25in,right=1.25in,top=1in,bottom=1in} 
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage{listings}
+\lstdefinestyle{lfonts}{
+  basicstyle   = \footnotesize\ttfamily,
+  stringstyle  = \color{purple},
+  keywordstyle = \color{blue!60!black}\bfseries,
+  commentstyle = \color{olive}\scshape,
+}
+\lstdefinestyle{lnumbers}{
+  numbers     = left,
+  numberstyle = \tiny,
+  numbersep   = 1em,
+  firstnumber = 1,
+  stepnumber  = 1,
+}
+\lstdefinestyle{llayout}{
+  breaklines       = true,
+  tabsize          = 2,
+  columns          = flexible,
+}
+\lstdefinestyle{lgeometry}{
+  xleftmargin      = 20pt,
+  xrightmargin     = 0pt,
+  frame            = tb,
+  framesep         = \fboxsep,
+  framexleftmargin = 20pt,
+  backgroundcolor = \color{blue!10},  %%控制背景颜色
+}
+\lstdefinestyle{lgeneral}{
+  style = lfonts,
+  style = lnumbers,
+  style = llayout,
+  style = lgeometry,
+}
+\lstdefinestyle{python}{
+    language = {Python},
+    style    = lgeneral,
+}
+
+\begin{document}
+\textbf{example.2} 使用listings自定义代码环境\par
+具体而言，需要使用lstdefinestyle定义样式的不同细节，详细的配置可参见texdoc listings。 \par
+上述配置单来自 \url{https://www.zhihu.com/question/65508676}。\par
+使用\textbf{lstinline}命令插入行内代码 \par
+\lstinline[style = python]|print('To explore the world,you should explore yourself first!')|
+
+使用\textbf{lstlisting}环境插入行间代码 \par
+\begin{lstlisting}[style = python]
+def build(self, number):
+    for _ in range(number):
+        t = random.uniform(0, 2 * pi)  
+        x, y = heart_function(t)
+        self._points.add((x, y))
+
+    for _x, _y in list(self._points):
+        for _ in range(3):
+            x, y = scatter_inside(_x, _y, 0.05)
+            self._edge_diffusion_points.add((x, y))
+
+    point_list = list(self._points)
+    for _ in range(4000):
+        x, y = random.choice(point_list)
+        x, y = scatter_inside(x, y, 0.17)
+        self._center_diffusion_points.add((x, y))
+\end{lstlisting}
+
+\end{document}

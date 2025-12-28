@@ -1,0 +1,23 @@
+\documentclass{ctexart}
+\usepackage{geometry}   %%调整页面间距
+\geometry{a4paper,left=1.25in,right=1.25in,top=1in,bottom=1in}
+
+
+\begin{document}
+\textbf{example.1} 直接使用verbatim环境插入代码并添加注释。
+\begin{verbatim}
+bool dfs(int x){ //匈牙利算法
+    for(register int i=head[x];i;i=ne[i]){
+        int y=ver[i];
+        if(vis[y]) continue; //如果该点被访问过，就跳过
+        vis[y]=1;
+        if(!match[y] or dfs(match[y])){ //如果目标点未匹配或它可以换一个，就进行匹配
+            match[y]=x;
+            return 1; //返回匹配成功
+        }
+    }
+    return 0; //返回匹配失败
+}
+\end{verbatim}
+
+\end{document}

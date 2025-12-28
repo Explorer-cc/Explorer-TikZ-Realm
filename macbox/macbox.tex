@@ -1,0 +1,81 @@
+\documentclass{ctexart}
+\usepackage[many]{tcolorbox}
+\usepackage{fontawesome}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{geometry}   %%调整页面间距
+\geometry{a4paper,left=1.25in,right=1.25in,top=1in,bottom=1in} 
+\lstdefinestyle{Matlab}{
+    language        =   Matlab, % 选择对应的代码语言对应高亮关键字
+    frame           =   none,
+    basicstyle      =   {\small\color{white}\tt},
+    mathescape,
+    emphstyle       =   {\small\bfseries\color{white}},
+    numbers         =   none,
+    stepnumber      =   2,
+    numbersep       =   3em,
+    numberstyle     =   \small\ttfamily\bfseries\tiny,
+    keywordstyle    =   \small\ttfamily\bfseries\color{orange},
+    stringstyle     =   \small\ttfamily\bfseries\color{white},
+    breaklines      =   true,   % 自动换行，
+    columns         =   fixed,  %字间距不固定会很丑
+    basewidth       =   .5em,
+    commentstyle    =   \small\ttfamily\bfseries\color{cyan!30},
+    backgroundcolor =   \color{macosbox@bgdark},
+    tabsize         =   4,
+    showspaces      =   false,
+    showstringspaces=   false,
+    morekeywords    =   {Out,In,maketitle,pip,matplotlib,pandas,numpy,np,dtype},
+}
+\definecolor{macosbox@bgdark}{RGB}{30,30,30}
+\definecolor{macosbox@borddark}{RGB}{30,30,30}
+\definecolor{macosbox@titledark}{RGB}{61,62,64}
+\definecolor{macosbox@linedark}{RGB}{116,116,118}
+\newtcolorbox{macboxd}[2][]{%自定义maxbox环境并配置对应参数（我的建议是直接chao）
+    arc             =   5pt,
+    enhanced,
+    %colupper        =   white,
+    colupper        =   black,
+    coltitle        =   white,
+    %colback         =   macosbox@bgdark,
+    colback         =   white,
+    boxrule         =   0mm,
+    frame style     =   {draw=macosbox@linedark,fill=macosbox@borddark},
+    title style     =   {color=macosbox@titledark},
+    drop fuzzy shadow=darkgray,
+    title           ={\hspace{-1em}\textcolor[RGB]{220, 105, 98}{\scriptsize\faCircle}\ \ \textcolor[RGB]{244, 191, 79}{\scriptsize\faCircle}\ \ \textcolor[RGB]{97, 197, 84}{\scriptsize\faCircle}\rightline{#2\hspace{0.5\textwidth}}},#1
+}
+\begin{document}
+为了追求更美观的视觉效果，参照\textbf{carbon} \quad\url{https://carbon.now.sh/}这一macbox的样式配置了对应的minted样式，可以实现较好的代码展示效果（如下）。\par
+在此也特别感谢\LaTeX{} Studio \quad \url{https://www.latexstudio.net/} 交流群大神群友 \textbf{西安-雨霓-1210} 提供的莫大帮助~
+
+\begin{macboxd}{Matlab}
+    \begin{lstlisting}[style=Matlab]
+%% 一维特征LSTM网络训练
+numFeatures = 1;   %特征为一维
+numResponses = 1;  %输出也是一维
+numHiddenUnits = 200;   %创建LSTM回归网络，指定LSTM层的隐含单元个数200。
+
+layers = [ ...
+            sequenceInputLayer(numFeatures)    %输入层
+            lstmLayer(numHiddenUnits)  % LSTM层
+            fullyConnectedLayer(numResponses)    %为全连接层
+            regressionLayer];      %其计算回归问题的半均方误差模块
+%指定训练选项，求解器设置为adam， 1000轮训练。
+%梯度阈值设置为1。指定初始学习率0.01，在125轮训练后通过乘以因子0.2来降低学习率
+options = trainingOptions('adam', ...
+    'MaxEpochs',1000, ...
+    'GradientThreshold',1, ...
+    'InitialLearnRate',0.01, ...      
+    'LearnRateSchedule','piecewise', ...
+    'LearnRateDropPeriod',400, ...      
+    'LearnRateDropFactor',0.15, ...     
+    'Verbose',0,  ...  %如果将其设置为true，则有关训练进度的信息将被打印到命令窗口
+    'Plots','training-progress');    
+net = trainNetwork(XTrain,YTrain,layers,options);
+    \end{lstlisting}
+\end{macboxd}
+
+\end{document}

@@ -1,0 +1,265 @@
+% !TEX program = xelatex
+\PassOptionsToPackage{quiet}{fontspec}
+\documentclass[fontset=source]{ctexart}
+\usepackage{tcolorbox.doc.s_main}
+\usepackage{indentfirst}
+\setlength{\parindent}{2\ccwd}
+\usepackage{shortvrb}
+\usepackage[minted]{macbox}
+\usepackage{zhlipsum}
+\tcbuselibrary{documentation}
+\begin{document}
+\begin{macwindow1}[title={MacOS 风格的文本框},fonttitle=\huge\bfseries\color{spot},breakable,colback=page]
+    \begin{center}
+        \vskip 1cm
+        张泓知\par\vskip1ex
+        \zhtoday\vskip.5cm
+        \begin{macwindow2}[title={摘\quad 要}]
+            在“LaTeX技术交流1群”（群号：91940767）的一次交流中做了一个MacOS风格的代码块。现在把其中的一段代码抽出来专门做成一个宏包。
+        \end{macwindow2}
+    \end{center}
+    \par\vspace*{.5cm}
+    上面的标题和摘要部分，纯粹是为了展示文本框，并不代表建议大家在标题和摘要部分使用这样的排版。下面是几个示例。
+    \begin{maclisting1}[title={最小代码示例}]
+        \documentclass[fontset=fandol]{ctexart}
+        \usepackage{macbox}
+        \usepackage{zhlipsum}
+        \begin{document}
+        \begin{macwindow2}[title={《祝福》（选段）——鲁迅【著】}]
+            \zhlipsum[18][name=zhufu]
+        \end{macwindow2}
+        \end{document}
+    \end{maclisting1}
+    那么就会得到下面这样的文本框：
+    \begin{macwindow2}[title={《祝福》（选段）——鲁迅【著】}]
+        \zhlipsum[18][name=zhufu]
+    \end{macwindow2}
+    第二个示例：
+    \begin{maclisting1}[title={第二个示例},listing side text]
+        \begin{macwindow2}[title={静夜思}]
+            床前明月光，疑似地上霜。
+
+            举头望明月，低头思故乡。
+        \end{macwindow2}
+    \end{maclisting1}
+\end{macwindow1}
+
+
+\section{MacOS风格的文本框的绘制代码}
+该文本框基于\texttt{tcolorbox}的\mylib{skins}库，结合{\ttfamily tikz}宏包的绘制代码生成的。首先，我们需要在文档的导言区添加下面几行代码。
+\begin{maclisting1}[title={导言区的内容}]
+    \usepackage{fontawesome}
+    \usepackage{tcolorbox}
+    \tcbuselibrary{skins}
+    \definecolor{icon}{HTML}{aa937c} % 标题前的图标颜色
+    \definecolor{wt1}{HTML}{ebebeb} % 白色主题的标题框顶部背景颜色
+    \definecolor{wt2}{HTML}{bebebe} % 白色主题的标题框底部背景颜色
+    \definecolor{wt3}{HTML}{efefef} % 白色主题的正文部分的背景颜色
+    \definecolor{blk1}{HTML}{5e5e60} % 黑色主题的标题框顶部背景颜色
+    \definecolor{blk2}{HTML}{2f3032} % 黑色主题的标题框底部背景颜色
+    \definecolor{blk3}{HTML}{363739} % 黑色主题的正文部分的背景颜色
+    \definecolor{circ1}{HTML}{eb605b} % 标题框左边第一个圆圈的颜色
+    \definecolor{circ2}{HTML}{f6bb31} % 标题框左边第二个圆圈的颜色
+    \definecolor{circ3}{HTML}{56cb45} % 标题框左边第三个圆圈的颜色
+    % 如果需要像后面例子中一样用到\zhlipsum的命令就再加上下面这一句
+    \usepackage{zhlipsum}
+\end{maclisting1}
+其中，最后一行{\verb|\usepackage{zhlipsum}|}并不是必须的，只是出于演示文档生成随机文字的需要才添加的。
+
+文本框的绘图部分主要是利用了\mylib{skins}库中的{\ttfamily enhanced}皮肤，通过对其中的\docAuxKey[tcb]{frame code}进行重画，得到了下面的黑白两种风格的
+文本框。
+\begin{maclisting1}[title={白色框的代码},listing and text,colback=page]
+    \begin{tcolorbox}[
+            enhanced,
+            boxrule=0pt,
+            frame code={
+                    \clip[rounded corners=1mm] (frame.south west) rectangle (frame.north east);
+                    \shade[top color=wt1,bottom color=wt2] (title.south west) rectangle (title.north east);
+                    \fill[circ1] ([xshift=  2em]title.west) circle [radius=1ex];
+                    \fill[circ2] ([xshift=3.5em]title.west) circle [radius=1ex];
+                    \fill[circ3] ([xshift=  5em]title.west) circle [radius=1ex];
+                },
+            before title={\textcolor{icon}{\faHome}},
+            halign title=flush center,
+            title = {白色风格},
+            before upper={\setlength{\parindent}{2\ccwd}},
+            fonttitle=\sffamily\zihao{-5},
+            coltitle = black,
+            coltext = black,
+            colback = wt3,
+        ]
+        \zhlipsum[1][name=zhufu]
+    \end{tcolorbox}
+\end{maclisting1}
+
+\begin{maclisting1}[title={黑色框的代码},listing and text]
+    \begin{tcolorbox}[
+            enhanced,
+            boxrule=0pt,
+            frame code={
+                    \clip[rounded corners=1mm] (frame.south west) rectangle (frame.north east);
+                    \shade[top color=blk1,bottom color=blk2] (title.south west) rectangle (title.north east);
+                    \fill[circ1] ([xshift=  2em]title.west) circle [radius=1ex];
+                    \fill[circ2] ([xshift=3.5em]title.west) circle [radius=1ex];
+                    \fill[circ3] ([xshift=  5em]title.west) circle [radius=1ex];
+                },
+            before title={\textcolor{icon}{\faHome}},
+            halign title=flush center,
+            title = {黑色风格},
+            fonttitle=\sffamily\zihao{-5},
+            before upper={\setlength{\parindent}{2\ccwd}},
+            coltitle = white,
+            coltext = white,
+            colback = blk3,
+        ]
+        \zhlipsum[2][name=zhufu]
+    \end{tcolorbox}
+\end{maclisting1}
+
+\section{使用{\ttfamily macbox}宏包}
+使用{\ttfamily macbox}宏包可以更轻松地获得相同的效果。只需要把{\ttfamily macbox.sty}文件放在同目录下，然后把前面导言区的内容换成如下即可。
+\begin{maclisting1}[title={新的导言区内容}]
+    \usepackage{macbox}
+    % \usepackage[minted]{macbox}
+\end{maclisting1}
+{\ttfamily macbox}宏包提供了四种盒子，分别是
+
+\begin{docEnvironments}
+    [
+        doc no index,
+        doc parameter               =   \oarg{options},
+        doclang/environment content =   {盒子内容或代码\ },
+    ]
+    {
+        {
+                doc name            =   macwindow1,
+                doc description     =   {白色风格的窗格},
+            },
+        {
+                doc name            =   macwindow2,
+                doc description     =   {黑色风格的窗格},
+            },
+        {
+                doc name            =   maclisting1,
+                doc description     =   {白色风格的代码框},
+            },
+        {
+                doc name            =   maclisting2,
+                doc description     =   {黑色风格的代码框},
+            }
+    }
+\end{docEnvironments}
+
+下面是几个示例，把窗口的代码分别放在下方对应的代码框里：
+\begin{tcbraster}[raster columns=2,raster equal height=rows]
+    \begin{macwindow1}
+        \zhlipsum[20][name=zhufu]
+    \end{macwindow1}
+    \begin{macwindow2}
+        \zhlipsum[20][name=zhufu]
+    \end{macwindow2}
+    \begin{maclisting1}
+        \begin{macwindow1}
+            \zhlipsum[20][name=zhufu]
+        \end{macwindow1}
+    \end{maclisting1}
+    \begin{maclisting2}
+        \begin{macwindow2}
+            \zhlipsum[20][name=zhufu]
+        \end{macwindow2}
+    \end{maclisting2}
+\end{tcbraster}
+
+另外，本宏包还提供了一个宏包选项 \docAuxKey{minted} ：
+\begin{docKey*}{minted}{\colOpt{=true\textbar false}}{默认值{\ttfamily false}，初始值{\ttfamily false}}
+    \setlength{\parindent}{2\ccwd}
+    可以简写为 \docAuxKey{minted} 代表 \docAuxKey{minted}\colOpt{\ttfamily =true} ，或直接省略
+    代表 \docAuxKey{minted}\colOpt{\ttfamily =false} 。顾名思义，这是为了其中两个代码框环境加载{\ttfamily minted}宏包。
+
+    {\ttfamily minted}宏包是在{\ttfamily listings}宏包的基础上，利用{\ttfamily Python}的{\ttfamily Pygments}包的强大能力，
+    把代码高亮及美化更进一步，有更加灵活和多样的变化，就像在一个真正的代码编辑器中浏览代码一样。
+\end{docKey*}
+
+要使用{\ttfamily minted}宏包，需要先在系统上安装 {\ttfamily Python} 环境以及 {\ttfamily pip} 工具（ {\ttfamily Python 3.4+}
+以上版本都自带 {\ttfamily pip} 工具），然后打开命令行运行下列命令：
+\begin{maclisting2}[minted language=shell,title={命令行窗口}]
+    pip install pygments
+\end{maclisting2}
+一旦安装完成，即可打开 \docAuxKey{minted} 宏包选项。也就是在前面“新的导言区内容”中，把第一行的代码{\ \verb|\usepackage{macbox}|\ }
+注释掉，把第二行代码{\ \verb|% \usepackage[minted]{macbox}|\ }取消注释。然后编译源文件的时候，带上 {\ttfamily -shell-escape} 选项，
+在命令行窗口输入下列命令即可。
+\begin{maclisting2}[minted language=shell,title={命令行窗口}]
+    xelatex -shell-escape macbox.tex
+\end{maclisting2}
+
+虽然使用{\ttfamily minted}宏包略有麻烦，但是带来的效果也是极棒的。下面比较两段代码（一段是C++代码，一段是Python代码）分别在不同引擎格式
+下的美化效果，
+\begin{maclisting1}[minted language=cpp,title={Hello World!（minted 美化的C++代码）}]
+    #include <iostream>
+    using namespace std;
+
+    // main() 是程序开始执行的地方
+
+    int main()
+    {
+            cout << "Hello World!"; // 输出 Hello World!
+            return 0;
+        }
+\end{maclisting1}
+
+\begin{maclisting1}[listing engine=listings,listing options={style=tcblatex,language=C++,},title={Hello World!（listings 美化的C++代码）}]
+    #include <iostream>
+    using namespace std;
+
+    // main() 是程序开始执行的地方
+
+    int main()
+    {
+            cout << "Hello World!"; // 输出 Hello World!
+            return 0;
+        }
+\end{maclisting1}
+再看看Python代码在不同引擎下的美化效果：
+
+\begin{tcbraster}[raster columns=2,raster equal height=rows]
+    \begin{maclisting1}[minted language=python,title={Hello, Python!(minted)}]
+        #!/usr/bin/python
+
+        print ("Hello, Python!")
+    \end{maclisting1}
+    \begin{maclisting1}[listing engine=listings,listing options={style=tcblatex,language=Python,},title={Hello, Python!(listings)}]
+        #!/usr/bin/python
+
+        print ("Hello, Python!")
+    \end{maclisting1}
+    % \begin{maclisting2}[minted language=python,title={Hello, Python!(minted)}]
+    %     #!/usr/bin/python
+
+    %     print ("Hello, Python!")
+    % \end{maclisting2}
+    % \begin{maclisting2}[listing engine=listings,listing options={style=tcblatex,language=Python,},title={Hello, Python!(listings)}]
+    %     #!/usr/bin/python
+
+    %     print ("Hello, Python!")
+    % \end{maclisting2}
+\end{tcbraster}
+
+\section{其它示例}
+这里给一个用 \docAuxEnvironment*{macwindow1} 来模拟一个 MacOS 的文件夹窗口的例子。
+\begin{maclisting1}[title={模拟 MacOS 文件夹窗口},colback=page]
+    \begin{macwindow1}[title={文件夹},before title={\textcolor[HTML]{373739}{\faWhmcs\ }}]
+        \folder{\faDropbox}{Archiver}
+        \folder{\faChrome}{Camera}
+        \folder{\faVideo}{Record Screen}
+        \folder{\faCamera}{Screenshots}
+        \folder{\faClock}{Time}
+    \end{macwindow1}
+\end{maclisting1}
+\begin{macwindow1}[title={文件夹},before title={\textcolor[HTML]{373739}{\faWhmcs\ }}]
+    \folder{\faDropbox}{Archiver}
+    \folder{\faChrome}{Camera}
+    \folder{\faVideo}{Record Screen}
+    \folder{\faCamera}{Screenshots}
+    \folder{\faClock}{Time}
+\end{macwindow1}
+\end{document}

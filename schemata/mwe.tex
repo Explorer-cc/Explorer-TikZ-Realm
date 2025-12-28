@@ -1,0 +1,35 @@
+\documentclass[12pt,a4paper,landscape]{ctexart}
+\usepackage[margin=1.5in]{geometry}
+\usepackage{schemata}
+\usepackage{xcolor}
+\pagestyle{empty}
+\begin{document}
+\LCschema
+\Schema{20ex}{6ex}
+{\schemabox[1em]{建\\设\\总\\投\\资}}
+{
+  \Schema{13ex}{9ex}{\schemabox{固定资产投资——工程造价}}{
+    \Schema{0ex}{13ex}{\schemabox{建设投资}}{
+      \Schema{0ex}{3ex}{\schemabox{工程费用}}{\schemabox{设备及工器具购置费}\smallskip\schemabox{建筑安装工程费用}}
+      \Schema{0ex}{9ex}{\schemabox{工程建设及其他费用\hspace{1em}}}
+      {
+        \schemabox{项目建设管理费}
+        \schemabox{用地与工程准备费}
+        \schemabox{配套设施费}
+        \schemabox{工程咨询服务费}
+        \schemabox{建设期计列的生产经营费}
+        \schemabox{工程保险费}
+        \schemabox{税费}
+      }
+      \vskip-1ex
+      \Schema{0ex}{3ex}{\schemabox{预备费}}
+      {
+        \schemabox{基本预备费}\smallskip
+        \schemabox{价差预备费}}
+      }
+    \schemabox{建设期投资}
+  }
+  \schemabox{流动资产投资——流动资金}
+}
+\UCschema
+\end{document}
