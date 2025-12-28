@@ -1,0 +1,41 @@
+% https://tex.stackexchange.com/questions/755900/how-to-layout-the-two-side-notes-using-latex
+% https://github.com/fpantigny/nicematrix/issues/22#issuecomment-3631990157
+\documentclass{article}
+\usepackage{showframe}
+\usepackage{lipsum}
+\usepackage{nicematrix}
+\usepackage{tikz}
+\setlength{\parindent}{0pt}
+\newcommand*{\leftbracket}[2]{%
+    \tikz\draw[semithick] ([xshift=-3pt,yshift=-3pt]#1-|2) -- ++(-3pt,0) |- ([xshift=-3pt,yshift=+3pt]\inteval{#2+1}-|2);%
+}
+\newcommand*{\rightbracket}[2]{%
+    \tikz\draw[semithick] ([xshift=-3pt,yshift=-3pt]#1-|4) -- ++(3pt,0) |- ([xshift=-3pt,yshift=+3pt]\inteval{#2+1}-|4);%
+}
+\begin{document}
+\lipsum[2][1-5]
+
+\renewcommand{\arraystretch}{1.5}%
+\begin{NiceTabular}{@{}p{2.1cm}@{}p{1.2em}@{\;}p{5.6cm}p{2.5cm}@{}}%
+Because & 1.& Brazil needs to be developed. &  \\
+ & 2.& New city, Brasilia, built 600 miles, Rio. & which was built  \\
+It & 3.& Designed Lucio Costa. & and which \\
+and & 4.& Became capital 1960. &  \\
+Though & 5.& Planned for modern living. & It \\
+ & 6.& People at first reluctant to go. & but \\
+Since...not only & 7.& 1960 - population increasing. & However, with the increase \\
+but also & 8.& Established as capital. &  \\
+\CodeAfter
+\leftbracket{1}{2}
+\leftbracket{3}{4}
+\leftbracket{5}{6}
+\leftbracket{7}{8}
+\rightbracket{1}{1}
+\rightbracket{2}{4}
+\rightbracket{5}{6}
+\rightbracket{7}{8}
+\end{NiceTabular}%
+
+\lipsum[2][1-5]
+
+\end{document}

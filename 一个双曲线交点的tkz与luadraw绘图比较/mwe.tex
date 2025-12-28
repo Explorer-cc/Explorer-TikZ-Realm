@@ -1,0 +1,30 @@
+\documentclass[border=5pt]{standalone}
+\usepackage[mini]{tkz-euclide}
+\usepackage{tkz-elements}
+\directlua{
+    init_elements()
+    z.a = point(1, 0)
+    z.F1 = point(2,0)
+    z.F2 = point(-2,0)
+    z.T = point(math.sqrt(2), 0)
+    z.O = point(0, 0)
+    CO.HY = conic(HY_bifocal(z.F1, z.F2, z.T)) 
+    PA.curve = CO.HY:points(-2, 2, 100)
+    PA.curveb = CO.HY:points(-2, 2, 100, "swap")
+    z.P = point(-3.5, 0)
+    z.Q = point(0, 1)
+    L.PQ = line(z.P, z.Q)
+    z.A, z.B = intersection(CO.HY, L.PQ)
+}
+\begin{document}
+\begin{tikzpicture}[scale=1.2]
+\tkzInit[xmin=-4,xmax=3,ymin=-2,ymax=2]
+\tkzDrawX[noticks] \tkzDrawY[noticks]
+\tkzGetNodes
+\tkzDrawCoordinates[smooth,blue,thick](PA.curve)
+\tkzDrawCoordinates[smooth,blue,thick](PA.curveb) 
+
+\tkzLabelPoints(O,P,Q,A,B)
+\tkzDrawLine[thick,add=.15 and .9](P,Q)
+\end{tikzpicture}
+\end{document}

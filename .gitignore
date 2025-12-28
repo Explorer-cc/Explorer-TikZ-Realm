@@ -1,0 +1,39 @@
+*.aux
+*.log
+*.out
+*.toc
+*.gz
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex
+*.bbl
+*.blg
+*.nav
+*.snm
+*.vrb
+*.xdv
+*.pdf
+*.dvi
+*.ps
+*.tmp
+*.bak
+*.backup
+*.thm
+*.lof
+*.lot
+*.lol
+*.run.xml
+*.bcf
+
+# editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# latexmk
+latexmkrc
