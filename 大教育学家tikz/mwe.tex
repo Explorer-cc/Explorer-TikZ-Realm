@@ -1,0 +1,42 @@
+\documentclass[tikz,border=5pt]{standalone}
+\usepackage[fontset=ubuntu]{ctex}
+\usetikzlibrary{arrows.meta,calc,positioning}
+\begin{document}
+    \begin{tikzpicture}[
+        >={Stealth[round]},auto,
+        node distance=1.5cm,semithick,
+        every node/.style={
+            draw=none,text=black,
+            rectangle,minimum size=1.5em,
+            inner sep=2pt,outer sep=0pt,
+        }]
+    \node (teacher) {教师};
+    \node (research) [left=of teacher] {研究}; 
+    \node (teaching) [below left=of teacher] {教学};
+    \node[node distance=2cm] (lesson) [below=of teacher] {课程};
+    \node (student) [below right=of teacher] {学生};
+    \node[node distance=2cm] (otherteachers) [above right=of teacher] {其他老师};
+    \node[node distance=.8cm] (society) [above right=of student] {社会};
+    \node[node distance=.8cm] (school) [above=of society] {学校};
+    \path 
+    (teacher) edge[->] (research)
+              edge[->] (teaching)
+              edge[->] (lesson)
+              edge[<-] (student)
+              edge[-] (otherteachers)
+              edge[->] (society)
+              edge[-] (school)
+    (research) edge[->] (teaching)
+    (teaching) edge[-] (lesson)
+               edge[->] (student)
+    (student) edge[-] (society)
+    (society) edge[-] (school)
+    (school)  edge[-] (otherteachers)
+    ;
+    \coordinate (o1) at (teacher.north);
+    \coordinate (o2) at ($(student)!.5!(school)$);
+    \draw ([yshift=5pt]teacher.north) ++(-45:.3cm) arc (-45:225:.3cm);
+    \draw (o2) ++(255:1.5cm) arc (255:405:1.5cm);
+    \node[font=\huge\bfseries,text=magenta] at (-1,1.5) {大教育学家!};
+    \end{tikzpicture}
+\end{document}

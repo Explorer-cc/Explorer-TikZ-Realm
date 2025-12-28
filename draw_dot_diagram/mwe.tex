@@ -1,0 +1,46 @@
+\documentclass[landscape]{article}
+\usepackage[margin=1in,a3paper]{geometry}
+\usepackage{tkz-graph}
+\begin{document}
+\ExplSyntaxOn
+\cs_new_protected:Npn \draw_dot_diagram:n #1
+{
+    \pgfmathtruncatemacro{\NN}{0}
+    \str_set:Nn \l_tmpa_str { #1 }
+    \seq_clear:N \l_tmpa_seq
+    \begin{tikzpicture}[
+        line~join=round,line~cap=round,
+        VertexStyle/.style = {
+            shape=circle,draw,fill,
+            minimum~size=5pt,
+            inner~sep=0pt,
+            outer~sep=0pt,
+        }]
+        \SetGraphUnit{2}
+        \SetVertexNoLabel
+        \Vertex{P\NN}
+        \str_map_inline:Nn \l_tmpa_str
+        {
+            \pgfmathtruncatemacro{\tmp}{\NN+1}
+            \str_case:nn { ##1 }
+            {
+                {U} {\NO(P\NN){P\tmp}}
+                {D} {\SO(P\NN){P\tmp}}
+                {L} {\WE(P\NN){P\tmp}}
+                {R} {\EA(P\NN){P\tmp}}
+            }
+            \Edge(P\NN)(P\tmp)
+            \pgfmathtruncatemacro{\NN}{\tmp}
+        }
+    \end{tikzpicture}
+    \par \vspace*{3cm}
+}
+
+\draw_dot_diagram:n {RRUDRUDRR}
+
+\draw_dot_diagram:n {RRRUDRUDRUDRR}
+
+\draw_dot_diagram:n {RRRURUDLUUDLRDDDRRLDRURRUUDR}
+
+\ExplSyntaxOff
+\end{document}

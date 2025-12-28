@@ -1,0 +1,32 @@
+% From Zarko
+\documentclass[margin=3mm]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{
+    arrows.meta,ext.arrows,
+    decorations.markings,
+}
+\pgfmathtruncatemacro{\NN}{9}
+\begin{document}
+    \begin{tikzpicture}[
+        X/.style = {font=\footnotesize, text=black, anchor=#1},
+        ->-/.style = {decoration={markings,
+                        mark=at position 0.25 with {\arrow{Centered Stealth[scale=1.2]}},
+                        mark=at position 0.75 with {\arrow{Centered Stealth[scale=1.2]}},},
+                        postaction={decorate},semithick,cap=round},
+        ->-L/.style = {decoration={markings,
+                        mark=at position 0.5 with {\arrow{Centered Stealth[scale=1.2]}},},
+                        postaction={decorate},semithick,cap=round},]
+    \draw[-Straight Barb, very thin] (-0.5,0) -- (\NN+0.5,0) node[anchor=north west] {$x$};
+    \draw[-Straight Barb, very thin] (0,-0.5) -- (0,\NN+0.5) node[anchor=south east] {$y$};
+    \foreach \i in {1,...,\NN}
+    {
+        \ifodd\i   
+            \draw[->-,purple] (0,\i) node[X=east]  {$\i$} -| (\i,0) node[X=north] {$\i$};
+            \ifnum\i<\NN \draw[->-L,purple] (\i,0) -- ++ (1,0); \fi
+        \else
+            \draw[->-,cyan] (\i,0) node[X=north] {$\i$} |- (0,\i) node[X=east] {$\i$};
+            \ifnum\i<\NN \draw[->-L,cyan] (0,\i) -- ++ (0,1); \fi
+        \fi
+    }
+    \end{tikzpicture}
+\end{document}

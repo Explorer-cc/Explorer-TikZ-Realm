@@ -1,0 +1,18 @@
+\documentclass[border=5pt]{standalone}
+\usepackage{chemfig}
+% https://tex.stackexchange.com/a/754141/322482
+\setchemfig{atom style={scale=0.75}}
+\begin{document}
+% https://tex.stackexchange.com/a/748781/322482
+\definesubmol{benzene}1{*6([::#1,.65]=-=-=-)}
+    \hreac
+        X
+        + 
+        \chemfig{
+            (-[2](-[:135]!{benzene}{45})-[:45]OH)(-[:-135]!{benzene}{-45})-[:-45]OH}\name{Y}
+        >
+        \chemfig{*5([:-126]-O-(-[:180]H)(-[:-135]!{benzene}{15})-(-[:0]H)(-[:-45]!{benzene}{-15})-O-)=[2]O}\name{Z}
+    \endhreac
+\end{document}
+
+

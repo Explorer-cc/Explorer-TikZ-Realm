@@ -1,0 +1,86 @@
+% https://mp.weixin.qq.com/s/UJL6fyazNX6PzFwtN_F3Tw
+\documentclass[tikz,border=3.14mm]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{backgrounds,decorations}
+\begin{document}
+\newif\ifcheckerboardlabels
+\newcommand{\checkerboard}[1][]{%
+    \begin{scope}[#1]
+        \foreach \m [count=\count] in {1,...,4,13,12,...,9,10,11,...,13,4,3,...,1}{
+            \foreach \n in {1,...,\m}
+            \node at (\n-\m/2,\count) [
+                positions,
+                name=pos-\count-\n,
+                outer sep=0.5cm,
+                label=center:{\ifcheckerboardlabels \count-\n\fi}
+            ] {};
+        }
+        \begin{pgfonlayer}{background}
+            \draw [gray,thick,rounded corners=.4cm,fill=yellow!30] 
+              (pos-1-1.240)
+            --(pos-5-5.240)
+            --(pos-5-1.240)
+            --(pos-5-1.180)
+            --(pos-9-1.180)
+            --(pos-13-1.180)
+            --(pos-13-1.120)
+            --(pos-13-5.120)
+            --(pos-17-1.120)
+            --(pos-17-1.60)
+            --(pos-13-9.60)
+            --(pos-13-13.60)
+            --(pos-13-13.0)
+            --(pos-9-9.0)
+            --(pos-5-13.0)
+            --(pos-5-13.300)
+            --(pos-5-9.300)
+            --(pos-1-1.300)
+            --cycle;
+        \end{pgfonlayer}
+    \end{scope}
+}
+
+\newcommand{\placepieces}[2][]{
+    \begin{scope}[#1]
+        \foreach \checker in {#2} {
+            \node [pieces,#1] at (pos-\checker) {};
+        }
+    \end{scope}
+}
+
+\newcommand{\showmove}[2][]{
+    \begin{scope}[#1]
+        \foreach \position [
+            remember=\position as \previousposition,
+            count=\count
+        ] in {#2}{
+            \ifnum \count=1 \relax
+            \node [
+                positions,
+                black,
+                ultra thick,
+                fill=none
+                ] at (pos-\position.center)  {};
+            \else
+            \draw [move] 
+            (pos-\previousposition.center) to (pos-\position.center);
+            \fi
+        }
+    \end{scope}
+}
+
+\begin{tikzpicture}
+    \tikzset{
+        pieces/.style={fill,circle,minimum size=.5cm},
+        positions/.style={fill=black!5,draw=gray,solid,circle,minimum size=.6cm,inner sep=0pt},
+        checkerboard labels/.is if=checkerboardlabels,
+        checkerboard labels/.default=true,
+        move/.style={-latex,densely dashed,very thick,bend right=45}
+    }
+    \checkerboard
+    \placepieces[red!75!yellow]{1-1,2-1,2-2,3-1,3-2,3-3,4-1,4-2,5-8,7-7}
+    \placepieces[blue!75]{17-1,16-2,15-1,15-2,15-3,14-3,14-4,13-6,11-6,10-6}
+    \showmove{2-1,4-3,6-8,8-6}
+    \showmove{17-1,16-1}
+\end{tikzpicture}
+\end{document}

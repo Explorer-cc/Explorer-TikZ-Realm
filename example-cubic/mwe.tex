@@ -1,0 +1,35 @@
+\documentclass[tikz,border=1cm]{standalone}
+\usepackage[mini]{tkz-euclide}
+\usepackage{tkz-elements}
+\directlua{
+    z.O = point(0,0)
+    z.O0 = point(0,-3)
+    z.O1 = point(0,3)
+    z.x0 = point(-3,-1.5)
+    z.x1 = point(-3,1.5)
+    z.y0 = point(3,-1.5)
+    z.y1 = point(3,1.5)
+    z.P1 = line(z.y0,z.O).mid
+    z.P2 = line(z.O1,z.x1).mid
+    z.P3 = line(z.O1,z.y1).mid
+    z.xt = line(z.x0,z.x1):point(.2)
+    z.yt = line(z.y0,z.y1):point(.2)
+    z.Q1 = line(z.P1,z.P3):point(.35)
+    z.Q2 = line(z.P2,z.P3):point(.35)
+    z.Q3 = line(z.P1,z.P2):point(.35)
+    z.Q4 = line(z.P3,z.P2):point(.35)
+    z.Q5 = intersection(line(z.Q1, z.Q2),line(z.Q3, z.Q4))
+}
+\begin{document}
+\begin{tikzpicture}[line cap=round,line join=round]
+    \tkzGetNodes
+    \tkzDrawSegments(O0,x0 x0,x1 O0,y0 y0,y1)
+    \tkzDrawSegments[dashed](x1,O1 y1,O1 x0,P1)
+    \tkzDrawSegments[dashed](y0,P1 P1,P3 P2,P3)
+    \tkzDrawSegments[dashed](xt,Q1 xt,Q3 Q1,Q3 yt,Q3 yt,Q1)
+    \tkzDrawSegments[dashed](x1,P3 y1,P2)
+    \tkzDrawSegments(P1,P2 Q1,Q2 Q3,Q4)
+    \tkzDrawPoints(O0,O1,x0,x1,y0,y1,xt,yt)
+    \tkzDrawPoints(P1,P2,P3,Q1,Q2,Q3,Q4,Q5)
+\end{tikzpicture}
+\end{document}

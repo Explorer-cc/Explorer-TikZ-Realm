@@ -1,0 +1,35 @@
+% https://tex.stackexchange.com/q/751571/322482
+\documentclass[border=5pt]{standalone}
+\usepackage{tkz-euclide}
+\def\x{3}
+\def\y{4}
+\def\ratiox{.35}
+\def\ratioy{.45}
+\newcommand*\myGouGu[1][0]{
+    \begin{tikzpicture}[rotate=#1]
+    \tkzDefPoints{0/0/O,\x/0/A,\x/\y/B,0/\y/C}
+    \tkzDefPointOnLine[pos=\ratiox](O,A)\tkzGetPoint{P1}
+    \tkzDefPointOnLine[pos=\ratioy](A,B)\tkzGetPoint{P2}
+    \tkzDefPointOnLine[pos=\ratiox](B,C)\tkzGetPoint{P3}
+    \tkzDefPointOnLine[pos=\ratioy](C,O)\tkzGetPoint{P4}
+    \tkzDrawPolygon[fill=magenta](O,P1,P4)
+    \tkzDrawPolygon[fill=cyan](P1,A,P2)
+    \tkzDrawPolygon[fill=magenta](P2,B,P3)
+    \tkzDrawPolygon[fill=cyan](P3,C,P4)
+    \path[label distance=-4pt,every label/.style={circle,inner sep=0pt}]
+        (A) edge node[circle,label={#1:$a$}] {} (P2)
+        (P2) edge node[circle,label={#1:$d$}] {} (B)
+        (B) edge node[circle,label={(#1+90):$c$}] {} (P3)
+        (P3) edge node[circle,label={(#1+90):$b$}] {} (C)
+        (C) edge node[circle,label={(#1+180):$a$}] {} (P4)
+        (P4) edge node[circle,label={(#1+180):$d$}] {} (O)
+        (O) edge node[circle,label={(#1+270):$c$}] {} (P1)
+        (P1) edge node[circle,label={(#1+270):$b$}] {} (A)
+    ;
+    \end{tikzpicture}
+}
+\begin{document}
+\myGouGu[90]
+
+\myGouGu[135]
+\end{document}

@@ -1,0 +1,63 @@
+% https://tex.stackexchange.com/questions/732619/how-to-tune-the-tikz-marking-code-more-elegant?
+\documentclass[margin=2cm]{standalone}
+\usepackage{tikz,xfp}
+\usetikzlibrary{arrows.meta,decorations.markings}
+\pgfmathtruncatemacro{\NN}{9}
+\begin{document}
+    \begin{tikzpicture}[
+        ->-/.style = {
+            decoration={
+                markings,% \fpeval here is not so elegant
+                mark=between positions \fpeval{.55*{#1}/(2*{#1}+1)} and \fpeval{{#1}/(2*{#1}+1)} step \fpeval{{#1}/(2*{#1}+1)} with {\arrow{Stealth[scale=1.2]}},
+                mark=between positions \fpeval{1.58*{#1}/(2*{#1}+1)} and \fpeval{(2*{#1})/(2*{#1}+1)} step \fpeval{{#1}/(2*{#1}+1)} with {\arrow{Stealth[scale=1.2]}},
+                mark=between positions \fpeval{(2*{#1}+.63)/(2*{#1}+1)} and 1 step \fpeval{1/2*(2*{#1}+1)} with {\arrow{Stealth[scale=1.2]}},
+            },postaction={decorate},semithick
+        },
+        ->-end/.style = {
+            decoration={
+                markings,
+                mark=between positions .25 and .78 step .8 with {\arrow{Stealth[scale=1.2]}},
+                mark=between positions .78 and 1 step .8 with {\arrow{Stealth[scale=1.2]}},
+            },postaction={decorate},semithick
+        },line cap=round,line join=round,
+    ]
+        \draw (-.21,-.21) node {$O$};
+        \draw[->] (-.5,0) -- (\fpeval{\NN+.5},0)
+        node[anchor=north west] {$x$};
+        \draw[->] (0,-.5) -- (0,\fpeval{\NN+.5})
+        node[anchor=south east] {$y$ };
+        \foreach \x in {1,...,\NN}
+        \draw (\x cm,1pt) -- (\x cm,-1pt)
+            node[anchor=north] {$\x$};
+        \foreach \y in {1,...,\NN}
+            \draw (1pt,\y cm) -- (-1pt,\y cm)
+            node[anchor=east] {$\y$};
+        \pgfmathtruncatemacro{\nowx}{0}
+        \pgfmathtruncatemacro{\nowy}{1}
+        \foreach \t in {1,...,\NN}{
+            \ifnum\t=\NN\relax
+                \ifodd\t\relax
+                    \path[draw=magenta,->-end] (\nowx,\nowy) -- ++(\t,0) -- ++(0,-\t);
+                    % \pgfmathsetmacro\tmpx{\nowx+\t+1}
+                    % \pgfmathsetmacro\tmpy{\nowy-\t}
+                \else
+                    \path[draw=cyan,->-end] (\nowx,\nowy) -- ++(0,\t) -- ++(-\t,0);
+                    % \pgfmathsetmacro\tmpx{\nowx-\t}
+                    % \pgfmathsetmacro\tmpy{\nowy+\t+1}
+                \fi
+            \else
+                \ifodd\t\relax
+                    \path[draw=magenta,->-=\t] (\nowx,\nowy) -- ++(\t,0) -- ++(0,-\t) -- ++(1,0);
+                    \pgfmathsetmacro\tmpx{\nowx+\t+1}
+                    \pgfmathsetmacro\tmpy{\nowy-\t}
+                \else
+                    \path[draw=cyan,->-=\t] (\nowx,\nowy) -- ++(0,\t) -- ++(-\t,0) -- ++(0,1);
+                    \pgfmathsetmacro\tmpx{\nowx-\t}
+                    \pgfmathsetmacro\tmpy{\nowy+\t+1}
+                \fi
+            \fi
+            \global\let\nowx\tmpx
+            \global\let\nowy\tmpy
+        }
+    \end{tikzpicture}
+\end{document}

@@ -1,0 +1,49 @@
+\documentclass{article}
+\usepackage{emoji}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\begin{document}
+\newcommand{\splitemoji}[3][.5]{%
+    \begin{tikzpicture}[baseline=(char.base)]
+        \node[inner sep=.1pt] (char) {\phantom{\emoji{#2}}};
+        \coordinate (splitpoint) at ($(char.north) !#1! (char.south)$);
+        \begin{scope}
+            \clip (char.south west |- splitpoint) rectangle (char.north east);
+            \node[inner sep=0.1pt] {\emoji{#2}};
+        \end{scope}
+        \begin{scope}
+            \clip (char.south west) rectangle (char.north east |- splitpoint);
+            \node[inner sep=0.1pt] {\emoji{#3}};
+        \end{scope}
+    \end{tikzpicture}
+}
+\newcommand{\showeqn}[3][.5]{%
+    \emoji{#2} + \emoji{#3} = \splitemoji[#1]{#2}{#3}
+}
+
+
+
+
+
+
+
+\showeqn{heart-eyes}{kissing-smiling-eyes}
+
+\showeqn{kissing-smiling-eyes}{heart-eyes}
+
+\showeqn[.52]{star-struck}{face-with-tongue}  
+
+\showeqn[.55]{face-with-tongue}{star-struck}
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

@@ -1,0 +1,41 @@
+% https://tex.stackexchange.com/questions/733370/alternative-to-using-a-tikzpicture-inside-of-a-tikzmarknode/733374#733374
+\documentclass{article}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usetikzlibrary{tikzmark,calc}
+\makeatletter
+\def\pgfgetnodeheight(#1)#2{
+  \path ($(#1.south) - (#1.north)$);
+  \pgfmathsetmacro#2{veclen(\pgf@x, \pgf@y)}
+  \edef#2{#2pt}
+}
+\def\pgfgetnodewidth(#1)#2{
+  \path ($(#1.east) - (#1.west)$);
+  \pgfmathsetmacro#2{veclen(\pgf@x, \pgf@y)}
+  \edef#2{#2pt}
+}
+\makeatother
+\newsavebox\mynotbox%
+\newcommand{\mynot}[1]{%
+\sbox\mynotbox{%
+  \begin{tikzpicture}[baseline=-.6ex]%<- still needs manually spcified here...
+        \node[inner sep=0pt,outer sep=0pt] (a) {$#1$};
+        \pgfgetnodewidth(a)\nWidth
+        \pgfgetnodeheight(a)\nHeight
+        \draw[line width=.5pt](-.6*\nHeight,-.25*\nWidth)--(.6*\nHeight,.25*\nWidth);
+    \end{tikzpicture}\kern-1em%<- still needs manually spcified here...
+    }%
+    \usebox\mynotbox%
+}
+\begin{document}
+% \tikzmarknode{abc}{{A}{}B}
+% it seemed that `\tikzmarknode' is not always needed(?)
+\[
+    A \mynot{\Longleftrightarrow} B
+\]
+\[
+    A \mynot{\leftrightsquigarrow} B
+\]
+
+In the second case, the \verb|\kern-1em| should be modified less, so? Is there exists best practice to construct a well aligned math symbol with a tikzpicture?
+\end{document}

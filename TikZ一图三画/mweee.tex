@@ -1,0 +1,19 @@
+\documentclass[tikz,border=3pt]{standalone}
+\usepackage{amsmath}
+\usepackage{tzplot}
+\begin{document}
+\begin{tikzpicture}
+    \tzcoors[red](0,0)(O){$O$}[-135]
+                  (0,2)(o'){$o'$}[right]
+                  (1.732,3)(M){$M$}[45]
+                  (0,4)(N){$2r$}[45]
+                  (1,0)(x);
+    \tzpolygon*[blue,auto](O)(M)(N);
+    \tzcircle*[fill=magenta,auto](o')(2cm)
+    \tzcdot*[red,tzcdot=2pt](o')
+    \tzaxes[-latex](-3,-1)(3,5){$x$}{$y$}[right]
+    \tzanglemark[semithick,red](x)(O)(M){$\theta$}[text=red]
+    \tzrightanglemark[semithick,red](O)(M)(N)
+    \tzanglemark[semithick,red](O)(N)(M)
+    \end{tikzpicture}
+\end{document}

@@ -1,0 +1,34 @@
+\documentclass{article}
+\usepackage{tikz}
+\newcommand*\steelA{\tikz[baseline=0pt,yshift=.85ex]{%
+    \draw[thick] ellipse[x radius=.25em,y radius=.45ex];
+    \draw (0,-.8ex) -- (0,.8ex);
+}}%
+\newcommand*\steelB{\tikz[baseline=0pt,yshift=.85ex]{%
+    \draw[thick] ellipse[x radius=.25em,y radius=.45ex];
+    \draw (0,-.8ex) -- (0,.8ex) (-.3em,-.8ex) -- (.3em,-.8ex);
+}}%
+\newcommand*\steelC{\tikz[baseline=0pt,yshift=.85ex]{%
+    \draw[thick] ellipse[x radius=.25em,y radius=.45ex];
+    \draw[xshift=-.1em] (0,-.8ex) -- (0,.8ex);
+    \draw[xshift=.1em] (0,-.8ex) -- (0,.8ex);
+    \draw (-.3em,-.8ex) -- (.3em,-.8ex);
+}}%
+\newcommand*\steelD{\tikz[baseline=0pt,yshift=.8ex]{%
+    \draw[thick] ellipse[x radius=.25em,y radius=.45ex];
+    \draw[xshift=-.1em] (0,-.75ex) -- (0,.7ex);
+    \draw[xshift=.1em] (0,-.75ex) -- (0,.7ex);
+    \draw (-.3em,-.75ex) -- (.3em,-.75ex) (-.3em,.75ex) -- (.3em,.75ex);
+}}%
+%懒得微调了...暂时这样吧...
+\begin{document}
+
+A\steelA B
+
+A\steelB B
+
+A\steelC B
+
+A\steelD B
+
+\end{document}

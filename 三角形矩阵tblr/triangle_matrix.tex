@@ -1,0 +1,39 @@
+% XeLaTeX -> XeLaTeX
+\documentclass{article}
+\usepackage{ctex}
+\usepackage{geometry}   %%调整页面间距
+\geometry{a4paper,left=1.25in,right=1.25in,top=1in,bottom=1in}   %%设置页面边距为符合MS Word样式的大小
+\usepackage{nicematrix}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{fit}
+
+\begin{document}
+\[
+    \begin{bNiceArray}{c|ccc|c}[cell-space-limits=2pt,margin]
+        \CodeBefore
+        \cellcolor{green!50}{1-1}
+        \cellcolor{green!50}{5-5}
+        \cellcolor{yellow!50}{1-5}
+        \cellcolor{yellow!50}{5-1}
+        \rectanglecolor{gray!50}{1-2}{1-4}
+        \rectanglecolor{gray!50}{5-2}{5-4}
+        \rectanglecolor{blue!50}{2-1}{4-1}
+        \rectanglecolor{blue!50}{2-5}{4-5}
+        %右上三角形
+        \tikz \fill[red!50] (2-|3) -- (2-|5) -- (4-|5) -- cycle;
+        \tikz \fill[orange!50] (3-|2) -- (2-|2) -- (2-|3) -- (4-|5) -- (5-|5) -- (5-|4) -- cycle;
+        \tikz \fill[red!50] (3-|2) -- (5-|2) -- (5-|4) -- cycle;
+        \Body
+        -\dfrac{2N^2+1}{6} & & \dfrac{2\cdot (-1)^j}{-1-x_j} &  & -\dfrac{1}{2}(-1)^N \\
+        \hline
+        & & & \dfrac{(-1)^{i+j}}{x_i-x_j} &   \\
+        -\dfrac{(-1)^{N+i}}{2(1+x_i)} & & \dfrac{-x_j}{2(1-x_j^2)} & &  -\dfrac{(-1)^i}{2(1-x_i)}\\
+        & \dfrac{(-1)^{i+j}}{x_i-x_j} & & & \\
+        \hline
+        \dfrac{1}{2}(-1)^N & & \dfrac{2\cdot (-1)^{N+j}}{1-x_j} & & \dfrac{2N^2+1}{6}  \\
+    \end{bNiceArray}
+\]
+
+\end{document}

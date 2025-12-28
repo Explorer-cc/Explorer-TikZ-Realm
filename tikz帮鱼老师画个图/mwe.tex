@@ -1,0 +1,46 @@
+\documentclass[border=5pt]{standalone}
+\usepackage[fontset=fandol]{ctex}
+\newcommand*\circled[1]{\raisebox{.5pt}{\tikz[baseline=(char.base)]{\node[circle, draw, inner sep=1pt,minimum size=.1cm,scale=.8] (char) {#1};}}}
+\usepackage{tkz-euclide}
+\begin{document}
+
+\begin{tikzpicture}
+  \begin{scope}
+    \tkzDefPoints{0/0/A,2/0/B,2/1/C}
+    \tkzDrawPolygon(A,B,C)
+    \tkzDrawSegment[dim={$2$,-5pt,}](A,B)
+    \tkzDrawSegment[dim={$1$,-5pt,right=1pt}](B,C)
+    \node at (1,-.6) {图\circled{1}};
+  \end{scope}
+\begin{scope}[xshift=3cm]
+    \tkzDefPoints{0/0/A,2/0/B,2/1/C,1/1/D,1/0/E}
+    \tkzDrawPolygon(A,B,D)\tkzDrawSegment(D,E)
+    \tkzDrawSegment[dim={$2$,-5pt,}](A,B)
+    \tkzDrawSegment[dim={$1$,-5pt,right=1pt}](B,C)
+    \node at (1,-.6) {图\circled{2}};
+  \end{scope}
+\begin{scope}[xshift=6cm]
+    \tkzDefPoints{0/0/A,2/0/B,2/1/C,1/1/D,1/0/E}
+    \tkzDrawPolygon(A,B,D)\tkzDrawSegment[dashed](D,E)
+    \tkzDrawSegment[dim={$2$,-5pt,}](A,B)
+    \tkzDrawSegment[dim={$1$,-5pt,right=1pt}](B,C)
+    \node at (1,-.6) {图\circled{3}};
+  \end{scope}
+\begin{scope}[xshift=2cm,yshift=-3cm]
+    \tkzDefPoints{0/0/A,0/2/B,2/1/C,2/0/D}
+    \tkzDrawPolygon(A,B,C)
+    \tkzDrawSegment[dim={$2$,5pt,left=1pt}](A,B)
+    \tkzDrawSegment[dim={$2$,-5pt,}](A,D)
+    \node at (1,-.6) {图\circled{4}};
+  \end{scope}
+\begin{scope}[xshift=5cm,yshift=-3cm]
+    \tkzDefPoints{0/1/A,2/0/B,2/2/C,0/0/D}
+    \tkzDrawPolygon(A,B,C)
+    \tkzDrawSegment[dim={$2$,5pt,right=1pt}](C,B)
+    \tkzDrawSegment[dim={$2$,-5pt,}](D,B)
+\node at (1,-.6) {图\circled{5}};
+\end{scope}
+
+\end{tikzpicture}
+
+\end{document}

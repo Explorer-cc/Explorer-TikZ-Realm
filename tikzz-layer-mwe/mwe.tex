@@ -1,0 +1,51 @@
+% https://tex.stackexchange.com/questions/731186/how-to-put-the-node-after-the-futuring-assigned-node-in-the-foreach-loop/
+\documentclass[border=8pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{backgrounds}
+\usepackage{xfp}
+\newcommand*{\drawpentagon}[1]{%
+    \draw ({-#1*sin(18)},{#1*cos(18)}) --  (0,0) -- (#1,0);
+    \ifnum#1=0
+        \node [ circle, fill = white, draw , label={[yshift=-3pt]below:{\textbf{1}}}] {};
+    \else
+        \foreach \i in {1,...,#1}
+            {
+            \ifodd \i
+                \node [ circle, fill = white, draw ] (a) {};
+                \node [ circle, draw, fill, xshift = \i*1cm ] (b) at (a) {};
+                \node [ circle, draw, fill, shift = {({sin(18)*\i*1cm}, {cos(18)*\i*1cm})} ] (c) at (b) {};
+                \node [ circle, draw, fill, shift = {({-cos(36)*\i*1cm}, {sin(36)*\i*1cm})} ] (d) at (c) {};
+                \node [ circle, draw, fill, shift = {({-cos(36)*\i*1cm}, {-sin(36)*\i*1cm})} ] (e) at (d) {};
+                \draw (b) -- (c) -- (d) -- (e);
+            \else
+                \node [ circle, draw ] (a) {};
+                \node [ circle, draw, fill = white, xshift = \i*1cm ] (b) at (a) {};
+                \node [ circle, draw, fill = white, shift = {({sin(18)*\i*1cm}, {cos(18)*\i*1cm})} ] (c) at (b) {};
+                \node [ circle, draw, fill = white, shift = {({-cos(36)*\i*1cm}, {sin(36)*\i*1cm})} ] (d) at (c) {};
+                \node [ circle, draw, fill = white, shift = {({-cos(36)*\i*1cm}, {-sin(36)*\i*1cm})} ] (e) at (d) {};
+                \draw (b) -- (c) -- (d) -- (e);
+            \fi
+            }
+            \begin{scope}[on background layer]
+                \draw [ dashed ] (a) -- (d);
+                \draw [ dashed ] (a) -- (c);
+            \end{scope}
+            \node[label=below:{\textbf{\fpeval{{#1}*4+1}}}] at (#1/2,-3pt) {};
+    \fi
+}
+\begin{document}
+    \begin{tikzpicture}
+        \begin{scope}
+            \drawpentagon{3}
+        \end{scope}
+        \begin{scope}[xshift=7cm]
+            \drawpentagon{4}
+        \end{scope}
+        \begin{scope}[xshift=15cm]
+            \drawpentagon{5}
+        \end{scope}
+        \begin{scope}[xshift=25cm]
+            \drawpentagon{6}
+        \end{scope}
+    \end{tikzpicture}
+\end{document}

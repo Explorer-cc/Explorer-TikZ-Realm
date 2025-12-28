@@ -1,0 +1,53 @@
+% It NEED tkz-elements v4.15
+\documentclass[margin = 12pt]{standalone} 
+\usepackage[mini]{tkz-euclide}
+\usepackage{tkz-elements}
+\begin{document} 
+
+\directlua{dofile("def_ellipse.lua")
+z.O = point(0, 0)
+z.OO = point(0, -2)
+z.x = point(-2.75, -2.5)
+z.x0 = line(z.O, z.x):point(0.8)
+z.y = point(3, 0)
+z.y0 = point(1.65, 0)
+z.y00 = point(.75, 0)
+z.z = point(0, 3.5)
+z.z0 = point(0, 2)
+% ellipse1
+z.O1, z.A1, z.C1 = def_ellipse(z.O, z.y0, .25)
+CO.EL = conic(EL_points(z.O1, z.A1, z.C1))
+PA.Acurve1 = CO.EL:points(0, .5, 50)
+PA.Acurve2 = CO.EL:points(.5, 1, 50)
+% ellipse2
+z.O2, z.A2, z.C2 = def_ellipse(z.O, z.y00, .25)
+CO.EL = conic(EL_points(z.O2, z.A2, z.C2))
+PA.Bcurve1 = CO.EL:points(0, .5, 50)
+PA.Bcurve2 = CO.EL:points(.5, 1, 50)
+% ellipse3
+z.O3, z.A3, z.C3 = def_ellipse(z.OO, z.x0, .2)
+CO.EL = conic(EL_points(z.O3, z.A3, z.C3))
+PA.Ccurve1 = CO.EL:points(0, .5, 50)
+PA.Ccurve2 = CO.EL:points(.5, 1, 50)
+}
+
+\begin{tikzpicture}[line cap=rounded,line join=rounded]
+\tkzGetNodes
+% https://tex.stackexchange.com/a/136843/322482
+\tkzDrawSegments[-Stealth,thick](O,x O,y OO,z)
+\tkzDrawSegments[loosely dashed,white,ultra thick,line cap=butt](O,y0 OO,z0)
+\tkzDrawCoordinates[smooth,thick](PA.Acurve1)
+\tkzDrawCoordinates[smooth,dashed,thick](PA.Acurve2)
+\tkzDrawCoordinates[smooth,thick](PA.Bcurve1)
+\tkzDrawCoordinates[smooth,dashed,thick](PA.Bcurve2)
+\tkzDrawCircle[thick,black](O,y00)
+\tkzDrawCoordinates[smooth,dashed,very thick](PA.Ccurve1)
+\tkzDrawCoordinates[smooth,very thick](PA.Ccurve2)
+
+\draw[very thick] (x0) parabola[parabola height=4.5cm] + (4.4,0);
+%not so elegant matched with tkz-elements 
+
+\tkzDrawPoints[size=3,color=black](OO)
+% \tkzLabelPoints(A,B,C,O)
+\end{tikzpicture}
+\end{document} 

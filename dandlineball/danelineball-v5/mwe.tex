@@ -1,0 +1,92 @@
+% It NEED tkz-elements v4.15
+\documentclass[margin = 12pt]{standalone} 
+\usepackage[mini]{tkz-euclide}
+\usepackage{tkz-elements}
+\begin{document} 
+\directlua{dofile("def_ellipse.lua")
+% 定义主要坐标点
+z.H = point(0, 7)
+z.A = point(-3, 0)
+z.B = point(3, 0)
+
+% 求ABH的内接圆
+T.ABH = triangle(z.A, z.B, z.H)
+C.bigC = T.ABH:in_circle()
+z.O1 = C.bigC.center
+z.T1 = C.bigC.through
+z.x_a, z.x_b, z.x_c = T.ABH:intouch():get()
+% 在BH上取合适的点Z2
+L.BH = line(z.B, z.H)
+z.Z2 = L.BH:point(0.5)
+
+% 过Z2做bigC的切线交AH于Z1
+_,L.Z1Z2 = C.bigC:tangent_from(z.Z2)
+z.Z1 = intersection(line(z.A, z.H), L.Z1Z2)
+z.F2 = L.Z1Z2.pb
+
+% 求Z1HZ2的内接圆
+T.Z1Z2H = triangle(z.Z1, z.Z2, z.H)
+C.smallC = T.Z1Z2H:in_circle()
+z.O2 = C.smallC.center
+z.T2 = C.smallC.through
+z.y_a, z.y_b, z.y_c = T.Z1Z2H:intouch():get()
+z.F1 = z.y_c
+
+% 基于(A,B)绘制椭圆并定义路径
+z.W, z.C = def_ellipse(z.A, z.B, .18)
+CO.EL = conic(EL_points(z.W, z.A, z.C))
+PA.Bottom1 = CO.EL:points(0, 0.5, 50)
+PA.Bottom2 = CO.EL:points(0.5, 1, 50)
+
+% 基于(x_a,x_b)与(y_a,y_b)绘制椭圆并定义路径
+z.W1, z.C1 = def_ellipse(z.x_a, z.x_b, .18)
+CO.EL1 = conic(EL_points(z.W1, z.x_b, z.C1))
+PA.Big1 = CO.EL1:points(0, 0.5, 50)
+PA.Big2 = CO.EL1:points(0.5, 1, 50)
+z.W2, z.C2 = def_ellipse(z.y_a, z.y_b, .18)
+CO.EL2 = conic(EL_points(z.W2, z.y_b, z.C2))
+PA.Small1 = CO.EL2:points(0, 0.5, 50)
+PA.Small2 = CO.EL2:points(0.5, 1, 50)
+
+% 基于(Z1,Z2)绘制椭圆并定义路径
+z.W0, z.C0 = def_ellipse(z.Z1, z.Z2, .18)
+CO.EL0 = conic(EL_points(z.W0, z.Z1, z.C0))
+PA.Slash1 = CO.EL0:points(0, 0.5, 50)
+PA.Slash2 = CO.EL0:points(0.5, 1, 50)
+
+% 绘制截面椭圆
+z.Q2 = CO.EL1:point(-.7)
+L.HQ2 = line(z.H, z.Q2)
+_,z.Q1 = intersection(L.HQ2, CO.EL2)
+_,z.P = intersection(L.HQ2, CO.EL0)
+
+}
+\begin{tikzpicture}[line cap=round,line join=round,thick]
+\tkzGetNodes
+\tkzDrawCoordinates[smooth,thick](PA.Bottom1)
+\tkzDrawCoordinates[dashed,smooth,thick](PA.Bottom2)
+\tkzDrawCoordinates[smooth,thick](PA.Big1)
+\tkzDrawCoordinates[dashed,smooth,thick](PA.Big2)
+\tkzDrawCoordinates[smooth,thick](PA.Small1)
+\tkzDrawCoordinates[dashed,smooth,thick](PA.Small2)
+\tkzDrawCoordinates[smooth](PA.Slash1)
+\tkzDrawCoordinates[dashed,smooth,thick](PA.Slash2)
+\tkzDrawSegments[thick](A,H B,H)
+\tkzDrawCircles[dashed,black,thick](O1,T1 O2,T2)
+
+\tkzDrawPoints[color=black](P,F1,F2,Q1,Q2,x_b,y_b,O1,O2)
+
+\tkzDrawSegments[smooth,dashed,thick](Z1,Z2 P,F1 P,F2)
+\tkzDrawSegments[smooth,thick](H,Q2)
+\tkzLabelPoint[left](O1){$O_2$}
+\tkzLabelPoint[left](O2){$O_1$}
+\tkzLabelPoint[left](x_b){$S_1$}
+\tkzLabelPoint[left](y_b){$S_2$}
+\tkzLabelPoint[below right=-3pt](Q1){$Q_1$}
+\tkzLabelPoint[below](Q2){$Q_2$}
+\tkzLabelPoint[below left=-3pt](P){$P$}
+\node [pin={[pin distance=1cm,pin edge={semithick,black}]left:$F_1$},inner sep=0pt,outer sep=0pt] at (F1) {};
+\node [pin={[pin distance=1cm,pin edge={semithick,black}]30:$F_2$},inner sep=0pt,outer sep=0pt] at (F2) {};
+
+\end{tikzpicture}
+\end{document}

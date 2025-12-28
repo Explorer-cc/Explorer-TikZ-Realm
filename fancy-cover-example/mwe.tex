@@ -1,0 +1,26 @@
+\documentclass[tikz]{standalone}
+\usetikzlibrary{shapes.geometric}
+\NewDocumentCommand{\hexring}{ O{} m m m }{
+    \foreach \i in {#2,...,#3} {
+        \node[#1, draw, thick, regular polygon, regular polygon sides=6, rounded corners=2pt,  minimum size=\i cm, scale=.5] at (#4) {};
+    }
+}
+\pagecolor{black}
+\begin{document}
+\begin{tikzpicture}
+
+\clip (-5,-10) rectangle (5,5);
+
+% \hexring{4}{0,0}
+
+\hexring[violet]{1}{20}{-4.5,5}
+
+\hexring[blue!50]{3}{20}{-4.5,-5}
+
+\hexring[violet]{8}{20}{4.5,-9.5}
+
+\hexring[gray]{1}{20}{4.5,.5}
+
+\end{tikzpicture}
+
+\end{document}

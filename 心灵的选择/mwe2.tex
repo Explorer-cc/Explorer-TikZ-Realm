@@ -1,0 +1,10 @@
+\documentclass[margin=1in]{standalone}
+\usepackage{ctex}
+\usepackage{tikz}
+\usepackage{zhlipsum}
+\begin{document}
+    \begin{tikzpicture}
+        \node[inner sep=0pt, outer sep=0pt,text width = 20\ccwd,] (box) {\zhlipsum[1-5]};
+        \fill[cyan,opacity = .3] ([xshift = 2\ccwd]box.north west) rectangle ([xshift = 3\ccwd]box.south west);
+    \end{tikzpicture}
+\end{document}

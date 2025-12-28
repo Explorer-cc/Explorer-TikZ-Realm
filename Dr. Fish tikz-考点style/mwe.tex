@@ -1,0 +1,57 @@
+\documentclass{ctexart}
+\usepackage[margin=2cm]{geometry}
+\pagestyle{empty}
+\usepackage{tikz}
+\usetikzlibrary{shadows}
+\usetikzlibrary{shadows.blur}
+\definecolor{foo}{RGB}{1, 90, 172}
+\definecolor{bar}{RGB}{198, 234, 250}
+\usepackage{calc}
+\newcounter{foo}
+\NewDocumentEnvironment{groups}{}{%
+    \par\noindent%
+    \setcounter{foo}{0}%
+    \begin{tikzpicture}
+        \draw[dashed, foo, line width = 1pt] (0, 0.05) --++ (.995\textwidth, 0);
+        \node[anchor = south west, inner xsep = 15pt, inner ysep = 8pt, font = \large\bfseries] (box) at (0, 0) {考点剖析};% dummy 
+        \fill[foo, blur shadow, rounded corners = 2pt] (box.south west) -- (box.north west) -- ([xshift = -.2cm]box.north east) to [bend left = 10] (box.south east);
+        \node[anchor = south west, inner xsep = 15pt, inner ysep = 8pt, text = white, font = \large\bfseries] (box) at (0, 0) {考点剖析};
+    \end{tikzpicture}
+    \par
+}{}
+\makeatletter
+\newlength{\@tmp@width@a}%
+\newlength{\@tmp@width@b}%
+\NewDocumentCommand{\groupsItem}{m}{%
+    \vspace*{12pt}%
+    \stepcounter{foo}%
+    \par\noindent%
+    \def\@tmp{考点\chinese{foo}.}%
+    \settowidth{\@tmp@width@a}{\@tmp}%
+    \settowidth{\@tmp@width@b}{#1}%
+    \begin{tikzpicture}
+        \draw[foo!80, line width = 1pt] (0, -.05) -- ++ (30pt + \@tmp@width@a + 10pt + \@tmp@width@b + 30pt,0);
+        \node[inner xsep = 15pt, anchor = south west, inner ysep = 4pt] (box) at (0, 0) {\@tmp};
+        \fill[foo] {[rounded corners = 4pt]([xshift = -10pt]box.south east) -- (box.south west) -- (box.north west)} -- ([xshift = -10pt]box.north east) -- (box.east);
+        \fill[bar] ([xshift = 10pt]box.south west) rectangle ([xshift = -10pt]box.north east);
+        \node[inner xsep = 15pt, anchor = south west, inner ysep = 4pt, color = foo!80, font = \bfseries] (box) at (0, 0) {\@tmp};
+        \node[inner xsep = 0pt, anchor = south west] at (30pt + \@tmp@width@a + 10pt, 0) {#1};
+    \end{tikzpicture}
+}
+\makeatother
+\begin{document}
+
+\begin{groups}
+    \groupsItem{函数的概念}
+
+    \[
+        a^2 + b^2 = c^2
+    \]
+
+    \groupsItem{正数与负数的概念}
+    \[
+        a^2 + b^2 = c^2
+    \]
+\end{groups}
+
+\end{document}

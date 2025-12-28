@@ -1,0 +1,28 @@
+\documentclass{article}
+% https://tex.stackexchange.com/questions/7032/good-way-to-make-textcircled-numbers/7047#7047
+\usepackage{tikz}
+\usepackage{amsmath,amssymb}
+\newcommand{\mynot}[1]{%
+    \setbox0=\hbox{$#1$}%
+    \dimen0\wd0%
+    \divide\dimen0 by 2%
+    \dimen1\ht0%
+    \divide\dimen1 by 2%
+    \begin{tikzpicture}%
+        \useasboundingbox (-\the\dimen0,-\the\dimen1) rectangle (\the\dimen0,\the\dimen1);
+        \node[outer sep=1pt,inner sep=.3ex,draw] (a) {$#1$};
+        \fill [red] circle[radius=1pt];
+        \draw[line width=.5pt](-.6*\the\dimen1,-.25*\the\dimen0)--(.6*\the\dimen1,.25*\the\dimen0);
+    \end{tikzpicture}
+}
+\begin{document}
+\[
+    xyz \mynot{\Longleftrightarrow} zyx
+\]
+\[
+    ABC \mynot{\Longleftrightarrow} CBA
+\]
+\[
+    ABC \mynot{\leftrightsquigarrow} CBA
+\]
+\end{document}

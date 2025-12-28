@@ -1,0 +1,53 @@
+% https://tex.stackexchange.com/a/731431/322482
+\documentclass[tikz]{standalone}
+\tikzset{
+  %定义内部样式「@every rp」的代码
+  @every rp/.code={%
+  %全局定义\rpSides和\rpAngle的值
+  %需要注意 键/tikz/rp sides的值维护了图形的边数
+    \edef\rpSides{\pgfinteval{\pgfkeysvalueof{/tikz/rp sides}-2}}
+    \pgfmathsetmacro\rpAngle{360/(\pgfkeysvalueof{/tikz/rp sides})}
+},
+  @every rp/.append style={local bounding box=rpbox, x=\pgfkeysvalueof{/tikz/rp side length}, y=\pgfkeysvalueof{/tikz/rp side length}},
+  rp sides/.initial=5, rp side length/.initial=+7mm,
+  rp node/.style={shape=circle, draw, inner sep=+0pt, minimum size=+1.3ex, rp node \pgfintmod{#1}{2}},
+  rp node 0/.code=, rp node 1/.style=fill,
+  rp edge/.style=draw, rp edge in/.style={rp edge, dashed}, rp edge out/.style={rp edge},
+  rp legend/.style={below, at=(rpbox.south), node font=\bfseries}}
+
+% Nodes with edges between them
+\newcommand*\tikzRepPolyA[2][]{% #2 is an integer number
+\path[#1,@every rp]
+  node[rp node=0, alias/.list={rp-0, rp-..., rp-\rpSides}](rp){}
+  \ifnum#2>0 foreach \rpR in {1,...,#2}{
+    (rp) foreach \rpS in {0,...,\rpSides}{
+      ++(\rpS*\rpAngle:\rpR) node[rp node=\rpR](rp-\rpS'){}
+      edge[rp edge \if\ifnum\rpS>0 1\fi\ifnum\rpS<\rpSides\space 1\fi in\else out\fi] (rp-\rpS)
+    \ifnum\rpS>0 edge[rp edge out] (rp-\pgfinteval{\rpS-1}')\fi
+    node also[alias=rp-\rpS](rp-\rpS')}
+  } \fi node[rp legend]{\inteval{1+#2*(\pgfkeysvalueof{/tikz/rp sides}-1)}};}
+
+% Lines with nodes on top
+\newcommand*\tikzRepPolyB[2][]{% #2 is an integer number
+\path[rp node 0/.style={fill=white},#1,@every rp,rp edge out]
+  \ifnum#2>0
+    (0,0) foreach \rpS in {0, ..., \rpSides}{-- ++(\rpS*\rpAngle:#2)
+      \if\ifnum\rpS>0 1\fi\ifnum\rpS<\rpSides\space 1\fi edge[rp edge in, draw] (0,0) \fi } -- cycle
+    foreach \rpR in {1, ..., \pgfinteval{#2-1}}{
+      (0:\rpR) foreach \rpS in {1, ..., \rpSides}{-- ++(\rpS*\rpAngle:\rpR)}}
+    foreach \rpR in {1, ..., #2}{
+      (0,0) foreach \rpS in {0, ..., \rpSides}{++(\rpS*\rpAngle:\rpR) node[rp node=\rpR]{}}}
+  \fi
+  (0,0)node[rp node=0]{} node[rp legend]{\pgfinteval{1+#2*(\pgfkeysvalueof{/tikz/rp sides}-1)}};}
+
+\begin{document}
+\foreach \tikzRepPoly in {\tikzRepPolyA, \tikzRepPolyB}
+  \tikz[column sep=1cm, row sep=5mm, column 4/.append style={rp side length=2/3*7mm}]
+    \matrix[rp sides=\inteval{\pgfmatrixcurrentrow+1}]{
+      \tikzRepPoly{0} \pgfmatrixnextcell \tikzRepPoly{1} \pgfmatrixnextcell \tikzRepPoly{2} \pgfmatrixnextcell \tikzRepPoly{3} \\
+      \tikzRepPoly{0} \pgfmatrixnextcell \tikzRepPoly{1} \pgfmatrixnextcell \tikzRepPoly{2} \pgfmatrixnextcell \tikzRepPoly{3} \\
+      \tikzRepPoly{0} \pgfmatrixnextcell \tikzRepPoly{1} \pgfmatrixnextcell \tikzRepPoly{2} \pgfmatrixnextcell \tikzRepPoly{3} \\
+      \tikzRepPoly{0} \pgfmatrixnextcell \tikzRepPoly{1} \pgfmatrixnextcell \tikzRepPoly{2} \pgfmatrixnextcell \tikzRepPoly{3} \\
+      \tikzRepPoly{0} \pgfmatrixnextcell \tikzRepPoly{1} \pgfmatrixnextcell \tikzRepPoly{2} \pgfmatrixnextcell \tikzRepPoly{3} \\
+    };
+\end{document}

@@ -1,0 +1,25 @@
+% It NEED tkz-elements v4.15
+
+\documentclass[margin = 12pt]{standalone} 
+\usepackage[mini]{tkz-euclide}
+\usepackage{tkz-elements}
+\begin{document} 
+  
+\directlua{dofile("def_ellipse.lua")
+z.A = point(5, 4)
+z.B = point(2, 0)
+z.O, z.C = def_ellipse(z.A, z.B, 0.5)
+CO.EL = conic(EL_points(z.O, z.A, z.C))
+PA.curve1 = CO.EL:points(0, .5, 50)
+PA.curve2 = CO.EL:points(.5, 1, 50)
+}
+
+\begin{tikzpicture}
+\tkzGetNodes
+\tkzDrawCoordinates[smooth](PA.curve1)
+\tkzDrawCoordinates[dashed,smooth](PA.curve2)
+\tkzDrawSegments(O,A O,C A,B)
+\tkzDrawPoints(A,B,C,O)
+\tkzLabelPoints(A,B,C,O)
+\end{tikzpicture}
+\end{document} 

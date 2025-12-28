@@ -1,0 +1,31 @@
+\documentclass[fontset=ubuntu]{ctexart}
+\usepackage{tikz}
+\definecolor{lightpink}{RGB}{245,233,233}
+\usetikzlibrary{positioning}
+\begin{document}
+\begin{figure}
+    \begin{center}
+        \tikzset{
+            every node/.style={
+                    draw,rectangle,fill=lightpink,
+                    line width=.75pt,align=center,
+                    minimum height=1.2cm,minimum width=2cm,
+                    inner sep=5pt,outer sep=0pt,
+                    rounded corners=.05cm,
+                },
+            }
+        \begin{tikzpicture}
+            \node (A) {高等袋鼠};
+            \node[below = of A,yshift=-.5cm] (B) {抽象袋鼠} 
+                    edge [<-,thick] (A);
+            \node[below = of B,yshift=-.5cm] (C) {同调袋鼠} 
+                    edge [<-,thick] (B);
+            \node[left = of C,xshift=-1.5cm] (D) {交换袋鼠} (B);
+            \node[right = of C,xshift=1.5cm] (E) {李袋鼠} (B);
+            \draw[->,thick] (B.west) -| (D.north);
+            \draw[->,thick] (B.east) -| (E.north);
+        \end{tikzpicture}
+    \end{center}
+    \caption{袋鼠之家}
+\end{figure}
+\end{document}

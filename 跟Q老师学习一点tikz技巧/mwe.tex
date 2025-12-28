@@ -1,0 +1,45 @@
+\documentclass[tikz,border=6pt]{standalone}
+% https://tex.stackexchange.com/a/731219/322482
+\ExplSyntaxOn
+\NewDocumentCommand \drawpentagon { m }
+  {
+    \int_compare:nNnF {#1} = { 0 }
+      {
+        %绘制两条虚线
+        \draw [ shift = ( 54 \c_colon_str #1 ) , dashed ] 
+        ( 234 \c_colon_str #1 ) -- ( 18 \c_colon_str #1 ) 
+        ( 234 \c_colon_str #1 ) -- ( 90 \c_colon_str #1 );
+        %绘制最外侧的五边形边框
+        \draw [ shift = ( 54 \c_colon_str #1 ) ] 
+        ( 306 \c_colon_str #1 ) -- ( 18 \c_colon_str #1 ) -- ( 90 \c_colon_str #1 ) -- ( 162 \c_colon_str #1 ) -- ( 234 \c_colon_str #1 ) -- cycle;
+        %循环(#1-1)次绘制内部的五边形边框
+        \int_step_inline:nn { #1 - 1 }
+          {
+            \draw [ shift = ( 54 \c_colon_str ##1 ) ] ( 306 \c_colon_str ##1 ) -- ( 18 \c_colon_str ##1 ) -- ( 90 \c_colon_str ##1 ) -- ( 162 \c_colon_str ##1 ) ;
+          }
+        %循环(#1)次绘制五边形的顶点并作奇偶判断
+        \int_step_inline:nn {#1}
+          {
+            %遍历四个角度 => 72*##1 - 126 绘制黑白圆点
+            \int_step_inline:nn { 4 }
+              {
+                \draw [ 
+                    shift = ( 54 \c_colon_str ##1 ) ,
+                    fill = \int_if_odd:nTF {##1} { black } { white } 
+                ] ( ####1 * 72 - 126 \c_colon_str ##1 ) circle [ radius = 4 pt ] ;
+              }
+          }
+      }
+    \draw [ fill = white ] ( 0 , 0 ) circle [ radius = 4 pt ] ;
+    \node [ below ] at ( { #1 * sin ( 36 ) } , 0 ) { \int_eval:n { #1 * 4 + 1 } } ;
+  }
+\ExplSyntaxOff
+\begin{document}
+\begin{tikzpicture}[scale=.5]
+\foreach\n in {0,...,5}{
+  \begin{scope}[shift={({(\n^2)*2*sin(36)},0)}]
+    \drawpentagon{\n}
+  \end{scope}
+}
+\end{tikzpicture}
+\end{document}

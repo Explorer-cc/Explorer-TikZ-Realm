@@ -1,0 +1,33 @@
+\documentclass[tikz,border=2pt]{standalone}
+\usepackage{tkz-euclide,tkz-elements} 
+\begin{document}
+\directlua{
+    z.O = point(0 , 0)
+    z.x1 = point(1 , 0)
+    z.A = point(2 , 0)
+    z.B = point(0 , 1)
+    CO.EL = conic(EL_points(z.O, z.A, z.B))
+    PA.EL = CO.EL:points(0, 1, 40)
+    z.P = point(1 , 2)
+    L.T1,L.T2= CO.EL:tangent_from(z.P)
+    z.T1 = L.T1.pb
+    z.T2 = L.T2.pb
+    L.x = line(z.O ,z.x1)
+    z.C= intersection (L.T1,L.x)
+    z.D= intersection (L.T2,L.x)
+}
+    
+\begin{tikzpicture}
+    \draw [gray!70] (-4,-4) grid (4,4);
+    \draw [->] (-4,0) -- (4,0) node [below left] {$x$};
+    \draw [->] (0,-4) -- (0,4) node [below left] {$y$};
+    \tkzGetNodes
+    \tkzDrawCoordinates[smooth](PA.EL)
+    \tkzDrawSegments(P,C P,D)
+    \tkzDrawPoints(P,T1,T2,C,D)
+    \tkzLabelPoints[above](P,T1)
+    \tkzLabelPoints[below](C,D)
+    \tkzLabelPoints[right](T2)
+    \tkzLabelPoints[below left](O)
+\end{tikzpicture}
+\end{document} 

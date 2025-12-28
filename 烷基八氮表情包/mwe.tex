@@ -1,0 +1,22 @@
+\documentclass[border=5pt]{standalone}
+% https://tex.stackexchange.com/questions/752474/baseline-of-chemfig-and-chemname-question
+\usepackage{chemfig}
+\usepackage{quickreaction}
+\usepackage[fontset=fandol]{ctex}
+\begin{document}
+% \chemnameinit{\chemfig{[:-22.5]*9(-N=N-N=N-N=N-N=N-)}}
+% \setchemfig{baseline=(current bounding box.center)}
+% \schemestart
+% \chemname{\chemfig{N*6(-N=N-N=N-N=)}}{苯氮} \+
+% \chemname{\chemfig{H_2C-[:30]N=[:-30]N}}{烷氮} \arrow
+% \chemname{\chemfig{[:-22.5]*9(-N=N-N=N-N=N-N=N-)}}{烷基八氮}
+% \schemestop
+    \begin{quickreaction}%
+        \chemfig{N*6(-N=N-N=N-N=)} \& 
+        + \& 
+        \chemfig{H_2C-[:30]N=[:-30]N} \& 
+        \quickarrow \&  
+        \chemfig{[:-22.5]*9(-N=N-N=N-N=N-N=N-)} \\
+        {苯氮} \& \& {烷氮} \& \& {烷基八氮} \\
+    \end{quickreaction}
+\end{document}

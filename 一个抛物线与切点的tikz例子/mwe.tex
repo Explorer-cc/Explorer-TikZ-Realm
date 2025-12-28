@@ -1,0 +1,35 @@
+\documentclass[border=5pt]{standalone}
+\usepackage{tkz-base}
+\usepackage[mini]{tkz-euclide}
+\usepackage{tkz-elements}
+\usepackage{libertinust1math}
+\directlua{ 
+    init_elements()
+    z.F = point(1/4,0)
+    z.f1 = point(-1/4,1)
+    z.f2 = point(-1/4,-1)
+    CO.PA = conic(z.F, line(z.f1,z.f2), 1)
+    PA.curve = CO.PA:points(-2.2, 2.2, 100)
+    z.M = point(2,0) z.R = point(3,0)
+    C.OA = circle(z.M, z.R)
+    z.A_2 = CO.PA:point(0.25)
+    L.T1,L.T2 = C.OA:tangent_from(z.A_2)
+    z.T1 = L.T1.pb z.T2 = L.T2.pb
+    _, z.A_1 = intersection(L.T1, CO.PA) 
+    _, z.A_3 = intersection(L.T2, CO.PA) 
+} 
+\begin{document}
+\begin{tikzpicture}
+    \tkzGetNodes\tkzSetUpLabel[font=\scriptsize]
+    \tkzInit[xmin=-.5,xmax=4,ymin=-2.5,ymax=2.5]
+    \tkzDrawXY[noticks] 
+    \tkzDrawCoordinates[smooth,magenta,semithick](PA.curve)
+    \tkzDrawCircles[smooth,cyan,semithick](M,R)
+    \tkzDrawPolygon[teal,semithick](A_1,A_2,A_3)
+    \tkzDrawPoints[fill=gray!25](A_2,A_1,A_3,M)
+    \tkzLabelPoints[left](A_2)
+    \tkzLabelPoints[above](A_1) 
+    \tkzLabelPoints[above right=-3pt](A_3)
+    \tkzLabelPoints[below](M)
+\end{tikzpicture}
+\end{document}

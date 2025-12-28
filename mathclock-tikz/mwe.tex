@@ -1,0 +1,60 @@
+\documentclass[tikz,border=1cm]{standalone}%
+\usepackage{amsmath,bm}%
+\def\R{5cm}%
+\begin{document}%
+\newcommand*\drawnode[2]{%
+    \node[draw,thick,circle,inner sep=2pt,outer sep=0pt,label={%
+            [%
+                % draw,
+                % circle,
+                % anchor=north,
+                rectangle,
+                inner sep=0pt,
+                outer sep=0pt,
+                label distance=.1em
+            ]{(#1-180)}:{$\displaystyle\bm{#2}$}
+        }%
+    ] at (#1:\R) {};
+}
+\begin{tikzpicture}
+\draw[thick,black] (-\R,0) -- (\R,0) (0,-\R) -- (0,\R); 
+\draw[gray,thin] circle[radius=1.08*\R];
+\filldraw[even odd rule,brown!60!black] circle[radius=1.1*\R] circle[radius=1.15*\R];
+\begin{scope}
+\clip circle [radius=1.03*\R];
+\foreach \i in {1,...,5}%
+{%
+    \draw[thick] 
+    (0,3cm+0.3*\i cm) -- +(-.25cm,0)
+    (0,-1.3cm-0.3*\i cm) -- +(.25cm,0)
+    ;
+}%
+\draw[thick] (45:1.03*\R) circle [radius=.6*\R] (180+45:1.03*\R) circle [radius=.6*\R];
+\draw[thick] 
+(.15cm,0) -- ++(0,3.3cm) arc [start angle=90,delta angle=90,radius=3.3cm] 
+(.15cm,-\R) -- ++(0,2cm) arc [start angle=270,delta angle=90,radius=3cm];
+\filldraw[thick,fill=white] (0,0) circle [radius=1.5cm];
+\filldraw[thick] (0,0) circle [radius=6pt];
+\draw[line width=3pt] 
+    (-120:.6cm) -- (60:2.5cm)
+    (-80:.8cm) -- (100:3cm)
+    ;
+\draw[thin] 
+    ([yshift=3pt]0:.6cm) -- (179:2.85cm)
+    ;
+\end{scope}
+\drawnode{5}{e}
+\drawnode{15}{\ln10}
+\drawnode{45}{\phi}
+\drawnode{75}{\gamma}
+\drawnode{105}{\cot5^\circ}
+\drawnode{155}{\sinh 3}
+\drawnode{170}{\sqrt{90}}
+\drawnode{210}{\sec83^\circ}
+\drawnode{235}{e^2}
+\drawnode{250}{\phi^4}
+\drawnode{290}{\sqrt[3]{130}}
+\drawnode{335}{\log9876}
+\drawnode{355}{\pi}
+\end{tikzpicture}
+\end{document}

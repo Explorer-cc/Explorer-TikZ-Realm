@@ -1,0 +1,40 @@
+% tkz-euclide 5.10 tkz-elements 4.15
+\documentclass[margin = 12pt]{standalone} 
+\usepackage[mini]{tkz-euclide}
+\usepackage{tkz-elements}
+\begin{document} 
+\directlua{
+function def_ellipse(pa, pb, ratio)
+    local axe = line(pa, pb)
+    local o = axe.mid
+    local a = 0.5 * axe.length
+    local b = a * ratio
+    local pc = (pa - o):orthogonal(b): at (o)
+    return o, pc
+end
+z.O = point(0, 0)
+z.A = point(-2, 0)
+z.B = point(2, 0)
+z.P = point(0, 4)
+L.AP = line(z.A, z.P)
+z.Q = L.AP:point(0.5)
+z.W, z.C = def_ellipse(z.A, z.B,.25)
+CO.EL = conic(EL_points(z.W, z.A,z.C))
+PA.path1 = CO.EL:points(0, 0.5, 50)
+PA.path2 = CO.EL:points(0.5, 1, 50)
+z.C = CO.EL:point(0.2)
+z.D = CO.EL:point(0.35)
+}
+\begin{tikzpicture}[line cap=round]
+\tkzGetNodes
+\tkzDrawCoordinates[smooth](PA.path1)
+\tkzDrawCoordinates[dotted,smooth](PA.path2)
+\tkzDrawPolygon[thick](A,B,P)
+\tkzDrawPoints[color=red](A,B,P,O,C,D,Q)
+\tkzLabelPoints[above](A,B,P,O,C,D,Q)
+\tkzDrawPolygon[dashed](A,B,D)
+\tkzDrawPolygon[dashed](O,C,Q)
+\tkzDrawSegments(C,P D,P)
+\tkzDrawSegments[dashed](C,D)
+\end{tikzpicture}
+\end{document}

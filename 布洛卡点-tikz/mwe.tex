@@ -1,0 +1,44 @@
+\documentclass[border=5pt]{standalone}
+\usepackage{tkz-euclide}
+\begin{document}
+
+\begin{tikzpicture}
+\tkzDefPoints{0/0/A, 4/0/B, 1/3/C}
+\tkzDrawPolygon[thick,black](A,B,C)
+\tkzDefLine[mediator](A,B) \tkzGetPoints{m1}{m2}
+\tkzDefLine[perpendicular=through B](B,C) \tkzGetPoint{tmp}
+% \tkzDrawPoints(A,B,C,m1,m2,tmp)
+% \tkzDrawSegment(m1,m2)
+% \tkzDrawSegment(B,tmp)
+\tkzInterLL(m1,m2)(B,tmp) \tkzGetPoint{Oa}
+\tkzCalcLength(Oa,B) \tkzGetLength{rOaB} 
+\tkzDefCircle[R](Oa,\rOaB) \tkzGetPoint{Oaa}
+\tkzDrawCircle[dashed,cyan,thick](Oa,Oaa)
+
+\tkzDefLine[mediator](A,C) \tkzGetPoints{m1}{m2}
+\tkzDefLine[perpendicular=through A](A,B) \tkzGetPoint{tmp}
+% \tkzDrawPoints(A,B,C,m1,m2,tmp)
+% \tkzDrawSegment(m1,m2)
+% \tkzDrawSegment(A,tmp)
+\tkzInterLL(m1,m2)(A,tmp) \tkzGetPoint{Ob}
+\tkzCalcLength(Ob,A) \tkzGetLength{rObA} 
+\tkzDefCircle[R](Ob,\rObA) \tkzGetPoint{Obb}
+\tkzDrawCircle[dashed,magenta,thick](Ob,Obb)
+
+\tkzDefLine[mediator](B,C) \tkzGetPoints{m1}{m2}
+\tkzDefLine[perpendicular=through C](A,C) \tkzGetPoint{tmp}
+% \tkzDrawPoints(A,B,C,m1,m2,tmp)
+% \tkzDrawSegment(m1,m2)
+% \tkzDrawSegment(C,tmp)
+\tkzInterLL(m1,m2)(C,tmp) \tkzGetPoint{Oc}
+\tkzCalcLength(Oc,C) \tkzGetLength{rOcC} 
+\tkzDefCircle[R](Oc,\rOcC) \tkzGetPoint{Occ}
+\tkzDrawCircle[dashed,teal,thick](Oc,Occ)
+
+\tkzInterCC(Oa,Oaa)(Ob,Obb) 
+\tkzGetSecondPoint{P}
+\tkzDrawPoints(A,B,C,P)
+\tkzLabelPoints(A,B,C,P)
+
+\end{tikzpicture}
+\end{document}

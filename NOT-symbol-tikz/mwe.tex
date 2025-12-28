@@ -1,0 +1,47 @@
+% https://tex.stackexchange.com/questions/737348/what-is-the-best-practice-to-declare-a-tikzpicture-as-a-math-symbol
+\documentclass{article}
+\usepackage{tikz,amsmath}
+\usetikzlibrary{calc}
+\begin{document}
+\makeatletter
+\def\pgfgetnodeheight(#1)#2{
+  \path ($(#1.south) - (#1.north)$);
+  \pgfmathsetmacro#2{veclen(\pgf@x, \pgf@y)}
+  \edef#2{#2pt}
+}
+\def\pgfgetnodewidth(#1)#2{
+  \path ($(#1.east) - (#1.west)$);
+  \pgfmathsetmacro#2{veclen(\pgf@x, \pgf@y)}
+  \edef#2{#2pt}
+}
+\makeatother
+\DeclareRobustCommand{\notleftrightarrow}{%
+    \mathrel{\begin{tikzpicture}[baseline=-.5ex]%
+        \node[inner sep=0pt,outer sep=0pt] (a) {$\Longleftrightarrow$};
+        \pgfgetnodewidth(a)\nWidth
+        \pgfgetnodeheight(a)\nHeight
+        \draw[line width=.5pt](-.6*\nHeight,-.25*\nWidth)--(.6*\nHeight,.25*\nWidth);
+      \end{tikzpicture}%
+    }\kern-1em%%
+}
+\[
+\sum_{k}^{n}f(k)%
+\fbox{%
+\begin{tikzpicture}[baseline=-.5ex]%
+\fbox{%
+  \node[inner sep=0pt,draw] (a) {$\Longleftrightarrow$};%
+  \pgfgetnodewidth(a)\nWidth%
+  \pgfgetnodeheight(a)\nHeight%
+  \fbox{%
+    \draw[line width=.5pt](-.6*\nHeight,-.25*\nWidth)--(.6*\nHeight,.25*\nWidth);
+  }
+  \fill[red] (a) circle[radius=1pt];
+}
+\end{tikzpicture}}%\mkern-15mu%
+ABC
+\]
+
+\[
+\sum_{k}^{n}f(k) \notleftrightarrow ABC
+\]
+\end{document}

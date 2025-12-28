@@ -1,0 +1,64 @@
+% https://tex.stackexchange.com/questions/686637/oiint-using-tikz
+\documentclass[12pt]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{cmupint}
+% \usepackage{unicode-math} % No!
+\usepackage{esint}
+\usepackage{fixdif}
+\usepackage{tikz}
+\usetikzlibrary{shapes}
+\usetikzlibrary{ext.shapes.rectangleroundedcorners}
+\DeclareRobustCommand{\myoint}{%
+  \mathop{}\!%
+  \vcenter{\hbox{%
+    \makebox[0pt][l]{%
+      \sbox0{$\displaystyle\phantom{\int}$}%
+      \makebox[\wd0]{%
+        \begin{tikzpicture}
+          \node[
+            draw,circle,minimum size=1.5ex,
+            line width=0.5pt,
+            inner xsep=-0.15ex,
+            inner ysep=-0.15ex,
+          ] {\phantom{-\,}};
+        \end{tikzpicture}%
+      }%
+    }%
+  }}\!%
+  \int\nolimits
+}
+
+\DeclareRobustCommand{\myoiint}{%
+  \mathop{}\!%
+  \vcenter{\hbox{%
+    \makebox[0pt][l]{%
+      \sbox0{$\displaystyle\phantom{\iint}$}%
+      \makebox[\wd0]{%
+        \begin{tikzpicture}
+          \node[
+            draw,
+            shape=rectangle with rounded corners,
+            rectangle with rounded corners radius=6pt,
+            minimum width=2.7ex,minimum height=2.3ex,
+            line width=0.5pt,
+            inner xsep=-0.15ex,
+            inner ysep=-0.15ex,
+          ] {\phantom{+\,}};
+        \end{tikzpicture}%
+      }%
+    }%
+  }}\!%
+  \iint
+}
+
+\begin{document}
+    
+    \[
+    I=\myoint_{C} \frac{\cos (\mathbf{r}, \mathbf{n})}{r} \d s
+    \]
+
+    \[
+    I=\myoiint_{\Sigma}\, (z+x) \d y \d z+(x+y) \d z \d x+(y+z) \d x \d y
+    \]
+
+\end{document}

@@ -1,0 +1,48 @@
+% \documentclass[tikz,border=5pt]{standalone}
+\documentclass{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage[many]{tcolorbox}
+\usepackage{lipsum}
+\usepackage{gbt7714}
+\usepackage{hyperref}
+\NewDocumentCommand\mywheelchart{O{magenta} m m m m m}{%
+% #1-color #2-radius1 #3-radius2 #4-start_angle #5-end_angle #6-node-text
+    \filldraw[#1] (#4:#2) arc[start angle=#4, end angle=#5, radius=#2] -- (#5:#3) arc[start angle=#5, end angle=#4, radius=#3] -- cycle;
+    \node[font=\normalsize] at (\fpeval{(#4+#5)/2}:\fpeval{(#2+#3)/2}) {#6};
+}
+\NewDocumentCommand\mywheelchartpin{O{magenta} m m m m m O{10cm} m m}{%
+% #1-color #2-radius1 #3-radius2 #4-start_angle #5-end_angle #6-node-text
+% #7-width #8-title #9-text
+\mywheelchart[#1]{#2}{#3}{#4}{#5}{#6}%
+\coordinate (#1-target) at (\fpeval{(#4+#5)/2}:#2);
+\coordinate (#1-tcb-target) at ($ (0,0) ! 1.6 ! (#1-target) $);
+\ifnum\fpeval{(#4+#5)/2}>180\relax
+\def\myanchor{north}%
+\else%
+\def\myanchor{south}%
+\fi%
+\node[anchor=\myanchor] (#1)
+at (#1-tcb-target)
+{%
+\begin{tcolorbox}[enhanced,colframe=#1,colback=#1!20,title=#8,width=#7]
+    #9
+\end{tcolorbox}
+};
+\draw[#1] (#1-target.base) -- (#1-tcb-target);
+}
+\begin{document}
+\def\R{3}
+\begin{tikzpicture}[
+    line cap=round,line join=round,
+    ultra thick,every node/.style={outer sep=0pt,inner sep=0pt},
+    ]
+\mywheelchartpin{\R}{0.8*\R}{30}{60}{okay}[3cm]{TITLE}{Hello,World!}
+\mywheelchartpin[lime]{\R}{0.8*\R}{60}{120}{okay}[3cm]{TITLE}{hello \cite{article-full} and \cite{misc-full} and \cite{techreport-full}}
+\mywheelchartpin[violet]{\R}{0.8*\R}{120}{180}{okay}[2cm]{TITLE}{Hello}
+\mywheelchartpin[orange]{1.21*\R}{1.01*\R}{180}{390}{okay}{TITLE}{\lipsum[2]}
+\mywheelchart[cyan]{\R}{0.8*\R}{30}{-150}{NO}
+\end{tikzpicture}
+\bibliography{xampl}
+\end{document}

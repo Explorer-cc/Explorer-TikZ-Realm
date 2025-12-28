@@ -1,0 +1,111 @@
+\documentclass{article}
+% https://tex.stackexchange.com/questions/223186/easy-way-to-draw-ribbon/223229#223229
+\usepackage[a2paper,landscape]{geometry}
+\usepackage{tikz}
+\colorlet{color1}{gray!40}
+\colorlet{color2}{gray}
+\newlength\myrblen
+\newlength\myrbht
+\newlength\myrbarc
+\setlength\myrblen{1cm}
+\setlength\myrbht{3cm}
+\setlength\myrbarc{8pt}
+\makeatletter
+\define@key{ribbonpar}{color1}{\colorlet{color1}{#1}}
+\define@key{ribbonpar}{color2}{\colorlet{color2}{#1}}
+\define@key{ribbonpar}{rblength}{\setlength\myrblen{#1}}
+\define@key{ribbonpar}{rbheight}{\setlength\myrbht{#1}}
+\define@key{ribbonpar}{rbarc}{\setlength\myrbarc{#1}}
+\makeatother
+\newcommand\Ribbon[2][]{%
+    \begin{tikzpicture}[thick,line join=round,line cap=round]
+    \setkeys{ribbonpar}{#1}
+    \path
+    (0,0) --
+    ++(3\myrblen,0) to[out=0,in=0,looseness=3] coordinate[midway] (aux1)
+    ++(0,- \myrbarc) --
+    ++(-\myrblen,0) to[out=180,in=180,looseness=3] coordinate[midway] (aux2)
+    ++(0,- \myrbarc) --
+    ++(5\myrblen,0) to[out=0,in=0,looseness=3] coordinate[midway] (aux3)
+    ++(0, \myrbarc) --
+    ++(-\myrblen,0) to[out=180,in=180,looseness=3] coordinate[midway] (aux4)
+    ++(0, \myrbarc) --
+    ++(4\myrblen,0) --
+    ++(-0.5\myrbht,-0.5\myrbht) --
+    ++(0.5\myrbht,-0.5\myrbht) --
+    ++(-11\myrblen,0) --
+    ++(0.5\myrbht,0.5\myrbht) --
+    ++(-0.5\myrbht,0.5\myrbht) --
+        cycle;
+    \draw[fill=color2]
+    (aux1) -- ++(0,-0.5\myrbht) coordinate (aux7) -- (aux2|-aux7) -- (aux2|-aux1) -- cycle;  
+    \draw[fill=color2]
+    (aux4) -- ++(0,-0.5\myrbht) coordinate (aux8) -- (aux3|-aux8) -- (aux3|-aux4) -- cycle;  
+    \draw[thick,fill=color1]
+    (0,0) --
+    ++(3\myrblen,0) to[out=0,in=0,looseness=3] coordinate[midway] (aux1)
+    ++(0,- \myrbarc) --
+    ++(-\myrblen,0) to[out=180,in=180,looseness=3] coordinate[midway] (aux2)
+    ++(0,- \myrbarc) --
+    ++(5\myrblen,0) to[out=0,in=0,looseness=3] coordinate[midway] (aux3)
+    ++(0, \myrbarc) --
+    ++(-\myrblen,0) to[out=180,in=180,looseness=3] coordinate[midway] (aux4)
+    ++(0, \myrbarc) --
+    ++(4\myrblen,0) --
+    ++(-0.5\myrbht,-0.5\myrbht) --
+    ++(0.5\myrbht,-0.5\myrbht) --
+    ++(-11\myrblen,0) --
+    ++(0.5\myrbht,0.5\myrbht) --
+    ++(-0.5\myrbht,0.5\myrbht) --
+        cycle;
+    \path
+    (aux2) {[rounded corners=6pt] -- 
+    ++(0,\dimexpr-\myrbht-1.5\myrbarc\relax) coordinate (aux5) -- 
+    (aux3|-aux5)} -- 
+    (aux3);
+    \fill[color1]
+    ([yshift=-\myrbarc]aux2) {[rounded corners=6pt] -- 
+    ++(0,\dimexpr-\myrbht-0.5\myrbarc\relax) -- 
+    (aux3|-aux5)} -- 
+    ([yshift=-\myrbarc]aux3);
+    \draw
+    (aux2) {[rounded corners=6pt] -- 
+    ++(0,\dimexpr-\myrbht-1.5\myrbarc\relax) coordinate (aux5) --  
+    (aux3|-aux5)} -- 
+    (aux3);
+    \node[
+    anchor=north west,
+    text width=\dimexpr5\myrblen-\myrbarc\relax,
+    align=center,%%
+    ] at ([xshift=\myrbarc,yshift=-\myrbarc]aux2)
+    {#2};
+    \end{tikzpicture}%
+}
+\usepackage{lipsum}
+\begin{document}
+
+\Ribbon{some text goes here}\bigskip
+
+\Ribbon[
+    color1=orange!30,
+    color2=orange!80,
+    rblength=0.5cm,
+    rbheight=2cm,
+]{some text goes here}\bigskip
+
+\Ribbon[
+    color1=cyan!50,
+    color2=cyan,
+    rblength=1cm,
+    rbheight=.8cm,
+    rbarc=5pt,
+]{some text goes here}\bigskip
+
+\Ribbon[
+    color1=magenta!50,
+    color2=magenta,
+    rblength=2cm,
+    rbheight=4cm,
+]{\lipsum[2]}\bigskip
+
+\end{document}

@@ -1,0 +1,52 @@
+% It NEED tkz-elements v4.15
+\documentclass[margin = 12pt]{standalone} 
+\usepackage[mini]{tkz-euclide}
+\usepackage{tkz-elements}
+\begin{document} 
+  
+\directlua{dofile("def_ellipse.lua")
+z.H = point(0, 7)
+z.A = point(-3, 0)
+z.B = point(3, 0)
+L.AH = line(z.A, z.H)
+% z.Z1 = L.AH:report(0.65 * L.AH.length)
+z.Z1 = L.AH:point(0.65)
+L.BH = line(z.B, z.H)
+%z.Z2p = L.BH:report(0.5 * L.BH.length)
+z.Z2p = L.BH:point(0.5)
+
+z.W, z.C = def_ellipse(z.A, z.B, .18)
+CO.EL = conic(EL_points(z.W, z.A, z.C))
+PA.Base1 = CO.EL:points(0, 0.5, 50)
+PA.Base2 = CO.EL:points(0.5, 1, 50)
+
+z.w, z.c = def_ellipse(z.Z1, z.Z2p, .15)
+CO.el = conic(EL_points(z.w, z.Z1, z.c))
+PA.base1 = CO.el:points(0, 0.5, 50)
+PA.base2 = CO.el:points(0.5, 1, 50)
+
+z.P1 = CO.EL:point(-0.10)
+z.P2 = CO.EL:point(0.35)
+
+z.Q1 = intersection(line:new(z.H, z.P1), CO.el)
+_,z.Q2 = intersection(line:new(z.H, z.P2), CO.el)
+}
+
+\begin{tikzpicture}[line cap=round,line join=round]
+\tkzGetNodes
+\tkzDrawCoordinates[smooth](PA.Base1)
+\tkzDrawCoordinates[dotted,smooth](PA.Base2)
+\tkzDrawCoordinates[smooth](PA.base1)
+\tkzDrawCoordinates[dotted,smooth](PA.base2)
+\tkzDrawPolygon[thick](A,B,H)
+\tkzDrawSegments[blue](H,P2)
+\tkzDrawSegments[red,dotted](H,P1)
+\tkzDrawPoints[color=red](A,B,H,Z1,Z2',P1,P2,Q1,Q2)
+\tkzLabelPoints(A,B,P2,Q2)
+\tkzLabelPoints[left](Z1)
+\tkzLabelPoints[right](Z2')
+\tkzLabelPoints[above](H,P1)
+\tkzLabelPoints[above right](Q1)
+\end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,37 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{centernot}
+\makeatletter
+\newcommand*{\mycenternot}{%
+    \mathpalette\@mycenternot
+}
+\def\@mycenternot#1#2{%
+    \mathrel{%
+        \rlap{%
+                \settowidth\dimen@{$\m@th#1{#2}$}%
+                \kern.5\dimen@
+                \settowidth\dimen@{$\m@th#1=$}%
+                \kern-.5\dimen@
+                $\m@th#1\slash$%<-%
+            }%
+        {#2}%
+    }%
+}
+\makeatother
+\begin{document}
+
+$\not$
+
+$/$
+
+$\char 92$%
+
+$\backslash$
+
+$\slash$
+
+$A \centernot{\Longleftrightarrow} B$  
+
+$A \mycenternot{\Longleftrightarrow} B$
+
+\end{document}

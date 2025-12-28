@@ -1,0 +1,36 @@
+\documentclass[border=5pt]{standalone}
+\usepackage{quantikz}
+\usepackage{amsmath,amssymb}
+\begin{document}
+\begin{quantikz}
+    \lstick{Meter} 
+    & 
+    \phase[
+        label style={
+            label position=above,
+            label distance=.2cm,
+        }]{\rho} 
+    & 
+    \gate[2][1.5cm]{\hat{u}} 
+    &
+    \ctrl{1} 
+    & 
+    \\ 
+    \lstick{System} 
+    & 
+    \phase[
+        label style={
+            label position=below,
+            label distance=.3cm,
+        }]{\ket{\phi}} 
+    & 
+    & 
+    \gate[
+        label style={
+            label={[label distance=.1cm]below:$\left\{\ket{\phi},\ket{\phi^\perp}\right\}$}
+            }
+        ]{}
+    & \\ 
+\end{quantikz}
+\end{document}
+

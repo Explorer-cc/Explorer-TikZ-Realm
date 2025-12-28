@@ -1,0 +1,28 @@
+\documentclass[border=1mm]{standalone}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta}
+\newsavebox\Chart
+\sbox\Chart{\begin{tikzpicture}[line cap=round,line join=round,scale=.2]
+        \pgfgettransformentries{\mya}{\tmp}{\tmp}{\tmp}{\tmp}{\tmp}
+        \filldraw[line width=\mya*2pt,color=purple,fill=brown!30] 
+                (-2.58,4.28) -- (-2.30,2.93) -- (0.59,2.67) -- (1.11,4.39) -- cycle;
+        \draw [line width=\mya*2pt] (-2.40,2.16)-- (0.84,2.16);
+        \draw [line width=\mya*2pt] (0.84,2.16)-- (0.59,2.67);
+        \draw [line width=\mya*2pt] (1.11,4.39)-- (1.39,4.78);
+        \draw [line width=\mya*2pt] (1.39,4.78)-- (1.72,4.78);
+        \draw [line width=\mya*2.8pt] (-2.17,1.78) circle (0.25cm);
+        \draw [line width=\mya*2.8pt] (0.43,1.78) circle (0.25cm);
+    \end{tikzpicture}}  
+\begin{document}    
+
+\begin{tikzpicture}[    
+    align=center,scale=4,
+    node distance=2.25cm,
+    every node/.style={transform shape},
+    cart/.style={node contents=\usebox{\Chart}}     
+]   
+\draw node (A) [cart,scale=1.5] {} -- (4,1) node[cart,name=B] {};   
+\draw[red] (A) -| (B);
+\end{tikzpicture}       
+\end{document}

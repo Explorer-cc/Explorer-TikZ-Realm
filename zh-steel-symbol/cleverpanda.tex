@@ -1,0 +1,40 @@
+\documentclass{article}
+\usepackage[fontset=fandol]{ctex}
+\usepackage{tikz}
+\usepackage{CleverPanda}
+\parindent=0pt
+\newlength{\IHeight}
+\newlength{\stroke}
+
+\newcommand*\steelD{%
+  \setlength{\IHeight}{\fontcharht\font`I}%
+  \setlength{\stroke}{\CleverPanda{}}%
+  \tikz[baseline=0pt,line width=\stroke]{%
+    \draw (-0.125\IHeight,0) -- (-0.125\IHeight,\IHeight);
+    \draw (0.125\IHeight,0) -- (0.125\IHeight,\IHeight);
+    \draw (-0.4\IHeight,.5\stroke) -- (0.4\IHeight,.5\stroke);
+    \draw (-0.4\IHeight,\IHeight-.5\stroke) -- (0.4\IHeight,\IHeight-.5\stroke);
+    \draw (0,.5\IHeight) ellipse [x radius=0.32\IHeight, y radius=0.25*(\IHeight-\stroke)];
+  }%
+}%
+
+\begin{document}
+
+你\steelD 好  A\steelD B
+
+{%
+\bfseries%
+你\steelD 好  A\steelD B
+}%
+
+{%
+\Large%
+你\steelD 好  A\steelD B
+}%
+
+{%
+\Huge%
+你\steelD 好  A\steelD B
+}%
+
+\end{document}

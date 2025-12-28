@@ -1,0 +1,24 @@
+\documentclass[fontset=ubuntu]{ctexart}
+\usepackage{zhlipsum}
+\usepackage{tikz}
+\definecolor{darkblue}{RGB}{0,112,212}
+\NewDocumentCommand{\mysignal}{O{考点解析}}{%
+    \medskip\noindent%
+    \begin{tikzpicture}[
+        line join=round,
+        myshadow/.style 2 args={fill=black,opacity=.3,transform canvas={xshift=##1,yshift=##2}}]%
+        \node[rectangle,minimum width=6\ccwd,inner sep=5pt,fill=darkblue,text=white,node font=\bfseries,preaction={myshadow={1mm}{-1mm}}] (x) {#1};
+        \filldraw[darkblue,preaction={myshadow={1mm}{-1.07mm}}] ([xshift=-.3pt,yshift=-.4pt]x.north east) .. controls ([xshift=.35cm,yshift=.1cm]x.east) .. ([xshift=.4cm,yshift=.4pt]x.south east) -- ([xshift=-.3pt,yshift=.4pt]x.south east) -- cycle;
+    \end{tikzpicture}
+}
+\begin{document}
+
+\zhlipsum[1]
+
+\mysignal
+
+\mysignal[hello,world!]
+
+\zhlipsum[2]
+
+\end{document}

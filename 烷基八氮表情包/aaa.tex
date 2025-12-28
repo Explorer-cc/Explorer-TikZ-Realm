@@ -1,0 +1,16 @@
+\documentclass[border=5pt]{standalone}
+\usepackage[fontset=fandol]{ctex}
+\usepackage{chemfig}
+\setchemfig{baseline=(current bounding box.center)}
+% \setchemfig{scheme debug=true}
+\begin{document}
+\chemnameinit{\chemfig{[:-22.5]*9(-N=N-N=N-N=N-N=N-)}}
+\schemestart
+\chemname{\chemfig{N*6(-N=N-N=N-N=)}}{苯氮} 
+\+
+\chemname{\chemfig{H_2C-[:30]N=[:-30]N}}{烷氮} 
+\arrow(.mid east--.mid west)
+\chemname{\chemfig{[:-22.5]*9(-N=N-N=N-N=N-N=N-)}}{烷基八氮}
+\schemestop
+\chemnameinit{}
+\end{document}

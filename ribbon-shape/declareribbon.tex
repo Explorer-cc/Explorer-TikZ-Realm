@@ -1,0 +1,222 @@
+% https://tex.stackexchange.com/questions/734715/how-to-draw-the-ribbon-shape-as-decoration-in-tikz
+\documentclass[varwidth,svgnames]{standalone}
+\usepackage{tikz}
+\pgfset{
+  ribbon arc x radius/.initial=+1mm,
+  ribbon arc y radius/.initial=+.5mm,
+  ribbon left  length/.initial=+1cm,
+  ribbon right length/.initial=+1cm,
+  ribbon left  angle/.initial=+45,
+  ribbon right angle/.initial=+45,
+  ribbon left inset/.initial=+5mm,
+  ribbon right inset/.initial=+5mm,
+  % for use with PGF (and internally by TikZ)
+  ribbon left/start/.initial=,
+  ribbon right/start/.initial=,
+  ribbon left/.initial=\pgfsetstrokecolor{black}\pgfusepath{stroke},
+  ribbon right/.initial=\pgfsetstrokecolor{black}\pgfusepath{stroke},
+  ribbon left  shadow/start/.initial=,
+  ribbon right shadow/start/.initial=,
+  ribbon left  shadow/.initial=\pgfsetfillcolor{gray!50}\pgfusepath{fill},
+  ribbon right shadow/.initial=\pgfsetfillcolor{gray!50}\pgfusepath{fill},
+  ribbon left  shadow line/start/.initial=,
+  ribbon right shadow line/start/.initial=,
+  ribbon left  shadow line/.initial=\pgfsetstrokecolor{gray}\pgfusepath{stroke},
+  ribbon right shadow line/.initial=\pgfsetstrokecolor{gray}\pgfusepath{stroke},
+}
+\makeatletter
+\tikzset{
+  % TikZ styles that further control the other paths
+  ribbon left/.code=, ribbon right/.code=,
+  ribbon left shadow/.code=, ribbon right shadow/.code=,
+  every ribbon node/.code={% this is done often, make it less PGFKeys-y
+    \pgfkeyssetvalue{/pgf/ribbon  left/start}            {\begingroup\tikzset{ribbon  left}}%
+    \pgfkeyssetvalue{/pgf/ribbon right/start}            {\begingroup\tikzset{ribbon right}}%
+    \pgfkeyssetvalue{/pgf/ribbon  left shadow/start}     {\begingroup\tikzset{ribbon  left shadow,draw=none}}%
+    \pgfkeyssetvalue{/pgf/ribbon right shadow/start}     {\begingroup\tikzset{ribbon right shadow,draw=none}}%
+    \pgfkeyssetvalue{/pgf/ribbon  left shadow line/start}{\begingroup\tikzset{ribbon  left shadow,fill=none,shade=none}}%
+    \pgfkeyssetvalue{/pgf/ribbon right shadow line/start}{\begingroup\tikzset{ribbon right shadow,fill=none,shade=none}}%
+    \pgfkeyssetvalue{/pgf/ribbon  left}                  {\tikz@finish}%
+    \pgfkeyssetvalue{/pgf/ribbon right}                  {\tikz@finish}%
+    \pgfkeyssetvalue{/pgf/ribbon  left shadow}           {\tikz@finish}%
+    \pgfkeyssetvalue{/pgf/ribbon right shadow}           {\tikz@finish}%
+    \pgfkeyssetvalue{/pgf/ribbon  left shadow line}      {\tikz@finish}%
+    \pgfkeyssetvalue{/pgf/ribbon right shadow line}      {\tikz@finish}%
+  }, % two setters:
+  ribbon shadow/.style={/tikz/ribbon left shadow/.style={#1}, /tikz/ribbon right shadow/.style={#1}},
+  ribbon ribbon/.style={/tikz/ribbon left/.style={#1},        /tikz/ribbon right/.style={#1}},
+}
+\pgfdeclareshape{ribbon}{%
+  % a saved anchor is a macro the expands to \pgfqpoint{<x>}{<y>}
+  % that will also be available after the node has been created (for anchors/anchorborder)
+  \savedanchor\text{%
+    % the anchor .text is where PGF puts the left point of the node's text's baseline
+    % usually the text anchor is at the origin, but let's make life easier for us
+    % and üitthe center of the shape at the center of the text part
+    \pgf@x=-.5\wd\pgfnodeparttextbox
+    \pgf@y=.5\dp\pgfnodeparttextbox
+    \advance\pgf@y by -.5\ht\pgfnodeparttextbox
+  }%
+  % similar to a saved anchor, but a saved macro could be anything
+  % here, we even add other definitions to it via \addtosavedmacro
+  \savedmacro\ribboncorners{%
+    \pgfmathsetlength\pgf@xa{\pgfkeysvalueof{/pgf/inner xsep}}%
+    \pgfmathsetlength\pgf@ya{\pgfkeysvalueof{/pgf/inner ysep}}%
+    \advance\pgf@y by -\dp\pgfnodeparttextbox
+    \pgf@x=-\pgf@x
+    \pgf@y=-\pgf@y
+    \advance\pgf@x by \pgf@xa
+    \advance\pgf@y by \pgf@ya
+    % the following points will be used in some calculations
+    % they could be generated from just one of them on the fly
+    % but let's make it easier for us again
+    \edef\northeast{\noexpand\pgfqpoint{\the\pgf@x}{\the\pgf@y}}%
+    \addtosavedmacro\northeast
+    \edef\northwest{\noexpand\pgfqpoint{-\the\pgf@x}{\the\pgf@y}}%
+    \addtosavedmacro\northwest
+    \edef\southeast{\noexpand\pgfqpoint{\the\pgf@x}{-\the\pgf@y}}%
+    \addtosavedmacro\southeast
+    \edef\southwest{\noexpand\pgfqpoint{-\the\pgf@x}{-\the\pgf@y}}%
+    \addtosavedmacro\southwest
+    % save all the bits and bobs
+    \pgfmathsetlengthmacro\xradius{\pgfkeysvalueof{/pgf/ribbon arc x radius}}%
+    \pgfmathsetlengthmacro\yradius{\pgfkeysvalueof{/pgf/ribbon arc y radius}}%
+    \pgfmathsetlengthmacro\leftinset {\pgfkeysvalueof{/pgf/ribbon left inset}}%
+    \pgfmathsetlengthmacro\rightinset{\pgfkeysvalueof{/pgf/ribbon right inset}}%
+    \pgfmathsetmacro\leftangle {\pgfkeysvalueof{/pgf/ribbon left angle}}%
+    \pgfmathsetmacro\rightangle{\pgfkeysvalueof{/pgf/ribbon right angle}}%
+    \pgfmathsetlengthmacro\leftlength {\pgfkeysvalueof{/pgf/ribbon left length}}%
+    \pgfmathsetlengthmacro\rightlength{\pgfkeysvalueof{/pgf/ribbon right length}}%
+    \addtosavedmacro\xradius   \addtosavedmacro\yradius
+    \addtosavedmacro\leftinset \addtosavedmacro\rightinset
+    \addtosavedmacro\leftangle \addtosavedmacro\rightangle
+    \addtosavedmacro\leftlength\addtosavedmacro\rightlength
+  }%
+  \anchor{text}{\text}% <node name>.text means \text in the node's coordinate system
+  \anchor{center}{\pgfpointorigin}% the center is the origin, easy
+  \anchor{north}{\ribboncorners\northwest \pgf@x=0pt }% all macros saved to \ribboncorners needs that macro first
+  \anchor{south}{\ribboncorners\southwest \pgf@x=0pt }%
+  % the … top anchors are used in the drawing
+  \anchor{left shadow line top}{\ribboncorners\pgfpointadd{\northwest}{\pgfqpoint{\leftinset}{\dimexpr\yradius*3\relax}}}%
+  \anchor{left shadow line bottom}{\ribboncorners\pgfpointadd{\northwest}{\pgfqpoint{\leftinset}{0pt}}}%
+  \anchor{right shadow line top}{\ribboncorners\pgfpointadd{\northeast}{\pgfqpoint{-\rightinset}{\dimexpr\yradius*3\relax}}}%
+  \anchor{right shadow line bottom}{\ribboncorners\pgfpointadd{\northeast}{\pgfqpoint{-\rightinset}{0pt}}}%
+  \backgroundpath{%
+    \pgfsetroundjoin % the north west and the north east corners can look funny, let's make them round
+    \pgfpathmoveto{\pgfpointadd{\northwest}{\pgfqpoint{0pt}{\yradius}}}% ($(\northwest)+(0pt,\yradius)$)
+    \pgfpathlineto{\pgfpointadd{\southwest}{\pgfqpoint{0pt}{\yradius}}}%
+    \pgfpatharc{180}{270}{\xradius and \yradius}%
+    \pgfpathlineto{\pgfpointadd{\southeast}{\pgfqpoint{-\xradius}{0pt}}}%
+    \pgfpatharc{270}{360}{\xradius and \yradius}%
+    \pgfpathlineto{\pgfpointadd{\northeast}{\pgfqpoint{0pt}{\yradius}}}%
+    \pgfpatharc{360}{270}{\xradius and \yradius}%
+    \pgfpathlineto{\pgfpointadd{\northwest}{\pgfqpoint{\xradius}{0pt}}}%
+    \pgfpatharc{270}{180}{\xradius and \yradius}%
+    \pgfpathclose
+  }%
+  \behindbackgroundpath{%
+    % first, some calculations:
+    \pgfmathtan@{\leftangle}%
+    \northeast % the y value can be used to calculate the node's height
+    \pgfmathdivide@{\pgf@sys@tonumber\pgf@y}{\pgfmathresult}%
+    \edef\leftindent{\pgfmathresult pt}%
+    %
+    \pgfmathtan@{\rightangle}%
+    \pgfmathdivide@{\pgf@sys@tonumber\pgf@y}{\pgfmathresult}%
+    \edef\rightindent{\pgfmathresult pt}%
+    %
+    \multiply\pgf@y by 2
+    \edef\ribbonheight{\the\pgf@y}%
+    % alright
+    % first the shadow: 1. the area, 2. just the vertical line
+    \pgfkeysvalueof{/pgf/ribbon left shadow/start}%
+      \pgfpathmoveto{\pgfpointadd{\northwest}{\pgfqpoint{0pt}{\yradius}}}%
+      \pgfpatharc{180}{90}{\xradius and \yradius}%
+      \pgfpathlineto{\pgfpointadd{\northwest}{\pgfpoint{\leftinset-\xradius}{2*\yradius}}}%
+      \pgfpatharc{270}{360}{\xradius and \yradius}%
+      \pgfpathlineto{\pgfpointadd{\northwest}{\pgfqpoint{\leftinset}{0pt}}}%
+      \pgfpathlineto{\pgfpointadd{\northwest}{\pgfqpoint{\xradius}{0pt}}}%
+      \pgfpatharc{270}{180}{\xradius and \yradius}%
+    \pgfkeysvalueof{/pgf/ribbon left shadow}%
+    \pgfkeysvalueof{/pgf/ribbon left shadow line/start}%
+      \pgfpathmoveto{\pgf@sh@reanchor{ribbon}{left shadow line top}}%
+      \pgfpathlineto{\pgfpointadd{\northwest}{\pgfqpoint{\leftinset}{0pt}}}%
+    \pgfkeysvalueof{/pgf/ribbon left shadow line}%
+    % now the real part of the ribbon
+    \pgfkeysvalueof{/pgf/ribbon left/start}%
+      \begingroup
+        % shifting makes the following points relative to \northwest instead of the origin (the center)
+        \pgftransformshift{\northwest}%
+        \pgfpathmoveto{\pgfqpoint{0pt}{\yradius}}%
+        \pgfpatharc{180}{90}{\xradius and \yradius}%
+        \pgfpathlineto{\pgfpoint{\leftinset-\xradius}{2*\yradius}}%
+        \pgfpatharc{-90}{90}{\xradius and \yradius}%
+        \pgftransformyshift{4*\yradius}% even more relativity
+        \pgfpathlineto{\pgfqpoint{-\leftlength}{0pt}}%
+        \pgfpathlineto{\pgfpoint{-\leftlength+\leftindent}{-.5*\ribbonheight}}%
+        \pgfpathlineto{\pgfqpoint{-\leftlength}{-\ribbonheight}}
+        \pgfpathlineto{\pgfqpoint{0pt}{-\ribbonheight}}%
+        \pgfpathclose
+      \endgroup
+    \pgfkeysvalueof{/pgf/ribbon left}%
+    %%% and then the same for the right side
+    \pgfkeysvalueof{/pgf/ribbon right shadow/start}%
+      \pgfpathmoveto{\pgfpointadd{\northeast}{\pgfqpoint{0pt}{\yradius}}}%
+      \pgfpatharc{0}{90}{\xradius and \yradius}%
+      \pgfpathlineto{\pgfpointadd{\northeast}{\pgfpoint{-\leftinset+\xradius}{2*\yradius}}}%
+      \pgfpatharc{270}{180}{\xradius and \yradius}%
+      \pgfpathlineto{\pgfpointadd{\northeast}{\pgfqpoint{-\leftinset}{0pt}}}%
+      \pgfpathlineto{\pgfpointadd{\northeast}{\pgfqpoint{-\xradius}{0pt}}}%
+      \pgfpatharc{270}{360}{\xradius and \yradius}%
+    \pgfkeysvalueof{/pgf/ribbon right shadow}%
+    \pgfkeysvalueof{/pgf/ribbon right shadow line/start}%
+      \pgfpathmoveto{\pgf@sh@reanchor{ribbon}{right shadow line top}}%
+      \pgfpathlineto{\pgfpointadd{\northeast}{\pgfqpoint{-\rightinset}{0pt}}}%
+    \pgfkeysvalueof{/pgf/ribbon right shadow line}%
+    \pgfkeysvalueof{/pgf/ribbon right/start}%
+      \begingroup
+        \pgftransformshift{\northeast}%
+        \pgfpathmoveto{\pgfqpoint{0pt}{\yradius}}%
+        \pgfpatharc{0}{90}{\xradius and \yradius}%
+        \pgfpathlineto{\pgfpoint{-\rightinset+\xradius}{2*\yradius}}%
+        \pgfpatharc{270}{90}{\xradius and \yradius}%
+        \pgftransformyshift{4*\yradius}%
+        \pgfpathlineto{\pgfqpoint{\rightlength}{0pt}}%
+        \pgfpathlineto{\pgfpoint{\rightlength-\rightindent}{-.5*\ribbonheight}}%
+        \pgfpathlineto{\pgfqpoint{\rightlength}{-\ribbonheight}}
+        \pgfpathlineto{\pgfqpoint{0pt}{-\ribbonheight}}%
+        \pgfpathclose
+      \endgroup
+    \pgfkeysvalueof{/pgf/ribbon right}%
+  }
+}
+\makeatother
+\begin{document}
+\null
+
+\begin{pgfpicture}
+\pgfnode{ribbon}{center}{\color{black}Portable Gra\smash phics Format}{FooBar}
+  {\pgfsetfillcolor{green}\pgfusepath{stroke, fill}}
+\end{pgfpicture}
+\medskip
+
+%\tikz\node[ribbon]{Doesn't do much.};
+\tikz[every label/.style={node font=\tiny\ttfamily, text width=20em}, y=+1.2cm]
+  \foreach[count=\i] \opts in {
+    {draw, ribbon right angle=-60},
+    {draw=blue, fill=red, line join=round, text=white, rotate=30, yslant=-.5},
+    {draw, fill=blue!50, ribbon left/.style={draw=green, fill=yellow}},
+    {draw, fill=blue!50, ribbon shadow=blue!25},
+    {%
+      draw,
+      left color=yellow, right color=blue!75, middle color=green, 
+      ribbon left/.style={left color=red, right color=yellow, middle color=orange},
+      ribbon  left shadow/.style={shade=none, color=yellow!50!gray, draw, fill},
+      ribbon right shadow/.style={shade=none, color=blue!50!gray, draw, fill},
+      ribbon right/.style={left color=blue, right color=violet, middle color=Indigo},
+    }%
+  }
+  \node[shape=ribbon, line width=1pt, text depth=+0pt,
+    style/.expand once=\opts, label=south:\detokenize\expandafter{\opts}]
+    at (0, -\i) {Hello, world!};
+\end{document}

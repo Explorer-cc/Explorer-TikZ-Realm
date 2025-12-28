@@ -1,0 +1,27 @@
+\documentclass[fontset=ubuntu]{ctexart}
+\usepackage{zhlipsum}
+\usepackage{tikz}
+\definecolor{darkblue}{RGB}{0,112,192}
+\definecolor{lightblue}{RGB}{198,234,250}
+\usetikzlibrary{backgrounds}
+\newcommand*{\mysignal}[2]{%
+    \medskip\noindent%
+    \tikz[line join=round]{%
+        \node[rectangle,fill=lightblue,text=darkblue,node font=\bfseries] (x) {#1};
+        \begin{scope}[on background layer]
+            \filldraw[darkblue,rounded corners=1pt] ([xshift=.1cm,yshift=-.45pt]x.north west) rectangle ([xshift=-.2cm,yshift=.45pt]x.south west);
+            \filldraw[darkblue] ([xshift=-.35pt,yshift=-.45pt]x.north east) -- ([xshift=.3cm]x.east) -- ([xshift=-.35pt,yshift=.45pt]x.south east);
+        \end{scope}
+        \draw[darkblue,thick] ([xshift=-.2cm,yshift=-.5ex]x.south west) -- ([xshift=4cm,yshift=-.5ex]x.south east);
+        \node[xshift=4.5em] at (x.east) {#2};
+        }\medskip%
+}
+\begin{document}
+
+\zhlipsum[1]
+
+\mysignal{hello}{這是一些內容}
+
+\zhlipsum[2]
+
+\end{document}

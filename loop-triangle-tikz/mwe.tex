@@ -1,0 +1,19 @@
+\documentclass[border=1cm]{standalone}
+\usepackage{tkz-euclide}
+\NewDocumentCommand{\drawedge}{mm}{
+    \tkzDefBarycentricPoint(#1=1,#2=2)\tkzGetPoint{tmp#1#2}
+    \tkzDefBarycentricPoint(#1=2,#2=1)\tkzGetPoint{tmp#2#1}
+    \draw[cap=round] (#1) -- (#2)
+    node[circle,draw,fill=white,minimum size=.5cm] at (tmp#1#2) {}
+    node[circle,draw,fill=white,minimum size=.5cm] at (tmp#2#1) {};
+}
+\begin{document}
+    \begin{tikzpicture}
+        \tkzDefPoints{-2/0/A, 2/0/B}
+        \tkzDefTriangle[equilateral](A,B)\tkzGetPoint{C}
+        \tkzDefTriangleCenter[ortho](A,B,C)\tkzGetPoint{H}
+        \foreach \from/\to in {A/B,A/C,B/C,A/H,B/H,C/H}{%
+            \drawedge{\from}{\to}
+        }
+    \end{tikzpicture}
+\end{document}

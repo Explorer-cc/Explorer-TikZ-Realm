@@ -1,0 +1,52 @@
+\documentclass{article}
+% 我基于cfr第一版代码的改良
+% https://tex.stackexchange.com/a/747076/322482
+% 
+\usepackage[paperheight=10cm]{geometry}
+\usepackage{lipsum}
+\usepackage{tcolorbox}
+\tcbuselibrary{theorems,skins,breakable}
+\usetikzlibrary{arrows.meta}
+\tikzset{mytcbframe/.style={ultra thick,tcbcolframe,rounded corners=5mm}}
+\NewTcbTheorem[number within=section]{mythm}{Theorem}% 
+{%
+  enhanced jigsaw,fonttitle=\bfseries,   
+  colback=white,breakable,
+  colframe=green!75!black,
+%   boxrule=0pt,titlerule=0pt, % 这里的两个设置是无效的
+  frame engine=empty,
+  arc=.5cm,sharp corners=northwest,
+  attach boxed title to top left={yshift=-4pt},
+  boxed title style={%
+    skin=enhancedfirst jigsaw,
+    colback=tcbcolframe,
+    bottom=1pt,sharp corners,
+  },
+  overlay unbroken and first= {%
+    \fill[tcbcolframe] (title.north east) -- (title.south east) -- ++(1em,0) -- cycle;
+    },%
+  underlay unbroken={%
+    \draw[mytcbframe,-{Circle},shorten >=6mm] (frame.north west) -| (frame.south east) -| (frame.north west) ;
+  },
+  underlay first={%
+    \draw[mytcbframe,-{Circle},shorten >=6mm] (frame.north west) -| (frame.south east) (frame.south west) -- (frame.north west) 
+    ;
+  },
+  underlay middle={%
+    \draw[mytcbframe] (frame.north west) -- (frame.south west) (frame.north east) -- (frame.south east) ;
+  },
+  underlay last={%
+  \draw[mytcbframe] (frame.north east) |- (frame.south west) -- (frame.north west);
+  }
+}
+{thm}%
+\begin{document}
+\section{AAA}
+\section{BBB}
+\begin{mythm}{This is a theorem}{}
+  \lipsum[1-4]
+\end{mythm}
+\begin{mythm}{This is another theorem}{}
+    \lipsum[1][2-10]
+  \end{mythm}
+\end{document}

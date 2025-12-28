@@ -1,0 +1,28 @@
+% https://ask.latexstudio.net/ask/question/17826.html
+\documentclass[tikz,border=3pt]{standalone}
+\usepackage{amsmath}
+\usepackage{newpxmath}
+\usetikzlibrary{matrix}
+\usetikzlibrary{ext.positioning-plus}
+\newcommand\blind{\phantom{a_{11}}}
+\begin{document}
+\begin{tikzpicture}[line cap=round]
+    \matrix (det) [matrix of math nodes,nodes={circle}]
+    {
+    \blind & \blind & a_{11} & a_{12} & a_{13} & \blind & \blind \\
+    \blind & \blind & a_{21} & a_{22} & a_{23} & \blind & \blind \\ 
+    \blind & \blind & a_{31} & a_{32} & a_{33} & \blind & \blind \\
+    \blind & \blind & \blind & \blind & \blind & \blind & \blind \\
+    };
+    \draw[blue,dashed,thick] (det-1-3.center) -- (det-3-1.center) -- (det-4-3.ext_corner south west) -- (det-2-5.center);
+    \draw[blue,dashed,thick] (det-1-4.center) -- (det-3-2.center) -- (det-4-4.ext_corner south west) -- (det-3-5.center);
+    \draw[blue,dashed,thick] (det-1-5.center) -- (det-3-3.center);
+    \draw[red,thick] (det-1-4.center) -- (det-3-6.center) -- (det-4-5.ext_corner south west) -- (det-3-3.center);
+    \draw[red,thick] (det-1-5.center) -- (det-3-7.center) -- (det-4-6.ext_corner south west) -- (det-3-4.center);
+    \draw[red,thick] (det-1-3.center) -- (det-3-5.center);
+    \draw[thick]
+    (det-1-3.ext_corner north west) -- (det-3-3.ext_corner south west)
+    (det-1-5.ext_corner north east) -- (det-3-5.ext_corner south east)
+    ;
+\end{tikzpicture}
+\end{document}

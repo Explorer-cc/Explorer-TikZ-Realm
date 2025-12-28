@@ -1,0 +1,19 @@
+\documentclass[tikz,border=3pt]{standalone}
+\usepackage{tkz-euclide}
+\begin{document}
+\begin{tikzpicture}
+    \tkzInit[xmin=-3,xmax=3,ymin=-1,ymax=5]
+    \tkzDrawX[noticks]\tkzDrawY[noticks]
+    \tkzDefPoints{0/0/O,1.732/3/M,0/4/{2r},0/2/o',2/0/xaxis}
+    \tkzDrawPolygon[semithick,blue](O,M,2r)
+    \tkzDrawCircle[semithick,black](o',O)
+    \tkzDrawPoint[red](o')
+    \tkzLabelPoints[right](o')
+    \tkzLabelPoints[above right](M,2r)
+    \tkzLabelPoints[below left](O)
+    \tkzPicRightAngle[semithick,draw,red,angle radius=2mm](O,M,2r)
+    \tkzMarkAngle[size=.3,red](xaxis,O,M)
+    \tkzMarkAngle[size=.3,red](O,2r,M)
+    \tkzLabelAngle[red,pos=.5](xaxis,O,M){$\theta$}
+\end{tikzpicture}
+\end{document}

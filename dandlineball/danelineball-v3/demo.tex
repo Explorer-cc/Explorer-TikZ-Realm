@@ -1,0 +1,25 @@
+% It NEED tkz-elements v3.34c NOT v4.x
+
+\documentclass[margin = 12pt]{standalone} 
+\usepackage[mini]{tkz-euclide}
+\usepackage{tkz-elements}
+\begin{document} 
+  
+\directlua{
+init_elements()
+z.O = point(0, 0)
+z.A = point(1, 2)
+z.B = point(5, 1)
+z.C = point(4, 3)
+z.D = z.A: orthogonal(2)
+z.E = (z.B - z.A): orthogonal(2): at (z.A)
+z.F = (z.B - z.A): orthogonal(2): at (z.C)
+}
+
+\begin{tikzpicture}
+\tkzGetNodes
+\tkzDrawSegments(O,A O,D A,E C,F A,B)
+\tkzDrawPoints(A,...,F,O)
+\tkzLabelPoints(A,...,F,O)
+\end{tikzpicture}
+\end{document} 

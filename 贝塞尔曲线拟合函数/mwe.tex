@@ -1,0 +1,28 @@
+\documentclass[border=5pt,tikz]{standalone}
+\tikzset{line join=round,line cap=round,thick}%
+\newcommand*\myhalfpath[1][black]{%
+    \draw[#1] (0,0)
+    .. controls (.1,1) and (.6,1) .. (.8,0)
+    .. controls (1.2,-1.75) and (1.6,-1.2) .. (2.8,0)
+    .. controls (2.9,.1) and (3.1,.18) .. (3.2,.2)
+    ;
+}
+\begin{document}
+\begin{tikzpicture}
+   \draw[-latex] (-3.25,0) -- (3.25,0) node[below] {$x$};
+   \draw[-latex] (0,-2) -- (0,2) node[right] {$y$};
+   \begin{scope}[xscale=-1]
+        \myhalfpath[magenta]
+   \end{scope}
+   \myhalfpath[magenta]
+\end{tikzpicture}
+
+\begin{tikzpicture}
+    \draw[-latex] (-3.25,0) -- (3.25,0) node[below] {$x$};
+    \draw[-latex] (0,-2) -- (0,2) node[right] {$y$};
+    \myhalfpath[cyan]
+    \begin{scope}[scale=-1]
+        \myhalfpath[cyan]
+    \end{scope}
+ \end{tikzpicture}
+\end{document}

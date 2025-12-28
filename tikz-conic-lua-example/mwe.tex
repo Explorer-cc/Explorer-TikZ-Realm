@@ -1,0 +1,54 @@
+\documentclass[border=4pt,tikz]{standalone}
+\usepackage{tkz-euclide,tkz-elements}
+\usepackage{newpxmath}
+\directlua{
+    init_elements()
+    c = 2
+    a = 1.25
+    p = a * a / c
+    e = c / a
+    z.O = point(0, 0) 
+    z.F = point(-c, 0)
+    z.a = point(-p, -1)
+    z.b = point(-p, 1)
+    L.ab = line(z.a, z.b)
+    CO.HY = conic(z.F, L.ab, e)
+    PA.curveL = CO.HY:points(-3, 3, 200)
+    PA.curveR = CO.HY:points(-3, 3, 200,"swap")
+    z.A = CO.HY.vertex
+    z.D = point(0,1.5)
+    z.P = point(-1,1)
+    L.OP = line(z.O, z.P)
+    z.M,z.N = intersection(L.OP, CO.HY)
+}
+\begin{document}
+    \begin{tikzpicture}[line cap=round]
+        \tkzGetNodes
+        \tkzInit[xmin=-3.5,xmax=3.5,ymin=-4,ymax=4]
+        \tkzDrawX[noticks,thick]\tkzDrawY[noticks,thick]
+        \tkzDrawCoordinates[smooth,magenta,semithick](PA.curveL)
+        \tkzDrawCoordinates[smooth,cyan,semithick](PA.curveR)
+        \tkzDrawLine[add=1 and 1,thick](A,D)
+        \tkzDrawLine[add=3 and 2,thick](O,P)
+        \tkzPicAngle[
+            "$\alpha$",draw=orange,
+            angle eccentricity=1.35, 
+            angle radius=.5cm,text=orange
+        ](M,A,O)
+        \tkzPicAngle[
+            "$\beta$",draw=violet,
+            angle eccentricity=1.35, 
+            angle radius=.5cm,text=violet
+        ](O,A,D)
+        \tkzPicAngle[
+            "$\theta$",draw=olive,
+            angle eccentricity=1.35, 
+            angle radius=.5cm,text=olive
+        ](D,A,N)
+        \tkzDrawSegments[thick](A,M A,N)
+        \tkzDrawPoints[blue](O,A,D,M,N)
+        \tkzLabelPoints[blue,left](D,N)
+        \tkzLabelPoints[blue,above right](O,M)
+        \tkzLabelPoints[blue,above left](A)
+    \end{tikzpicture}
+\end{document}

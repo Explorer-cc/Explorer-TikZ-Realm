@@ -1,0 +1,80 @@
+\documentclass{article}
+\usepackage{l3draw}
+
+\ExplSyntaxOn
+
+\NewDocumentCommand { \Steel } { m } {
+    \draw_begin:
+        \draw_path_rectangle:nn { 0em , 0em } { 0.7em , 0.667em }
+        \draw_path_use_clear:n { clip }
+        \draw_scope_begin:
+            \draw_evenodd_rule:
+            \draw_path_ellipse:nnn { 0.35em , 0.333em } { 0em , 0.2em } { 0.35em , 0em }
+            \draw_path_ellipse:nnn { 0.35em , 0.333em } { 0em , 0.175em } { 0.25em , 0em }
+            \draw_path_use_clear:n { fill }
+        \draw_scope_end:
+        \draw_linewidth:n { 0.175ex }
+        \bool_lazy_any:nT {
+            { \tl_if_eq_p:NN #1 a }
+            { \tl_if_eq_p:NN #1 b }
+        } {
+            \draw_path_moveto:n { 0.35em , 0em }
+            \draw_path_lineto:n { 0.35em , 0.667em }
+            \draw_path_use_clear:n { stroke }
+        }
+        \bool_lazy_any:nT {
+            { \tl_if_eq_p:NN #1 c }
+            { \tl_if_eq_p:NN #1 d }
+        } {
+            \draw_path_moveto:n { 0.45em , 0em }
+            \draw_path_lineto:n { 0.45em , 0.667em }
+            \draw_path_moveto:n { 0.25em , 0em }
+            \draw_path_lineto:n { 0.25em , 0.667em }
+            \draw_path_use_clear:n { stroke }
+        }
+        \draw_linewidth:n { 0.075ex }
+        \bool_lazy_any:nT {
+            { \tl_if_eq_p:NN #1 b }
+            { \tl_if_eq_p:NN #1 c }
+            { \tl_if_eq_p:NN #1 d }
+        } {
+            \draw_path_moveto:n { 0.1em , 0em + 0.075ex / 2 }
+            \draw_path_lineto:n { 0.6em , 0em + 0.075ex / 2 }
+            \draw_path_use_clear:n { stroke }
+        }
+        \bool_lazy_any:nT {
+            { \tl_if_eq_p:NN #1 d }
+        } {
+            \draw_path_moveto:n { 0.1em , 0.667em - 0.075ex / 2 }
+            \draw_path_lineto:n { 0.6em , 0.667em - 0.075ex / 2 }
+            \draw_path_use_clear:n { stroke }
+        }
+    \draw_end:
+}
+
+\ExplSyntaxOff
+
+\begin{document}
+
+4\Steel{a}25
+
+4\Steel{b}25
+
+4\Steel{c}25
+
+4\Steel{d}25
+
+{
+\Huge
+
+4\Steel{a}25
+
+4\Steel{b}25
+
+4\Steel{c}25
+
+4\Steel{d}25
+
+}
+
+\end{document}

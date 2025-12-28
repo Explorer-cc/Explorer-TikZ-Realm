@@ -1,0 +1,37 @@
+\documentclass[tikz,border=6pt]{standalone}
+\begin{document}
+\def\delta{\fpeval{.125*sqrt(3)}}
+\def\deltaa{2*\delta}
+\def\hxx{.625}
+\def\hyy{\delta}
+\def\vxx{.125}
+\def\vyy{3*\delta}
+\begin{tikzpicture}[
+    line cap=round, line join=round,
+    tileG/.pic={
+        \draw (.25,0)  -- (.5,0) -- (.25,\deltaa) -- (0,\deltaa);
+        \draw (.25,0) -- (.125,\delta) -- (0,\delta);
+        \draw 
+        (0,\deltaa) -- (.125,\delta) -- (.25,\deltaa)
+        (.125,\delta) -- (.375,\delta) -- (.25,0);
+    },
+    tileGs/.pic={
+        \path%
+            pic {tileG}
+            pic[xscale=-1] {tileG}
+            pic[yscale=-1] {tileG}
+            pic[scale=-1] {tileG}
+        ;
+    }
+]
+%   \pic {tileGs};
+\clip (3*.625,5*\deltaa) rectangle ++(9*0.625,14*\deltaa);
+\foreach \i in {0,...,12}{
+    \foreach \j in {0,...,12}{
+        \def\pointx{\i*\hxx+\j*\vxx}
+        \def\pointy{\i*\hyy+\j*\vyy}
+        \pic at (\pointx,\pointy) {tileGs};
+    }
+}
+\end{tikzpicture}
+\end{document}

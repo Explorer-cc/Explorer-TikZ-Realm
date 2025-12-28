@@ -1,0 +1,25 @@
+\documentclass[tikz,border=5pt]{standalone}
+\begin{document}
+\def\xx{\fpeval{.25*(sqrt{3}-1)}}%
+\def\tmpyy{\fpeval{\xx*sqrt{3}}}%
+\def\yy{\fpeval{2*\xx+\tmpyy}}%
+\begin{tikzpicture}[
+    tileB/.pic = {%
+        \draw (-\xx,-\xx) rectangle (\xx,\xx);
+        \draw (\xx,\xx) 
+        -- (0,.5) -- (-\xx,\xx)
+        -- (-.5,0) -- (-\xx,-\xx)
+        -- (0,-.5) -- (\xx,-\xx)
+        -- (.5,0) -- cycle;
+    }%
+]
+    \clip (0,3) rectangle (4,7);
+    \foreach \i in {0,...,12}{
+        \foreach \j in {0,...,12}{
+            \def\pointx{\fpeval{-\i*\xx+\j*\yy}}
+            \def\pointy{\fpeval{\i*\yy+\j*\xx}}
+            \pic at (\pointx,\pointy) {tileB};
+        }
+    }
+\end{tikzpicture}
+\end{document}

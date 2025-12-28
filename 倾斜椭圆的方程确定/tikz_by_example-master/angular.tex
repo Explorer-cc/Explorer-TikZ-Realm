@@ -1,0 +1,33 @@
+% Copyleft 2015 | Ridlo W. Wibowo
+% ridlo.w.wibowo@gmail.com
+
+\documentclass{article}
+\usepackage{tikz}
+\usepackage{verbatim}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{10pt}
+\tikzset{fontscale/.style = {font=\relsize{#1}}}
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations.markings}
+\tikzset{->-/.style={decoration={
+  markings,
+  mark=at position #1 with {\arrow{triangle 45}}},postaction={decorate}}}
+
+\begin{document}
+\begin{tikzpicture}
+\draw[fill=gray!20] (0,0) -- (6,2) -- (7,1) -- cycle;
+\draw[->-=0.5] (6,2) node[right=7] {$t$} -- (7,1) node[right=5] {$t + \delta t$};
+
+\draw[fill=blue] (0,0) circle(3mm) node[above=5] {$m_1$};
+\draw[fill=blue] (6,2) circle(1mm) node[above left] {$m_2$};
+\draw[fill=blue, opacity=0.3] (7,1) circle(1mm);
+
+\draw[] (3,0.42) arc (0:41:8mm);
+
+\node[] at (2.5,0.6) {$\delta \theta$};
+\node[] at (3.6,1.4) {$r$};
+\node[] at (4,0.3) {$r + \delta r$};
+\node[] at (5,1.2) {$\delta A$};
+\end{tikzpicture}
+\end{document}

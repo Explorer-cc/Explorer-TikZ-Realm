@@ -1,0 +1,93 @@
+\documentclass{article}
+% https://tex.stackexchange.com/a/747203/322482
+% 基于sec9.3 subskin
+\usepackage[papersize={10cm,6cm}, margin=.3in]{geometry}
+\usepackage{lipsum}
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable,skins,theorems}
+
+\tikzset{
+    mythm frame/.style={
+        tcbcolframe,%复用colframe的颜色值
+        % 下文中用colframe=green!75!black传入
+        line width=1.5pt,
+        rounded corners=.5cm
+    }
+}
+% 定义继承自empty的mythm的subskin
+\tcbsubskin{mythm}{empty}{
+  frame engine=path,%指定frame引擎
+  % make title another tcolorbox, in natual width
+  % 格式化title box的样式
+  attach boxed title to top left={yshift=-4pt},
+  boxed title style={
+    skin=empty,%
+    interior engine=path,%指定interior引擎
+    interior code={
+      \fill[tcbcolframe]
+          (frame.north east) 
+          -- (frame.north west)
+          -- (frame.south west) 
+          -- ([xshift=1em]frame.south east);
+    }
+  },
+  % frame code specific for unbroken boxes
+  % 设置frame engine的样式
+  frame code={
+    \draw[mythm frame]
+        (frame.north -| title.east) -- (frame.north east)
+            -- (frame.south east) -- (frame.south west)
+            -- ([yshift=-.5cm]frame.north east -| title.west);
+    \fill[tcbcolframe]
+        ([yshift=-.5cm]frame.north east -| title.west) circle[radius=2pt];
+  },
+  % frame code for broken boxes
+  % 在subskin内部设置 skin (xxx) is subskin of 这个选项
+  skin first is subskin of={emptyfirst}{
+    frame code={
+      \draw[mythm frame]
+          (frame.north -| title.east) 
+          -- (frame.north east) 
+          -- (frame.south east)
+          (frame.south west) 
+          -- ([yshift=-.5cm]frame.north east -| title.west);
+      \fill[tcbcolframe]
+          ([yshift=-.5cm]frame.north east -| title.west) circle[radius=2pt];
+    }
+  },
+  skin middle is subskin of={emptymiddle}{
+    frame code={
+      \draw[mythm frame]
+          (frame.north east) -- (frame.south east)
+          (frame.north west) -- (frame.south west);
+    }
+  },
+  skin last is subskin of={emptylast}{
+    frame code={
+      \draw[mythm frame]
+          (frame.north east) -- (frame.south east)
+          -- (frame.south west) -- (frame.north west);
+    }
+  }
+}
+
+\NewTcbTheorem[number within=section]{mythm}{Theorem}{
+  breakable,
+  skin=mythm,
+  colframe=green!75!black,
+  fonttitle=\bfseries,
+}{thm}
+
+\begin{document}
+\section{Using subskin, unbroken box}
+
+\begin{mythm}{This is a theorem}{}
+    \lipsum[1][1-5]
+\end{mythm}
+
+\section{Using subskin, broken box}
+
+\begin{mythm}{This is another theorem}{}
+    \lipsum[1]
+\end{mythm}
+\end{document}

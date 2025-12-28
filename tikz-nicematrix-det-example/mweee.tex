@@ -1,0 +1,42 @@
+% https://ask.latexstudio.net/ask/question/17826.html
+\documentclass{article}
+\usepackage{newpxmath}
+\usepackage{nicematrix}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\begin{document}
+\pagestyle{empty}
+\setlength{\extrarowheight}{1.5mm}
+\ExplSyntaxOn
+\def\N{8}
+\def\ratio{\fpeval{\N/(2*(\N-1))}}
+\[
+\begin{vNiceMatrix}
+    % \c_math_subscript_token
+    \int_step_inline:nn {\N} {%
+        a\c_math_subscript_token{#11}%
+        \int_step_inline:nnn {2}{\N} {%
+            & a\c_math_subscript_token{#1{##1}}%
+        }%
+        \int_compare:nNnTF {#1} < {\N} {\\} {}%
+    }%
+    \CodeAfter%
+    \begin{tikzpicture}[line~cap=round]
+        % 定义主/副对角线的向量
+        \coordinate (main-vec) at ($(\N-\N.center)-(1-1.center)$);
+        \coordinate (secondary-vec) at ($(\N-1.center)-(1-\N.center)$);
+        % 处理副对角线方向的其他 \N-1 条虚线
+        \draw[orange,dashed,thick] (1-\N.center) -- (\N-1.center);
+        \int_step_inline:nn {\N-1} {
+            \draw[orange,dashed,thick,rounded~corners=5mm] (1-#1.center) --++(secondary-vec) --++($\ratio*(main-vec)$) -- (\int_eval:n{#1+1}-\N.center);
+        }
+        % 处理主对角线方向的其他 \N-1 条实线
+        \draw[magenta,thick] (1-1.center) -- (\N-\N.center);
+        \int_step_inline:nn {\N-1} {
+            \draw[magenta,thick,rounded~corners=5mm] (1-\int_eval:n{#1+1}.center) --++(main-vec) --++($\ratio*(secondary-vec)$) -- (\int_eval:n{\N-#1+1}-1.center);
+        }
+    \end{tikzpicture}
+    \end{vNiceMatrix}
+\]
+\ExplSyntaxOff 
+\end{document}

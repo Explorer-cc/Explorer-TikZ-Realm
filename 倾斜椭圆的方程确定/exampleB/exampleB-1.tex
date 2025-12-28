@@ -1,0 +1,25 @@
+\documentclass[12pt]{standalone}
+\usepackage[svgnames]{xcolor}
+\usepackage[3d]{luadraw}
+\begin{document}
+\begin{luadraw}{name=ellipse-cone}
+local g = graph3d:new{window={-5,5,-5,5}, viewdir={120,60}, size={12,12}}
+g:Linejoin("round"); g:Linewidth(4)
+Hiddenlinestyle = "dashed"
+local k = 4
+local R = 3
+local Z0 = 3
+local C1 = cone(Origin,k*vecK,R,100,true)
+local C2 = cone(Origin, -k*vecK,R,100,true)
+local P2 = {M(0,0,-Z0),vecK} -- plan de coupe
+local P1 = {M(0,0,Z0-1),vecI + 2*vecK } -- plan de coupe
+local I1 = g:Intersection3d(C1,P1)
+local I2 = g:Intersection3d(C2,P2) 
+g:Dcone(Origin,k*vecK,R,{color="orange"}) 
+g:Dcone(Origin,-k*vecK,R,{color="orange"})
+g:Lineoptions("solid","Navy",12)
+g:Dedges(I1,{hidden=true})
+g:Dedges(I2,{hidden=true}) 
+g:Show()
+\end{luadraw}
+\end{document} 

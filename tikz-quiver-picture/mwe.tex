@@ -1,0 +1,27 @@
+\documentclass[tikz,border=8pt]{standalone}
+\usetikzlibrary{arrows.meta,decorations.markings}
+\begin{document}
+\begin{tikzpicture}[cap = round]
+    % \draw (0,0) circle(2);
+    \foreach \i in {30,60,...,150,240,270,300}{
+        \node[circle,draw,inner sep=1pt,outer sep=0pt,minimum size=2pt] (A\i) at (\i:2) {}; % 画点
+    }
+    \foreach \i in {30,60,...,120,240,270} {
+        \pgfmathsetmacro{\next}{int(\i+30)}
+        \path[->] (A\i) edge[bend right=8] (A\next);
+    }
+    \foreach \angle/\txt in {30/2,60/1,90/0,120/n-1,150/n-2}{
+        \node[label={[anchor=\angle+180,outer sep=1pt,inner sep=1.5pt,]\scriptsize$\txt$}] at (\angle:2) {};
+    }
+    \foreach \i in {180,210,330,0}{
+        \node[circle,inner sep=0pt,outer sep=0pt,minimum size=0pt] (A\i) at (\i:2) {}; % 画点
+    }
+    \foreach \i in {150,210,300,0} {
+        \pgfmathsetmacro{\next}{int(\i+30)}
+        \ifnum \next=360 \pgfmathsetmacro{\next}{0} \fi
+        \path[->] (A\i) edge[bend right=10] (A\next);
+    }
+    \path[dotted] (A180) edge[bend right=10] (A210) 
+                  (A330) edge[bend right=10] (A0);
+\end{tikzpicture}
+\end{document}

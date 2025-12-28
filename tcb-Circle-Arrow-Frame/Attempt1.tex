@@ -1,0 +1,40 @@
+\documentclass{article}
+% 最笨的方法
+% https://tex.stackexchange.com/q/746958/322482
+% 使用白色的node作为遮挡，缺陷在于：
+% - 相对距离不好确定
+% - 使用`overlay'-family做设置实现较为繁琐
+\usepackage[paperheight=10cm]{geometry}
+\usepackage{lipsum}
+\usepackage{tcolorbox}
+\tcbuselibrary{theorems,skins,breakable}
+\NewTcbTheorem[number within=section]{mythm}{Theorem}% 
+    {%
+    enhanced jigsaw,enhanced,fonttitle=\bfseries,breakable,
+    colback=white,colframe=green!75!black,arc=.5cm,
+    attach boxed title to top left={yshift=-4pt},
+    sharp corners=northwest,
+    boxed title style={%
+        skin=enhancedfirst jigsaw,
+        colback=green!75!black,
+        bottom=1pt,sharp corners,
+        },
+    underlay boxed title={%
+        \fill[green!75!black] (title.north east) -- (title.south east) -- ++(1em,0) -- cycle;
+        },
+    overlay unbroken and first = {%
+            \node[rectangle,fill=white,minimum height=.4cm,minimum width=.4cm] at ([xshift=-2pt,yshift=-.341cm]frame.north west) {};
+            \node[circle,inner sep=0pt,outer sep=0pt,fill=green!75!black,minimum size=3pt] at ([xshift=.7pt,yshift=-.5cm]frame.north west) {};
+        }%
+    }
+    {thm}%
+\begin{document}
+\section{AAA}
+\begin{mythm}{This is another theorem}{}
+    \lipsum[1][2-3]
+  \end{mythm}
+\section{BBB}
+\begin{mythm}{This is a theorem}{}
+    \lipsum[1-3]
+\end{mythm}
+\end{document}

@@ -1,0 +1,20 @@
+\documentclass[12pt]{standalone}
+\usepackage[svgnames]{xcolor}
+\usepackage[3d]{luadraw}
+\begin{document}
+\begin{luadraw}{name=ellipse-cylinder}
+local g = graph3d:new{window={-3,8,-3,8}, viewdir={120,60}, size={12,12}}
+g:Linejoin("round"); g:Linewidth(6)
+Hiddenlinestyle = "dashed"
+local k = 6
+local R = 3
+local Z0 = 2
+local C = cylinder(Origin,k*vecK,R,100,true)
+local P = {M(0,0,Z0),vecI + 2*vecK} -- plan de coupe
+local I1 = g:Intersection3d(C,P)
+g:Dcylinder(Origin,k*vecK,R,{color="teal"}) 
+g:Lineoptions("solid","Navy",12)
+g:Dedges(I1,{hidden=true})
+g:Show()
+\end{luadraw}
+\end{document} 

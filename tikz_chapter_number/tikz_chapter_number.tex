@@ -1,0 +1,32 @@
+\documentclass[12pt]{ctexbook}
+\usepackage{lipsum}
+\usepackage{tikz}
+\makeatletter %再次特别鸣谢:鱼香肉丝没有鱼先生
+\newcommand{\chapter@title@box}[1]{
+    \stepcounter{chapter}
+    \begin{center}
+        \begin{tikzpicture}
+            \draw[black!90] (.35\textwidth,0) -- ++ (.75\textwidth,0);
+            \draw[black!90] (.35\textwidth,-1) -- ++ (0, 4cm);
+            \node[anchor = south west,font = \Huge\heiti, inner xsep = 1cm] at (.35\textwidth,0) {#1};
+            \node[anchor = east, fill = gray, text = white, font= \Large\heiti,inner sep = 6pt] at (.35\textwidth,2) {第 \thechapter\ 章};
+            \node[text = gray, font = \itshape\Large, scale = 8] at (.85\textwidth, .5) {\thechapter};
+        \end{tikzpicture}
+    \end{center}
+}
+\ctexset{
+    chapter = {
+        name = {},
+        numbering = false,
+        format = \chapter@title@box,
+    }
+}
+\makeatother
+\begin{document}
+    \chapter{第一章节}
+    \lipsum[1]
+    \chapter{第二章节}
+    \lipsum[2]
+    \chapter{第三章节}
+    \lipsum[3]
+\end{document}

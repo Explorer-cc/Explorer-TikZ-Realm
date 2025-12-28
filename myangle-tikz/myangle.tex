@@ -1,0 +1,28 @@
+\documentclass{article}
+\usepackage{tikz}
+\makeatletter
+\DeclareRobustCommand\myangle[1]{%
+    \ifmmode
+        \def\@tmp@ct{$#1$}
+    \else
+        \def\@tmp@ct{#1}
+    \fi
+    \tikz[baseline = (angle.base)] {%
+        \node[inner xsep = 0pt, outer sep = 0pt] (angle) {\@tmp@ct};
+        \draw[] ([shift = {(-.15ex, -.3ex)}]angle.north west) -- ([shift = {(-1ex, .5ex)}]angle.south west) -- ([shift = {(.3ex, .5ex)}]angle.south east);
+    }%
+}
+\makeatother
+\begin{document}
+aaa  \myangle{$G(i\omega)$} bbb \myangle{$a^2 + b^2 = c^2$} ccc
+
+\begin{equation}
+    \begin{aligned}
+        a^2 + b^2 = c^2 \\
+        \myangle{a^2 + b^2 = c^2}
+    \end{aligned}
+\end{equation}
+
+\myangle{asdfghjklasdfghjklasdfghjkasdfghjklasdfghjkl}
+
+\end{document}

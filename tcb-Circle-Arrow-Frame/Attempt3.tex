@@ -1,0 +1,78 @@
+\documentclass{article}
+% https://tex.stackexchange.com/a/747106/322482
+% muzimuzhi老师的第一个版本
+\usepackage[papersize={10cm,6cm},margin=.3in]{geometry}
+\usepackage{lipsum}
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable, skins, theorems}
+% 设置统一颜色, 也方便随时切换
+\colorlet{mythm}{green!75!black}
+\tikzset{
+  mythm frame/.style={
+    mythm, line width=1.5pt, rounded corners=.5cm
+  }
+}
+% skin = empty
+% /tcb/frame engine: empty
+% /tcb/interior titled engine: empty 
+% /tcb/interior engine: empty 
+% /tcb/segmentation engine: empty 
+% /tcb/title engine: empty
+% nothing is drawn at all. Therefore, this skin is a good starting point to create a complete new style by yourself
+
+\NewTcbTheorem[number within=section]{mythm}{Theorem}{
+  breakable,
+  skin=empty,%设置skin=empty
+  fonttitle=\bfseries,
+  % make title another tcolorbox, in natual width
+  attach boxed title to top left={yshift=-4pt},
+  boxed title style={
+    skin=empty,
+    interior engine=path,%设置内部样式调整引擎
+    interior code={
+      \fill[mythm]
+          (frame.north east) -- (frame.north west) 
+          --  (frame.south west) -- ([xshift=1em]frame.south east);
+    }
+  },
+  overlay unbroken = {
+    \draw[mythm frame]
+        (frame.north -| title.east) -- (frame.north east)
+            -- (frame.south east) -- (frame.south west)
+            -- ([yshift=-.5cm]frame.north east -| title.west);
+    \fill[mythm]
+        ([yshift=-.5cm]frame.north east -| title.west) circle[radius=2pt];
+  },
+  overlay first={
+    \draw[mythm frame]
+        (frame.north -| title.east) -- (frame.north east)
+            -- (frame.south east)
+        (frame.south west) -- ([yshift=-.5cm]frame.north east -| title.west);
+    \fill[mythm]
+        ([yshift=-.5cm]frame.north east -| title.west) circle[radius=2pt];
+  },
+  overlay middle={
+    \draw[mythm frame]
+        (frame.north east) -- (frame.south east)
+        (frame.north west) -- (frame.south west);
+  },
+  overlay last={
+    \draw[mythm frame]
+        (frame.north east) -- (frame.south east)
+        -- (frame.south west) -- (frame.north west);
+  }
+}{thm}
+
+\begin{document}
+\section{AAA}
+
+\begin{mythm}{This is a theorem}{}
+    \lipsum[1][1-5]
+\end{mythm}
+
+\section{BBB}
+
+\begin{mythm}{This is another theorem}{}
+    \lipsum[1]
+\end{mythm}
+\end{document}

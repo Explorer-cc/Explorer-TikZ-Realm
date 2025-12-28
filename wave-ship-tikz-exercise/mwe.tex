@@ -1,0 +1,82 @@
+\documentclass[tikz,border=5pt]{standalone}
+\usetikzlibrary{patterns}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usetikzlibrary{arrows.meta,decorations.pathmorphing,calc,angles,quotes}
+\begin{document}
+    \begin{tikzpicture}[
+        scale=1.2,>=latex,
+        line cap=round,
+        line join=round,
+        font=\footnotesize,
+        decoration={snake, amplitude=0.5mm, segment length=10mm},% wave decoration
+    ]
+        \def\shipTilt{16}           % Tilt angle (degrees)
+        \def\hullTopWidth{1.4}      % Hull width at waterline
+        \def\hullBottomWidth{0.8}   % Deck width
+        \def\hullHeight{0.8}        % Hull height above water
+        \def\deckWidth{0.5}         % Deck width
+        \def\deckHeight{0.5}        % Deck extra height above the hull
+        \def\decktoraderHeight{0.6} % Deck to rader height
+        \def\raderWidth{0.2}        % Rader width
+        \def\raderHeight{0.2}       % Rader height
+        \def\mastupperHeight{0.5}   % Mast height
+        \def\waveShiftHeight{0.35}  % wave's vertical shift
+        \def\waveLeftShift{2}
+        \def\waveRightShift{3.5}    % RightShift Larger to accomdate the signal 
+        \def\drawHwidth{0.9}        % horizontal shift of the h distance label
+        \def\TotalHeight{\hullHeight + \deckHeight + \decktoraderHeight + \raderHeight + \mastupperHeight}           % Total Mast Height
+        % -------------------------------------------------
+        \begin{scope}[rotate=\shipTilt]
+            % Mast
+            % The total height of the mast is:
+            % \hullHeight + \deckHeight + decktoraderHeight + \raderHeight + mastupperHeight = \TotalHeight
+            \draw[thick] (0,0) -- (0, \TotalHeight);
+            % Ship hull
+            \draw[thick,fill=gray!20] 
+            ( -\hullBottomWidth/2, 0 ) 
+            -- (  \hullBottomWidth/2, 0 )
+            -- (  \hullTopWidth/2, \hullHeight ) 
+            -- ( -\hullTopWidth/2, \hullHeight ) 
+            -- cycle;
+            % Ship Deck
+            \draw[thick,fill=white] 
+            ( -\deckWidth, \hullHeight ) rectangle
+            (  \deckWidth, \hullHeight + \deckHeight ); 
+            % Antenna/radar on top of the mast
+            \draw[thick,pattern=crosshatch]%
+            ( -\raderWidth, \hullHeight + \deckHeight + \decktoraderHeight) 
+            rectangle 
+            (  \raderWidth, \hullHeight + \deckHeight + \decktoraderHeight + \raderHeight );
+        \end{scope}
+        % -------------------------------------------------
+        % the middie layer
+        \fill[white] (-\waveLeftShift,\waveShiftHeight) decorate[draw] {-- (\waveRightShift,\waveShiftHeight)} -- (\waveLeftShift,-.2) -- (-\waveLeftShift,-.2) -- cycle; % 0.2 here is just to control the mask's height(or the river's depth in the case) not to be too deep
+        \draw[decorate,thick] (-\waveLeftShift,\waveShiftHeight) -- (\waveRightShift,\waveShiftHeight); %this line seemed to be dummy here...        
+        % the vertical upright dashed mast line
+        \draw[densely dashed,fill=black] circle (.3pt) -- (0,\TotalHeight);
+        % -------------------------------------------------
+        % the top layer of the layouts denotation
+        \begin{scope}[rotate=\shipTilt] % Draw the top layers of the layouts denotation
+            \draw[densely dashed] (0,0) -- (0,\TotalHeight) ;
+            \draw[<->] (-\drawHwidth,0) -- (-\drawHwidth,\TotalHeight-.35) node[pos=.65,fill=white,circle,inner sep=1pt] {$h$};
+            \draw (-\drawHwidth-.1,0) -- (0,0) (-\drawHwidth-.1,\TotalHeight-.35) -- (0,\TotalHeight-.35);
+        \end{scope}
+        \shorthandoff{"}% turn on the quote symbol "
+        % https://tex.stackexchange.com/questions/340661/argument-of-languageactivearg-has-an-extra-i-use-includegraphics-and-r
+        \path (0,\TotalHeight) coordinate (A) -- (0,0) coordinate (O) -- ({90+\shipTilt}:{\TotalHeight}) coordinate (B) pic [<->,draw,angle radius=3cm,"$\scriptstyle \beta$",angle eccentricity=1.05] {angle = A--O--B};
+        \shorthandon{"}% turn off the quote symbol "
+        \coordinate (C) at ({90+\shipTilt}:{\TotalHeight-.35});
+        \draw[<->] (C) -- ($(O)!(C)!(A)$) node[midway,label=$\scriptstyle \raisebox{.1ex}{$r$}_{\kern-.25em h}$,above=-10pt] {}; % projection
+        \draw ($(O)!(C)!(A)$) -- ++(2.5+.1,0); % +0.1 to concate the join of the arrow and the stright line
+        \draw[<-] ($(O)!(C)!(A)$) ++(2.5,0) -- ++(.5,0) node[above=5pt,label={PJIC}] {};
+        % because I don't have russian font on my machine, I substitute the Л with JI here...
+        % the symbol of the signal's symbol
+        \node at ($($(O)!(C)!(A)$)+(2.8,0)$) [right] {%
+            \begin{tikzpicture}
+                \node[scale=3] {\textbf{)}}; % draw it by yourself
+                \draw[very thick,xshift=1em](.2em,.15) -- (.2em,-.15) (.2em,0) -- (1em,0);
+            \end{tikzpicture}
+        };
+    \end{tikzpicture}
+\end{document}

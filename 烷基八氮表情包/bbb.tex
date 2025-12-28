@@ -1,0 +1,13 @@
+\documentclass[border=5pt]{standalone}
+\usepackage[fontset=fandol]{ctex}
+\usepackage{chemfig}
+\usepackage{tabularray}
+\begin{document}
+\begin{tblr}{colspec={*{5}{Q[c,m]}}}%
+    \chemfig[baseline=3.5ex]{N*6(-N=N-N=N-N=)} & 
+    + & 
+    \chemfig[baseline=2ex]{H_2C-[:30]N=[:-30]N} & \tikz{\draw[-latex,semithick](-.5,.2)--(.5,.2);} & 
+    \chemfig[baseline=-.5ex]{[:-22.5]*9(-N=N-N=N-N=N-N=N-)} \\
+    苯氮 & & 烷氮 & & 烷基八氮 \\
+\end{tblr}
+\end{document}

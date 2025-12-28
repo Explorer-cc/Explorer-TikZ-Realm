@@ -1,0 +1,32 @@
+\documentclass[border=8pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{shadings}
+\usetikzlibrary{decorations.markings}
+\definecolor{darkblue}{RGB}{1,66,126}
+\definecolor{darkred}{RGB}{143,30,91}
+\definecolor{lightblue}{RGB}{72,114,168}
+\definecolor{lightred}{RGB}{200,149,174}
+\tikzset{
+    multicolor/.style n args={3}{
+    postaction={
+        decorate,
+        decoration={
+            markings,
+            mark=at position \pgfdecoratedpathlength-0.5pt with {\arrow[blue,line width=#3] {>}; },
+            mark=between positions 0 and \pgfdecoratedpathlength-8pt step 0.5pt with {
+                \pgfmathsetmacro\myval{multiply(divide(
+                    \pgfkeysvalueof{/pgf/decoration/mark info/distance from start}, \pgfdecoratedpathlength),100)};
+                \pgfsetfillcolor{#1!\myval!#2};
+                \pgfpathcircle{\pgfpointorigin}{#3};
+                \pgfusepath{fill};}
+}}}}
+\begin{document}
+    \begin{tikzpicture}
+        \foreach \x[
+            evaluate=\x as \y using int(\x*2),
+            ] in {0,22.5,...,337.5} {
+            \draw[multicolor={darkred}{lightred}{.5pt},overlay,rotate around={\x:(\x:2cm)},thick,blue!40!black] (\x:2cm) ellipse (2.4cm and 1.2cm);
+            \draw[multicolor={darkblue}{lightblue}{.5pt},overlay,rotate around={\y:(\y:1cm)},very thick,magenta!50] (\y:1cm) ellipse (2.5cm and 2.2cm);
+        }
+    \end{tikzpicture}
+\end{document}

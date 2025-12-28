@@ -1,0 +1,44 @@
+\documentclass[border=4pt,tikz]{standalone}
+\usepackage{tkz-euclide,tkz-elements}
+\usepackage{eulervm}
+\directlua{
+    function deflinebyslope(mypoint, slope)
+        if slope == "oo" then
+            point_tmp = point(mypoint.re, mypoint.im + 1)
+        else
+            point_tmp = point(mypoint.re + 1, mypoint.im + 1 * slope)
+        end
+        return line(mypoint, point_tmp)
+    end
+    init_elements()
+    z.O = point(0, 0) 
+    z.F = point(1.5, 0)
+    z.a = point(-1.5, -1)
+    z.b = point(-1.5, 1)
+    L.ab = line(z.a, z.b)
+    CO.PA = conic(z.F, L.ab, 1)
+    PA.curve1 = CO.PA:points(-3.2, 4, 100)
+    z.C1 = point(1.8, 0)
+    z.C2 = point(.8, 0)
+    CO.EL = conic(EL_points(z.O, z.C1, z.C2))
+    PA.curve2 = CO.EL:points(0, 1, 100)
+    L.PF = deflinebyslope(z.F, 4.5)
+    % L.PF = deflinebyslope(z.F, "oo")
+    z.A, z.B = intersection(CO.EL,L.PF)
+    z.C, z.D = intersection(CO.PA,L.PF)
+}
+\begin{document}
+    \begin{tikzpicture}[line cap=round]
+        \tkzGetNodes
+        \tkzInit[xmin=-2,xmax=3,ymin=-3.5,ymax=4]
+        \tkzDrawX[noticks]\tkzDrawY[noticks]
+        \tkzDrawCoordinates[smooth](PA.curve1)
+        \tkzDrawCoordinates[smooth](PA.curve2)
+        \tkzDrawSegment[semithick](C,D)
+        \tkzDrawPoints[blue](O,F,A,B,C,D)
+        \tkzLabelPoints[blue,above left](O,F)
+        \tkzLabelPoints[blue,above right](B,C)
+        \tkzLabelPoints[blue,below right](A,D)
+
+    \end{tikzpicture}
+\end{document}

@@ -1,0 +1,69 @@
+% https://tex.stackexchange.com/a/751754/322482
+\documentclass[border=5pt]{standalone}
+\usepackage{tkz-euclide}
+\tikzset{% from code cfr
+  mylabel/.style={
+    % draw,magenta,
+    circle,
+    inner sep=0pt,
+    outer sep=1pt,%<-- added
+    % anchor=180+#1+\exangle,
+    % shift=(#1+\exangle:1pt),
+    anchor=#1+\exangle,%<--- modified
+    text width=\dimexpr\exlabeltht\relax,
+    align=center
+  }
+}
+\newdimen\exlabeltht
+\newbox\exbox
+\AddToHook{begindocument/end}{%
+  \setbox\exbox=\hbox{$abcdefghijklmnopqrstuvwxyz$}%
+  \exlabeltht=\dimexpr\ht\the\exbox+\dp\the\exbox\relax
+  \setbox\exbox=\hbox{$f$\llap{$g$}}%
+}
+\newcommand*\myGouGu[1][0]{%
+  \begin{tikzpicture}[rotate=#1]
+    % keep dangerous definitions local
+    \def\x{3}
+    \def\y{4}
+    \def\ratiox{.35}
+    \def\ratioy{.45}
+    \def\exangle{#1}
+    \tkzDefPoints{0/0/O,\x/0/A,\x/\y/B,0/\y/C}
+    \tkzDefPointOnLine[pos=\ratiox](O,A)\tkzGetPoint{P1}
+    \tkzDefPointOnLine[pos=\ratioy](A,B)\tkzGetPoint{P2}
+    \tkzDefPointOnLine[pos=\ratiox](B,C)\tkzGetPoint{P3}
+    \tkzDefPointOnLine[pos=\ratioy](C,O)\tkzGetPoint{P4}
+    \tkzDrawPolygon[fill=magenta](O,P1,P4)
+    \tkzDrawPolygon[fill=cyan](P1,A,P2)
+    \tkzDrawPolygon[fill=magenta](P2,B,P3)
+    \tkzDrawPolygon[fill=cyan](P3,C,P4)
+    \tkzLabelSegment[mylabel=180](A,P2){\strut$a$}
+    \tkzLabelSegment[mylabel=180](P2,B){\strut$d$}
+    \tkzLabelSegment[mylabel=-90](B,P3){\strut$c$}
+    \tkzLabelSegment[mylabel=-90](P3,C){\strut$b$}
+    \tkzLabelSegment[mylabel=  0](C,P4){\strut$e$}
+    \tkzLabelSegment[mylabel=  0](P4,O){\strut$f$}
+    \tkzLabelSegment[mylabel= 90](O,P1){\strut$g$}
+    \tkzLabelSegment[mylabel= 90](P1,A){\strut$h$}
+  \end{tikzpicture}%
+}
+\begin{document}
+\myGouGu[0]
+
+\myGouGu[90]
+
+\myGouGu[135]
+
+% \newcommand{\ang}{0}
+% \begin{tikzpicture}[rotate=\ang]
+% \tkzDefPoints{0/0/A,3/0/B,3/3/C,0/3/D}
+% \tkzDrawPolygon(A,...,D)
+% % \tkzLabelPoints(A,...,D)
+% \tkzLabelSegment[anchor= 90+\ang ,draw,circle](A,B){$a$}
+% \tkzLabelSegment[anchor=180+\ang,draw,circle](B,C){$b$}
+% \tkzLabelSegment[anchor=-90+\ang,draw,circle](C,D){$c$}
+% \tkzLabelSegment[anchor=  0+\ang,draw,circle](D,A){$d$}
+% \end{tikzpicture}
+
+\end{document}

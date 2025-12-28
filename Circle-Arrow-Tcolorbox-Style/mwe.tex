@@ -1,0 +1,39 @@
+\documentclass{article}
+\usepackage[paperheight=10cm]{geometry}
+\usepackage{lipsum}
+\usepackage{tcolorbox}
+\tcbuselibrary{theorems,skins,breakable}
+\usetikzlibrary{arrows.meta}
+\NewTcbTheorem[number within=section]{mythm}{Theorem}% 
+{%
+  enhanced,
+  enhanced jigsaw,
+  breakable,
+  fonttitle=\bfseries,   
+  colback=white,
+  colframe=green!75!black,
+  boxrule=0pt,
+  titlerule=0pt,
+  arc=.5cm,
+  attach boxed title to top left={yshift=-4pt},
+  sharp corners=northwest,
+  boxed title style={%
+    skin=enhancedfirst jigsaw,
+    colback=green!75!black,
+    bottom=1pt,sharp corners,
+  },
+  underlay boxed title={%
+    \draw [ultra thick,green!75!black,-{Circle},rounded corners=5mm,shorten >=6mm] (frame.north west) -| (frame.south east) -| (frame.north west) ;
+  },
+  overlay = {%
+    \fill[green!75!black] (title.north east) -- (title.south east) -- ++(1em,0) -- cycle;
+  }%
+}
+{thm}%
+\begin{document}
+\section{AAA}
+\section{BBB}
+\begin{mythm}{This is a theorem}{}
+  \lipsum
+\end{mythm}
+\end{document}

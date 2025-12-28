@@ -1,0 +1,47 @@
+\documentclass[border=1.5in]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{calc,3dtools}% https://github.com/marmotghost/tikz-3dtools
+\begin{document}
+\foreach \Angle in {30,60,...,330}
+{   
+    \begin{tikzpicture}[
+        3d/install view={phi=\Angle,theta=70},
+        line cap=butt,
+        line join=round,
+        c/.style={circle,fill,inner sep=1pt},
+        declare function={a=2.5;},
+        same bounding box=A
+    ]
+        \path
+        (a,-a,-a) coordinate (A)
+        (a,a,-a) coordinate (B)
+        (-a,a,-a) coordinate (C)
+        (-a,-a,-a) coordinate (D)
+        (a,-a,a) coordinate (E)
+        (a,a,a) coordinate (F)
+        (-a,a,a) coordinate (G)
+        (-a,-a,a) coordinate (H)
+        (0,0,0)  coordinate (O)
+        (a,2*a,-a) coordinate (x)
+        (-2*a,-a,-a) coordinate (y)
+        (a,-a,2*a) coordinate (z)
+        ;
+        \draw[-stealth,thick] (A) -- (x) node[pos=1.05] {\Large $x$};
+        \draw[-stealth,thick] (A) -- (y) node[pos=1.05] {\Large $y$};
+        \draw[-stealth,thick] (A) -- (z) node[pos=1.05] {\Large $z$};
+        \tikzset{
+            3d/polyhedron/.cd,O={(O)},
+            back/.style={3d/polyhedron/complete dashes,fill=none,3d/hidden},
+            fore/.style={3d/visible,fill=none},
+            draw face with corners={{(B)},{(C)},{(G)},{(F)}},
+            draw face with corners={{(D)},{(C)},{(G)},{(H)}},
+            draw face with corners={{(A)},{(B)},{(C)},{(D)}},
+            draw face with corners={{(A)},{(B)},{(F)},{(E)}},
+            draw face with corners={{(A)},{(E)},{(H)},{(D)}}
+        }  
+        \path[save named path=EFGH] (E) -- (F) -- (G) -- (H) -- cycle;
+        % draw ordered objects 
+        \tikzset{3d/draw ordered paths={EFGH}}
+        \path foreach \p/\g in {A/-90,B/180,C/-90,D/-90,E/0,F/90,G/-30,H/0}{(\p)node[c]{}+(\g:2.5mm) node{$\p$}};
+    \end{tikzpicture}}
+\end{document}    

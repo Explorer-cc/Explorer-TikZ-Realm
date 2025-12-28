@@ -1,0 +1,38 @@
+\documentclass[border=8pt]{standalone}
+\usepackage{tikz}
+\usepackage{tkz-euclide}
+\usetikzlibrary{calc,intersections}
+\begin{document}
+ \begin{tikzpicture}[scale=1]
+     \tkzDefPoints{0/0/O}
+     \draw (O)++(0.25,-0.35) node {$O$};    
+     \draw[thick,->] (-2,0) -- (5.5,0)
+     node[anchor=north west] {$x$};
+     \draw[thick,->] (0,-1.5) -- (0,6.5)
+     node[anchor=south east] {$y$ };
+     \tkzDefPoints{4/0/A,-1/0/B,0/4/C}
+     \tkzDefPoints{2/6/D,1.5/0/E}
+     \tkzDefPoints{2/2/F}
+     \tkzDrawPoints[color=blue,size=1pt](A,B,C,O)
+     %\tkzDrawPolygons(A,B,C)
+     \draw (A)++(0.25,-0.35) node {$A$};    
+     \draw (B)++(-0.35,-0.35) node {$B$};    
+     \draw (C)++(-0.25,0.25) node {$C$};
+     \tkzDefPoints{-3/4.5/P}
+     \tkzDefPoints{-2/5.5/P1}
+     \tkzDrawLines[add = 1 and 1.5](P,P1)
+     \draw (P)++(0,0.325) node {$P$};    
+     \tkzDrawLines[add = .5 and 2](P,C)
+     \tkzDrawLines[add = .25 and 0.2](P,A)
+     \draw[scale=1,domain=-1.25:4.25,smooth, variable=\x,name path=parabola] plot ({\x}, {-\x*\x+3*\x+4});
+     \path[name path=lineAP] (A) -- (P);
+     \path [name intersections={of=parabola and lineAP,by={N,NN}}] (N) node[below left] {$N$};
+     \node (tmp) at ($(P)!3!(C)$) {};%
+     \path[name path=lineCP] (tmp) -- (P);
+     \path [name intersections={of=parabola and lineCP,by={MM,M}}] (M) node[above right] {$M$};
+     \tkzDrawLines[add = .5 and .5](M,N)
+     \tkzDrawPoints(O,A,B,C,M,N,P)
+ \end{tikzpicture}
+
+
+\end{document}

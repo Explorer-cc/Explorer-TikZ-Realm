@@ -1,0 +1,59 @@
+% https://tex.stackexchange.com/a/751739/322482
+\documentclass[border=5pt]{standalone}
+\usepackage{tkz-euclide}
+\tikzset{%
+  explorer label/.style 2 args={%
+    node contents={\strut$#2$\strut},%撑起一定的高度
+    circle,
+    % draw,
+    align=center,
+    inner sep=0pt,
+    outer sep=0pt,
+    anchor=180+#1+\exangle,%
+    shift=(#1+\exangle:1pt),%
+    text width=\dimexpr\exlabeltht\relax,%设置所有字符等高
+  },
+}
+\newdimen\exlabeltht
+\newbox\exbox
+\AddToHook{begindocument/end}{%
+  \setbox\exbox=\hbox{$abcdefghijklmnopqrstuvwxyz$}%
+  \exlabeltht=\dimexpr\ht\the\exbox+\dp\the\exbox\relax
+%   \setbox\exbox=\hbox{$f$\llap{$g$}}%
+}
+\newcommand*\myGouGu[1][0]{%
+  \begin{tikzpicture}[rotate=#1]
+    % keep dangerous definitions local
+    \def\x{3}
+    \def\y{4}
+    \def\ratiox{.35}
+    \def\ratioy{.45}
+    \def\exangle{#1}
+    \tkzDefPoints{0/0/O,\x/0/A,\x/\y/B,0/\y/C}
+    \tkzDefPointOnLine[pos=\ratiox](O,A)\tkzGetPoint{P1}
+    \tkzDefPointOnLine[pos=\ratioy](A,B)\tkzGetPoint{P2}
+    \tkzDefPointOnLine[pos=\ratiox](B,C)\tkzGetPoint{P3}
+    \tkzDefPointOnLine[pos=\ratioy](C,O)\tkzGetPoint{P4}
+    \tkzDrawPolygon[fill=magenta](O,P1,P4)
+    \tkzDrawPolygon[fill=cyan](P1,A,P2)
+    \tkzDrawPolygon[fill=magenta](P2,B,P3)
+    \tkzDrawPolygon[fill=cyan](P3,C,P4)
+    \path
+        (A) edge node[explorer label={0}{a}] {} (P2)
+        (P2) edge node[explorer label={0}{d}] {} (B)
+        (B) edge node[explorer label={90}{c}] {} (P3)
+        (P3) edge node[explorer label={90}{b}] {} (C)
+        (C) edge node[explorer label={180}{e}] {} (P4)
+        (P4) edge node[explorer label={180}{f}] {} (O)
+        (O) edge node[explorer label={270}{g}] {} (P1)
+        (P1) edge node[explorer label={270}{h}] {} (A)
+    ;
+  \end{tikzpicture}%
+}
+\begin{document}
+\myGouGu[0]
+
+\myGouGu[90]
+
+\myGouGu[135]
+\end{document}

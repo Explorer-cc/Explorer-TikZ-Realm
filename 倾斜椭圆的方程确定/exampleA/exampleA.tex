@@ -1,0 +1,330 @@
+% https://tex.stackexchange.com/a/748097/322482
+\documentclass[tikz,border = 1cm]{standalone}
+\usepackage{tikz-3dplot}
+\pgfmathdeclarefunction{dotproduct}{6}{%
+    \pgfmathparse{#1*#4 + #2*#5 + #3*#6}%
+}
+\pgfmathdeclarefunction{crossX}{6}{%
+    \pgfmathparse{#2*#6-#3*#5}%
+}
+\pgfmathdeclarefunction{crossY}{6}{%
+    \pgfmathparse{#3*#4-#1*#6}%
+}
+\pgfmathdeclarefunction{crossZ}{6}{%
+    \pgfmathparse{#1*#5-#2*#4}%
+}
+\begin{document}
+    \pgfmathsetmacro{\polarangle}{60}
+    \pgfmathsetmacro{\azimuthulangle}{0}
+    % https://tex.stackexchange.com/a/734566/319072
+    \pgfmathsetmacro{\CameraX}{sin(\azimuthulangle)*sin(\polarangle)}
+    \pgfmathsetmacro{\CameraY}{-cos(\azimuthulangle)*sin(\polarangle)}
+    \pgfmathsetmacro{\CameraZ}{cos(\polarangle)}
+    \tdplotsetmaincoords{\polarangle}{\azimuthulangle}
+    \foreach \i in {8,8.333,...,10} {
+        \begin{tikzpicture}[tdplot_main_coords]
+            \useasboundingbox (-2,-2) rectangle (2,7);
+            \draw (0,0) circle[radius = 1];
+            \pgfmathsetmacro{\thedeg}{\i}
+            \foreach \thedegree[parse = true] in {\thedeg,179-\thedeg} {
+                \pgfmathsetmacro{\orthX}{
+                    crossX(
+                        100*cos(\thedegree+1)-100*cos(\thedegree)
+                        ,100*sin(\thedegree+1)-100*sin(\thedegree)
+                        ,0
+                        ,\CameraX
+                        ,\CameraY
+                        ,\CameraZ
+                    )
+                }
+                \pgfmathsetmacro{\orthY}{
+                    crossY(
+                        100*cos(\thedegree+1)-100*cos(\thedegree)
+                        ,100*sin(\thedegree+1)-100*sin(\thedegree)
+                        ,0
+                        ,\CameraX
+                        ,\CameraY
+                        ,\CameraZ
+                    )
+                }
+                \pgfmathsetmacro{\orthZ}{
+                    crossZ(
+                        100*cos(\thedegree+1)-100*cos(\thedegree)
+                        ,100*sin(\thedegree+1)-100*sin(\thedegree)
+                        ,0
+                        ,\CameraX
+                        ,\CameraY
+                        ,\CameraZ
+                    )
+                }
+                \pgfmathsetmacro{\neworthX}{
+                    crossX(
+                        \orthX
+                        ,\orthY
+                        ,\orthZ
+                        ,\CameraX
+                        ,\CameraY
+                        ,\CameraZ
+                    )
+                }
+                \pgfmathsetmacro{\neworthY}{
+                    crossY(
+                        \orthX
+                        ,\orthY
+                        ,\orthZ
+                        ,\CameraX
+                        ,\CameraY
+                        ,\CameraZ
+                    )
+                }
+                \pgfmathsetmacro{\neworthZ}{
+                    crossZ(
+                        \orthX
+                        ,\orthY
+                        ,\orthZ
+                        ,\CameraX
+                        ,\CameraY
+                        ,\CameraZ
+                    )
+                }
+                \pgfmathparse{
+                    dotproduct(
+                        \neworthX,\neworthY,\neworthZ
+                        ,cos(\thedegree),sin(\thedegree),0
+                    ) > 0
+                }
+                \ifnum\pgfmathresult=1
+                    \pgfmathsetmacro{\neworthX}{-\neworthX}
+                    \pgfmathsetmacro{\neworthY}{-\neworthY}
+                    \pgfmathsetmacro{\neworthZ}{-\neworthZ}
+                \fi
+                \pgfmathsetmacro{\neworthL}{
+                    sqrt(
+                        (\neworthX)^2 + 
+                        (\neworthY)^2 + 
+                        (\neworthZ)^2
+                    )
+                }
+                \pgfmathsetmacro{\neworthX}{\neworthX/\neworthL}
+                \pgfmathsetmacro{\neworthY}{\neworthY/\neworthL}
+                \pgfmathsetmacro{\neworthZ}{\neworthZ/\neworthL}
+                \pgfmathsetmacro{\coefficient}{-cos(\thedegree)/\neworthX}
+                \draw 
+                ({cos(\thedegree)},{sin(\thedegree)}) -- 
+                (
+                    0
+                    ,0
+                    ,{
+                        \coefficient*\neworthZ + (
+                            (-\coefficient*\neworthY) / \CameraY
+                        ) * \CameraZ
+                    }
+                );
+                \draw[
+                    domain = 0:360
+                    ,samples = 45
+                    ,red
+                ] plot (
+                    {
+                        (
+                            (
+                                \coefficient*\neworthZ + (
+                                    (-\coefficient*\neworthY) / \CameraY
+                                ) * \CameraZ
+                            ) - (
+                                (
+                                    \coefficient*\neworthZ + (
+                                        (-\coefficient*\neworthY) / \CameraY
+                                    ) * \CameraZ
+                                ) / 3 + 0.4 * cos(\x)
+                            )
+                        ) / (
+                            \coefficient*\neworthZ + (
+                                (-\coefficient*\neworthY) / \CameraY
+                            ) * \CameraZ
+                        ) * cos(\x)
+                    }
+                    ,{
+                        (
+                            (
+                                \coefficient*\neworthZ + (
+                                    (-\coefficient*\neworthY) / \CameraY
+                                ) * \CameraZ
+                            ) - (
+                                (
+                                    \coefficient*\neworthZ + (
+                                        (-\coefficient*\neworthY) / \CameraY
+                                    ) * \CameraZ
+                                ) / 3 + 0.4 * cos(\x)
+                            )
+                        ) / (
+                            \coefficient*\neworthZ + (
+                                (-\coefficient*\neworthY) / \CameraY
+                            ) * \CameraZ
+                        ) * sin(\x)
+                    }
+                    ,{
+                        (
+                            \coefficient*\neworthZ + (
+                                (-\coefficient*\neworthY) / \CameraY
+                            ) * \CameraZ
+                        ) / 3 + 0.4 * cos(\x)
+                    }
+                );
+            }
+        \end{tikzpicture}
+    }
+    \foreach \i in {10,9.666,...,8} {
+        \begin{tikzpicture}[tdplot_main_coords]
+            \useasboundingbox (-2,-2) rectangle (2,7);
+            \draw (0,0) circle[radius = 1];
+            \pgfmathsetmacro{\thedeg}{\i}
+            \foreach \thedegree[parse = true] in {\thedeg,179-\thedeg} {
+                \pgfmathsetmacro{\orthX}{
+                    crossX(
+                        100*cos(\thedegree+1)-100*cos(\thedegree)
+                        ,100*sin(\thedegree+1)-100*sin(\thedegree)
+                        ,0
+                        ,\CameraX
+                        ,\CameraY
+                        ,\CameraZ
+                    )
+                }
+                \pgfmathsetmacro{\orthY}{
+                    crossY(
+                        100*cos(\thedegree+1)-100*cos(\thedegree)
+                        ,100*sin(\thedegree+1)-100*sin(\thedegree)
+                        ,0
+                        ,\CameraX
+                        ,\CameraY
+                        ,\CameraZ
+                    )
+                }
+                \pgfmathsetmacro{\orthZ}{
+                    crossZ(
+                        100*cos(\thedegree+1)-100*cos(\thedegree)
+                        ,100*sin(\thedegree+1)-100*sin(\thedegree)
+                        ,0
+                        ,\CameraX
+                        ,\CameraY
+                        ,\CameraZ
+                    )
+                }
+                \pgfmathsetmacro{\neworthX}{
+                    crossX(
+                        \orthX
+                        ,\orthY
+                        ,\orthZ
+                        ,\CameraX
+                        ,\CameraY
+                        ,\CameraZ
+                    )
+                }
+                \pgfmathsetmacro{\neworthY}{
+                    crossY(
+                        \orthX
+                        ,\orthY
+                        ,\orthZ
+                        ,\CameraX
+                        ,\CameraY
+                        ,\CameraZ
+                    )
+                }
+                \pgfmathsetmacro{\neworthZ}{
+                    crossZ(
+                        \orthX
+                        ,\orthY
+                        ,\orthZ
+                        ,\CameraX
+                        ,\CameraY
+                        ,\CameraZ
+                    )
+                }
+                \pgfmathparse{
+                    dotproduct(
+                        \neworthX,\neworthY,\neworthZ
+                        ,cos(\thedegree),sin(\thedegree),0
+                    ) > 0
+                }
+                \ifnum\pgfmathresult=1
+                    \pgfmathsetmacro{\neworthX}{-\neworthX}
+                    \pgfmathsetmacro{\neworthY}{-\neworthY}
+                    \pgfmathsetmacro{\neworthZ}{-\neworthZ}
+                \fi
+                \pgfmathsetmacro{\neworthL}{
+                    sqrt(
+                        (\neworthX)^2 + 
+                        (\neworthY)^2 + 
+                        (\neworthZ)^2
+                    )
+                }
+                \pgfmathsetmacro{\neworthX}{\neworthX/\neworthL}
+                \pgfmathsetmacro{\neworthY}{\neworthY/\neworthL}
+                \pgfmathsetmacro{\neworthZ}{\neworthZ/\neworthL}
+                \pgfmathsetmacro{\coefficient}{-cos(\thedegree)/\neworthX}
+                \draw 
+                ({cos(\thedegree)},{sin(\thedegree)}) -- 
+                (
+                    0
+                    ,0
+                    ,{
+                        \coefficient*\neworthZ + (
+                            (-\coefficient*\neworthY) / \CameraY
+                        ) * \CameraZ
+                    }
+                );
+                \draw[
+                    domain = 0:360
+                    ,samples = 45
+                    ,red
+                ] plot (
+                    {
+                        (
+                            (
+                                \coefficient*\neworthZ + (
+                                    (-\coefficient*\neworthY) / \CameraY
+                                ) * \CameraZ
+                            ) - (
+                                (
+                                    \coefficient*\neworthZ + (
+                                        (-\coefficient*\neworthY) / \CameraY
+                                    ) * \CameraZ
+                                ) / 3 + 0.4 * cos(\x)
+                            )
+                        ) / (
+                            \coefficient*\neworthZ + (
+                                (-\coefficient*\neworthY) / \CameraY
+                            ) * \CameraZ
+                        ) * cos(\x)
+                    }
+                    ,{
+                        (
+                            (
+                                \coefficient*\neworthZ + (
+                                    (-\coefficient*\neworthY) / \CameraY
+                                ) * \CameraZ
+                            ) - (
+                                (
+                                    \coefficient*\neworthZ + (
+                                        (-\coefficient*\neworthY) / \CameraY
+                                    ) * \CameraZ
+                                ) / 3 + 0.4 * cos(\x)
+                            )
+                        ) / (
+                            \coefficient*\neworthZ + (
+                                (-\coefficient*\neworthY) / \CameraY
+                            ) * \CameraZ
+                        ) * sin(\x)
+                    }
+                    ,{
+                        (
+                            \coefficient*\neworthZ + (
+                                (-\coefficient*\neworthY) / \CameraY
+                            ) * \CameraZ
+                        ) / 3 + 0.4 * cos(\x)
+                    }
+                );
+            }
+        \end{tikzpicture}
+    }
+\end{document}

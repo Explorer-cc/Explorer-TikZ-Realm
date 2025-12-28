@@ -1,0 +1,38 @@
+\documentclass{article}
+% cwestiwn Explorer: https://tex.stackexchange.com/q/746958/ 
+% ateb: https://tex.stackexchange.com/a/746982/
+\usepackage{lipsum}
+\usepackage{tcolorbox}
+\tcbuselibrary{theorems,skins,breakable}
+\usetikzlibrary{arrows.meta}
+\NewTcbTheorem[number within=section]{mythm}{Theorem}% 
+{%
+  enhanced jigsaw,enhanced,fonttitle=\bfseries,   
+  colback=white,
+  colframe=green!75!black,
+  arc=.5cm,
+  attach boxed title to top left={yshift=-4pt},
+  sharp corners=northwest,
+  boxed title style={%
+    skin=enhancedfirst jigsaw,
+    % sylwad muzimuzhi Z: https://tex.stackexchange.com/questions/746958/any-better-method-to-shade-only-part-of-the-frame-line-of-tcolorbox/746982?noredirect=1#comment1862415_746982
+    colback=tcbcolframe,
+    bottom=1pt,sharp corners,
+  },
+  % sylwad muzimuzhi Z: https://tex.stackexchange.com/questions/746958/any-better-method-to-shade-only-part-of-the-frame-line-of-tcolorbox/746982?noredirect=1#comment1862414_746982
+  frame engine=empty,
+  underlay boxed title={%
+    \draw [ultra thick,tcbcolframe,-{Circle},rounded corners=5mm,shorten >=6mm] (frame.north west) -| (frame.south east) -| (frame.north west) ;
+  },
+  overlay = {%
+    \fill[tcbcolframe] (title.north east) -- (title.south east) -- ++(1em,0) -- cycle;
+  }%
+}
+{thm}%
+\begin{document}
+\section{AAA}
+\section{BBB}
+\begin{mythm}{This is a theorem}{}
+  \lipsum[2]
+\end{mythm}
+\end{document}
