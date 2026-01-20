@@ -1,0 +1,26 @@
+\documentclass[border=10pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{intersections}
+\usetikzlibrary{angles}
+\usetikzlibrary{quotes}
+\begin{document}
+    \begin{tikzpicture}
+        \coordinate (A) at (0.5,3.6);
+        \coordinate (B) at (0,5.3);
+        \coordinate (C) at (4.8,6.2);
+        \coordinate (D) at (5,1.8);
+        \coordinate (E) at (2,0);
+        %\draw[help lines,line width=0.8pt] (A) -- (C) -- (E) (B) -- (D);
+        \draw[name path=l1] (A) -- (C);
+        \draw[name path=l2] (B) -- (D);
+        \draw[name path=l3] (C) -- (E);
+        \coordinate[name intersections={of=l1 and l2}];
+        \draw (A) -- (intersection-1) -- (B) pic ["$3$",draw,-,black,angle radius = 5mm,angle eccentricity=1.5] {angle = B--intersection-1--A};
+        \draw (C) -- (intersection-1) -- (D) pic ["$1$",draw,-,black,angle radius = 5mm,angle eccentricity=1.5] {angle = D--intersection-1--C};
+        \coordinate[name intersections={of=l2 and l3}];
+        \draw (B) -- (intersection-1) -- (E) pic ["$4$",draw,-,black,angle radius = 5mm,angle eccentricity=1.5] {angle = B--intersection-1--E};
+        \coordinate[name intersections={of=l1 and l3}];
+        \draw (A) -- (intersection-1) -- (E) pic ["$2$",draw,-,black,angle radius = 5mm,angle eccentricity=1.5] {angle = A--intersection-1--E};
+    \end{tikzpicture}
+\end{document}

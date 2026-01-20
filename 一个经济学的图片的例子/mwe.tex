@@ -1,0 +1,63 @@
+% https://tex.stackexchange.com/q/758305/322482
+
+\begin{frame}{Backward-bending Supply Curve}
+\vspace{0.1cm}
+
+\begin{columns}[T]
+
+    \column{0.55\textwidth}
+        \centering
+        \resizebox{1\textwidth}{!}{%
+       c
+        }
+        \vspace{0.1cm}
+        \footnotesize \textbf{(a) Optimal bundles}
+
+
+    \column{0.45\textwidth}
+        \centering
+        \resizebox{1\textwidth}{!}{%
+        \begin{tikzpicture}
+            \begin{axis}[
+                axis lines = left,
+                xmin=0, xmax=55,
+                ymin=0, ymax=32,
+                xtick={0, 20, 30, 40},
+                ytick={10, 13, 20, 25},
+                xlabel={Giờ làm việc ($H$)},
+                ylabel={Mức lương ($w$)},
+                ylabel style={rotate=90, at={(axis description cs:0.05,1)}, anchor=south},
+                xlabel style={at={(axis description cs:1,0)}, anchor=north west},
+                grid=major,
+                grid style={dotted, gray!50},
+                clip=false
+            ]
+
+
+            \coordinate (S1) at (axis cs: 20, 13);
+
+            \coordinate (S2) at (axis cs: 40, 20);
+
+            \coordinate (S3) at (axis cs: 30, 25);
+
+            \coordinate (S0) at (axis cs: 0, 10);
+
+            \draw[lineBlue, very thick] (S0) to[out=10, in=-120] (S1) 
+                                             to[out=60, in=-90] (S2) % Đoạn dốc lên
+                                             to[out=90, in=-20] (S3) % Đoạn vòng ngược
+                                             to[out=160, in=-60] (axis cs: 25, 30); 
+            \filldraw[dotRed] (S1) circle (2.5pt);
+            \filldraw[dotRed] (S2) circle (2.5pt);
+            \filldraw[dotRed] (S3) circle (2.5pt);
+            \filldraw[black] (S0) circle (2pt);
+
+            \node[right, font=\scriptsize, color=lineBlue] at (axis cs: 30, 28) {Labor Supply};
+
+            \end{axis}
+        \end{tikzpicture}
+        }
+        \vspace{0.1cm}
+        \footnotesize \textbf{(b) Labor supply}
+
+\end{columns}
+\end{frame}

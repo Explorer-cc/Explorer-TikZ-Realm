@@ -1,0 +1,53 @@
+\documentclass[border=5pt]{standalone}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usetikzlibrary{intersections}
+\usetikzlibrary{math}
+\pgfplotsset{compat=1.18}
+\usepackage{amsmath}
+\tikzset{elegant/.style={smooth,thick,samples=50}}
+% the syntax \ShowIntersection[<projections>]{<path 1>}{<path 2>}{<color>}
+\NewDocumentCommand{\ShowIntersection}{ ommm }{
+    \filldraw 
+    [name intersections={of=#2 and #3, name=i, total=\t}] 
+    [#4, opacity=1, every node/.style={above left, black, opacity=1}] 
+    \foreach \s in {1,...,\t}{(i-\s) circle (1pt)}
+    \IfValueT{#1}{
+        \foreach \s / \nodecontent / \nodexshift in {#1}{
+            (i-\s) edge[#4, dashed] (i-\s |- 0,0) (i-\s |- 0,0) node
+            [color = #4, below=1em, anchor=base, font=\footnotesize, xshift=\nodexshift]
+            {$\nodecontent$}
+        }
+    };
+}
+%%%
+% - \ShowIntersection{A}{D}{orange} works as before,
+% - \ShowIntersection[1/x_1, 2/x_2]{A}{D}{orange} marks the first intersection with x_1 and the second with x_2 (so you can use A and B if you need),
+% - \ShowIntersection[2/x]{A}{D}{orange} marks only the second intersection.
+%%%
+
+\begin{document}
+    \begin{tikzpicture}
+        \begin{axis}[
+            axis x line = middle,
+            axis y line = middle,
+            xmin = -1.5,
+            xmax = 4.5,
+            ymin = -1.2,
+            ymax = 3.2
+        ]
+        \node[below left=2.5pt] at (0,0) {$O$};
+        \addplot[elegant,domain=-4:4,name path global=A]{(x-1)*ln(x)-x+1} node [left=2pt] {$f(x)$};
+        \addplot[blue,mark=*,mark size=1pt] coordinates {(1,0)};
+        \addplot[blue,mark=*,mark size=1pt] coordinates {(e,0)};
+        \addplot[blue,thick,name path global=B]{-x+1};
+        \addplot[blue,thick,name path global=C]{(1-1/e)*x-e+1};
+        \addplot[orange,thick,name path global=D] coordinates {(-1,0.5) (4,0.5)};
+        \ShowIntersection[1/x_1/2pt, 2/x_2/-2pt]{A}{D}{orange}
+        \ShowIntersection[1/x'_1/-2pt]{B}{D}{blue}
+        \ShowIntersection[1/x'_2/2pt]{C}{D}{blue}
+        \end{axis}
+    \end{tikzpicture}
+\end{document}
+
+% https://tex.stackexchange.com/questions/720331/what-is-the-best-practice-to-define-a-newcommand-to-derive-the-projection-of-the/720343#720343

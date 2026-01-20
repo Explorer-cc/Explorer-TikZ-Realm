@@ -1,0 +1,85 @@
+\documentclass[fontset=fandol,openany]{ctexbook}
+\usepackage{libertinus-otf}
+\usepackage[centering]{geometry}
+\usepackage{lipsum}
+\usepackage{tikz}
+\makeatletter %特别鸣谢:鱼香肉丝没有鱼先生
+\newcommand{\chapter@title@box}[1]{
+    \stepcounter{chapter}
+    \begin{center}
+        \begin{tikzpicture}
+            \fill[gray!30] (0,0) rectangle (\textwidth,3);
+            \node[anchor = south east, font = \huge\heiti, inner xsep = .5cm,inner ysep = 2ex] at (\textwidth,0) {#1};
+            \node[text=gray, font =\scshape\itshape\Large, scale = 5] at (.99\textwidth, 3) {\thechapter};
+        \end{tikzpicture}
+    \end{center}
+}
+\ctexset{
+    chapter = {
+        name = {},numbering = false,
+        beforeskip = 5pt,
+        format = \chapter@title@box,
+    }
+}
+\makeatother
+\usepackage{tcolorbox}
+\tcbuselibrary{theorems,breakable,skins}
+\tcbset{
+    colortitle/.style = {
+        code={\colorlet{mycolor}{#1}},
+        breakable,sharp corners,enhanced,
+        skin=empty,
+        fonttitle=\bfseries\large,
+        coltitle=black,
+        attach boxed title to top,
+        boxed title style={
+            skin=empty,
+            frame engine=path,
+            frame code={
+                \draw[mycolor,thick,line width=2pt] 
+                (frame.north east) -- (frame.north west) 
+                (frame.south west) -- (frame.south east);
+                \fill[mycolor!10] (frame.north west) rectangle (frame.south east);
+            },
+        }
+    }
+}
+\NewTcbTheorem[number within=chapter]{mythm}{定理}{
+    colortitle={red}
+}{thm}
+\NewTcbTheorem[number within=chapter]{mydef}{定义}{
+    colortitle={blue}
+}{def}
+\NewTcbTheorem[number within=chapter]{myexample}{例}{
+    colortitle={green!50}
+}{def}
+\begin{document}
+\chapter{有限维线性空间}
+\lipsum[2]
+\section{线性空间的定义}
+\begin{mythm}{阿基米德定理}{}
+    \lipsum[2]
+\end{mythm}
+\chapter{无限维非线性空间}
+\begin{mydef}{欧几里得公设}{}
+    \lipsum[2]
+\end{mydef}
+\begin{myexample}{Sluskey例子}{}
+    \lipsum[2]
+\end{myexample}
+\section{线性空间的定义}
+\lipsum[2]
+\begin{mythm}{阿基米德定理}{}
+    \lipsum[2]
+\end{mythm}
+\begin{mydef}{欧几里得公设}{}
+    \lipsum[2]
+\end{mydef}
+\begin{myexample}{Sluskey例子}{}
+    \lipsum[2]
+\end{myexample}
+\chapter{无限维双曲空间}
+\lipsum[2]
+\section{线性空间的定义}
+\lipsum[2]
+\end{document}

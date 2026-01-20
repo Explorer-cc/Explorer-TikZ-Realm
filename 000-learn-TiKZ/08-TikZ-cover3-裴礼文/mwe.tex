@@ -1,0 +1,51 @@
+% https://mp.weixin.qq.com/s/KjeDh61W4K3Buln9_3zEIw
+\documentclass{ctexart}
+\usepackage{geometry}
+\geometry{paperwidth = 15cm, paperheight = 21cm}
+\usepackage{tikz}
+
+\definecolor{main}{RGB}{165, 203, 239}
+\definecolor{second}{RGB}{202, 217, 238}
+\definecolor{third}{RGB}{110, 185, 224}
+\definecolor{fourth}{RGB}{89, 156, 176}
+\def\maketitle{%
+    \titlepage%
+        \begin{tikzpicture}[overlay, remember picture]%
+            \fill[main] (current page.north west) rectangle (current page.south east);
+            % 0.032
+            \fill[third] (current page.north west) rectangle ++(\paperwidth, -0.032\paperheight);
+            \fill[third] (current page.south west) rectangle ++(\paperwidth, +0.032\paperheight);
+            % 0.2664
+            % 0.1667
+            \fill[fourth] ([yshift = -.16667\paperheight]current page.north west) rectangle ++(\paperwidth, -0.2664\paperheight);
+            % 0.0088
+            \fill[second] ([yshift = -.17547\paperheight]current page.north west) rectangle ++(\paperwidth, -0.2488\paperheight);
+            % 0.29987
+            \node[anchor = north west] at ([shift = {(0.59\paperwidth, -.17547\paperheight)}]current page.north west) {%
+            \begin{tikzpicture}
+                \foreach \x in {1,...,20} {
+                    \foreach \y in {1,..., 17} {
+                        \pgfmathsetmacro\cx{\x * .3}
+                        \pgfmathsetmacro\cy{\y * -.3}
+                        \pgfmathsetmacro\opcity{\fpeval{((\x*0.5) / 20) * 0.6 + ((17- (\y * 1.5)) / 20) * 0.4}}
+                        \fill[white, opacity = \opcity] (\cx, \cy) rectangle ++(4pt, 4pt);
+                    }
+                }
+            \end{tikzpicture}
+            };
+            \node[align = left, font = \bfseries\songti, anchor = west, scale = 3.9] at ([shift = {(.4cm, -0.29987\paperheight)}]current page.north west) {数学分析中的\\[-3pt]典型问题与方法};
+            \node[anchor = west, scale = 2] at ([shift = {(.5cm, .02\paperheight)}]current page.west) {{\bfseries 第 {\Huge 3} 版} \hspace*{.3cm}{\kaishu 裴礼文}};
+            \node[anchor = west, font = \fangsong] at ([shift = {(.7cm, 0.06\paperheight)}]current page.south west) {高等教育出版社};
+            %\node[anchor = north west] at ([shift = {(.5\paperwidth, -0.427\paperheight)}]current page.north west) {\includegraphics[width = .5156\paperwidth]{lower.jpg}};
+            %\node[anchor = north west, inner sep = 0pt] at ([shift = {(.5\paperwidth, 0)}]current page.north west) {\includegraphics[width = .5156\paperwidth, height = .16632\paperheight]{upper.jpg}};
+            \node[anchor = north west] at ([shift = {(.5\paperwidth, -0.427\paperheight)}]current page.north west) {\includegraphics[width = .5156\paperwidth]{example-image}};
+            \node[anchor = north west, inner sep = 0pt] at ([shift = {(.5\paperwidth, 0)}]current page.north west) {\includegraphics[width = .5156\paperwidth, height = .16632\paperheight]{example-image}};
+        \end{tikzpicture}
+    \endtitlepage
+}
+
+\begin{document}
+
+\maketitle
+
+\end{document}

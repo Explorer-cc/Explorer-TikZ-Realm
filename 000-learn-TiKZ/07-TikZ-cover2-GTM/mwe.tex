@@ -1,0 +1,37 @@
+% https://mp.weixin.qq.com/s/UWQFtdUscBe-u-nNaHZ2fg
+\documentclass{article}
+\usepackage{tikz}
+\definecolor{bg@main}{RGB}{254, 216, 71}
+\definecolor{bg@second}{RGB}{249, 241, 179}
+\definecolor{bg@third}{RGB}{247, 234, 156}
+\definecolor{text@main}{RGB}{254, 216, 71}
+\definecolor{text@second}{RGB}{2, 49, 102}
+\definecolor{text@third}{RGB}{162, 148, 65}
+\usepackage{times, fontawesome5}
+\usepackage[paperwidth = 16.51cm, paperheight = 24.77cm]{geometry}
+\def\maketitle{%
+\titlepage 
+\begin{tikzpicture}[remember picture, overlay]
+    \def\textnode[##1]##2;{
+        \node[anchor = west, align = left, ##1] ##2;
+    }
+    \fill[left color = bg@second] (current page.north west) rectangle (current page.south east);
+    \fill[bg@main] (current page.south east) rectangle ++(-0.9\paperwidth, 0.69\paperheight)coordinate(t1);
+    \fill[bg@third] (t1) rectangle ++(-0.1\paperwidth, -0.137\paperheight);
+    \draw[white, very thick] (current page.north west) ++ (.1\paperwidth, 0) -- ++ (0, -\paperheight);
+    \draw[white, very thick] (current page.north west) ++ (0, -.31\paperheight) -- ++ (\paperwidth, 0);
+    \draw[white, very thick] (current page.north west) ++ (0, -.447\paperheight) -- ++ (.1\paperwidth, 0);
+    \textnode[text = text@third, font = \LARGE] at ([shift = {(.1\paperwidth + .75cm, -.75cm)}]current page.north west) {Graduate Text in Mathematics};
+    \textnode[text = text@main, scale = 5, anchor = north east] at (current page.north east) {GTM};
+    \textnode[text = text@second, anchor = south west, scale = 2.4] at ([xshift = .75cm]t1) {Mathematician};
+    \textnode[text = text@second, anchor = north west, scale = 7] at ([xshift = 0cm]t1) {Introduction \\ to Real \\ Analysis};
+    \textnode[anchor = south east, scale = 2] at ([shift = {(-1, 1)}]current page.south east) {\faCat{} Math};
+\end{tikzpicture}
+\endtitlepage
+}
+
+\begin{document}
+
+\maketitle
+
+\end{document}

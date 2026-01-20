@@ -1,0 +1,71 @@
+\documentclass[border=10pt]{standalone}
+\usepackage{ctex}
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{intersections}
+\usetikzlibrary{positioning}
+\makeatletter
+\def\extractcoord#1#2#3{
+  \path let \p1=(#3) in \pgfextra{
+    \pgfmathsetmacro#1{\x{1}/\pgf@xx}
+    \pgfmathsetmacro#2{\y{1}/\pgf@yy}
+    \xdef#1{#1} \xdef#2{#2}
+  };
+}
+\makeatother
+\begin{document}
+\begin{tikzpicture}
+  \def\sep{0.8} % 图形之间的间距
+  \pgfmathsetmacro \a{2}
+  \pgfmathsetmacro \b{1}
+  \pgfmathsetmacro \c{sqrt(3)}
+  \coordinate (C) at (\a,0);
+  \coordinate (D) at (\a,\b*\c/\a);
+  \draw (\c*\c/\a,\b*\c/\a) node[above=-2pt] {\tiny$A$} coordinate (A);
+  \draw (0,0) node[below=-2pt] {\tiny$B$} coordinate (B);
+  \draw (\a,0) node[below=-2pt] {\tiny$C$} coordinate (C);
+  \draw (\a,\b*\c/\a) node[above=-2pt] {\tiny$D$} coordinate (D);
+  \draw[line join=round](A) -- (B) -- (C) -- (A) -- (D) -- (C);
+  \extractcoord{\xA}{\yA}{A}
+  \extractcoord{\xB}{\yB}{B}
+  \extractcoord{\xC}{\yC}{C}
+  \extractcoord{\xD}{\yD}{D}
+  \pgfmathsetmacro \Ox{(\a*\xA+\b*\xB+\c*\xC)/(\a+\b+\c)}
+  \pgfmathsetmacro \Oy{(\a*\yA+\b*\yB+\c*\yC)/(\a+\b+\c)}
+  \coordinate (O) at (\Ox,\Oy);
+  \coordinate (a1) at ($(A)!0.5!(O)$);
+  \coordinate (b1) at ($(B)!0.5!(O)$);
+  \coordinate (c1) at ($(C)!0.5!(O)$);
+  \filldraw[fill=gray!50,draw=black,opacity=0.5] (a1) -- (b1) -- (c1) -- cycle;
+  \pgfmathsetmacro \d{1}
+  \pgfmathsetmacro \c{.5}
+  \pgfmathsetmacro \a{.5*sqrt(3)}
+  \pgfmathsetmacro \Ox{(\a*\xA+\c*\xC+\d*\xD)/(\a+\c+\d)}
+  \pgfmathsetmacro \Oy{(\a*\yA+\d*\yC+\d*\yD)/(\a+\c+\d)}
+  \coordinate (O) at (\Ox,\Oy);
+  \coordinate (a2) at ($(A)!0.5!(O)$);
+  \coordinate (c2) at ($(C)!0.5!(O)$);
+  \coordinate (d2) at ($(D)!0.5!(O)$);
+  \filldraw[fill=gray!50,draw=black,opacity=0.5] (a2) -- (c2) -- (d2) -- cycle;
+  \node[below] at (.3*\a+\sep,-.25) {\tiny{图1}}; % 标签位于图形下方
+  % 绘制图二
+  \draw (B)++(\a+2*\sep,0) node[below=-2pt] {\tiny$B$} coordinate (B);
+  \draw (A)++(\a+2*\sep,0) node[above right=-2pt and -3pt] {\tiny$A$} coordinate (A);
+  \draw (D)++(\a+2*\sep,0) node[above=-2pt] {\tiny$D$} coordinate (D);
+  \draw (C)++(\a+2*\sep,0) node[below=-2pt] {\tiny$C$} coordinate (C);
+  \draw[line join=round] (A) -- (B) -- (C) -- (A) -- (D) -- (C);
+  \draw ($(A)!1!150:(D)$) node[above=-2pt] {\tiny$M$} coordinate (M);
+  \draw ($(A)!1!270:(C)$) node[above left=-3pt and -5pt] {\tiny$N$} coordinate (N);
+  \draw[line join=round](A) -- (M) -- (N);
+  %这里本来是要左角平分线的,但是难度较大...现考虑使用距离+旋转45°角度方法取巧实现之
+  \draw ($(A)!0.65!45:(B)$) coordinate (P) -- (A);
+  \draw ($(A)!0.8!75:(D)$) -- (A);
+  \path[name path=AP] (P) -- (A);
+  \path[name path=BC] (B) -- (C);
+  \path[name intersections={of=AP and BC, by = E}];
+  \node[below right=-2pt and -4pt] at (E) {\tiny$E$};
+  \node[below] at (.3*\a+4*\sep,-.25) {\tiny{图2}}; % 标签位于图形下方
+\end{tikzpicture}
+
+\end{document}

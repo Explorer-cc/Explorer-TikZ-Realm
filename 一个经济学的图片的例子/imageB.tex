@@ -1,0 +1,46 @@
+\documentclass[tikz,border=5pt]{standalone}
+\usetikzlibrary{hobby}%<-
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\definecolor{lineBlue}{RGB}{0, 102, 204}
+\definecolor{dotRed}{RGB}{204, 0, 0}
+\definecolor{curveBlack}{RGB}{0, 0, 0}
+\pgfplotsset{compat=1.18}
+\begin{document}
+\begin{tikzpicture}
+    \begin{axis}[
+        axis lines = left,
+        x=1mm, y=3mm,%<-scale the axis
+        xmin=0, xmax=55,
+        ymin=0, ymax=32,
+        xtick={0, 20, 30, 40},
+        ytick={10, 13, 20, 25},
+        xlabel={Hours of Work ($H$)},
+        ylabel={Wage Rate ($w$)},
+        ylabel style={rotate=-90,at={(axis description cs:0.05,1)},anchor=south},
+        xlabel style={at={(axis description cs:1,0)}, anchor=north west},
+        clip=false
+    ]
+        \coordinate (S1) at (axis cs: 20, 13);
+        \coordinate (S2) at (axis cs: 40, 20);
+        \coordinate (S3) at (axis cs: 30, 25);
+        \coordinate (S0) at (axis cs: 0, 10);
+        \coordinate (O) at (axis cs: 0, 0);%<-add
+        \coordinate (end) at (axis cs: 10, 30);%<-add
+        \draw[thin, gray] (S1 |- O) -- (S1) -- (S1 -| O);
+        \draw[thin, gray] (S2 |- O) -- (S2) -- (S2 -| O);
+        \draw[thin, gray] (S3 |- O) -- (S3) -- (S3 -| O);
+
+        \draw[ultra thick,lineBlue] (S0) to[curve through={(S1) .. ([tension in=1.25]S2) .. (S3)}] (end);
+        \node[right] at (axis cs: 30, 26) {Labor Supply};
+
+        \filldraw[dotRed] (S1) circle (2.5pt);
+        \filldraw[dotRed] (S2) circle (2.5pt);
+        \filldraw[dotRed] (S3) circle (2.5pt);
+        \filldraw[black] (S0) circle (2pt);
+    \end{axis}
+\end{tikzpicture}
+
+
+\end{document}
+

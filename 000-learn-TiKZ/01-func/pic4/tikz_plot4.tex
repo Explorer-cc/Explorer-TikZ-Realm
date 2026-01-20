@@ -1,0 +1,45 @@
+\documentclass[border=5pt]{standalone}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{intersections}
+\usetikzlibrary{math}
+\usepackage{amsmath}
+\NewDocumentCommand{\ShowIntersection}{ ommm }{
+    \filldraw 
+    [name intersections={of=#2 and #3, name=i, total=\t}] 
+    [#4, opacity=1, every node/.style={above left, black, opacity=1}] 
+    \foreach \s in {1,...,\t}{(i-\s) circle (1pt)}
+    \IfValueT{#1}{
+        \foreach \s / \nodecontent in {#1}{
+            (i-\s) edge[#4, dashed] (i-\s |- 0,0) (i-\s |- 0,0) node
+            [color = #4, below=1em, anchor=base, font=\footnotesize]
+            {$\nodecontent$}
+        }
+    };
+}
+\begin{document}
+    \begin{tikzpicture}
+        \begin{axis}[
+            axis x line = middle,
+            axis y line = middle,
+            xlabel = {$x$},
+            ylabel = {$y$},
+            xmin = -pi/2-0.5,
+            xmax = pi/2+0.5,
+            ymin = -0.4,
+            ymax = 2.8
+        ]
+        \node at (1.6,0.5) {$y=\cos x$};
+        \node[blue] at (-0.85,1.8) {$y=\dfrac{\cos x}{e^x}$};
+
+        \node[below left=2.5pt] at (0,0) {$O$};
+        \addplot[black,domain=-pi/2:pi/2,name path global=A] {cos(deg(x))};
+        \addplot[blue,domain=-pi/2:pi/2,name path global=B]{cos(deg(x))/(e^x)};
+        \addplot[orange,dashed,name path global=C]{0.74};
+        \ShowIntersection[1/x_1,2/x_2]{A}{C}{black};
+        \ShowIntersection[1/x'_1,2/x'_2]{B}{C}{blue};
+
+        \end{axis}
+    \end{tikzpicture}
+\end{document}

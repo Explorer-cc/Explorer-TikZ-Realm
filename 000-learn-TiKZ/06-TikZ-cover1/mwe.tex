@@ -1,0 +1,42 @@
+\documentclass[a4paper,12pt]{ctexart}
+\usepackage[margin=1.2in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usepackage{tkz-euclide}
+\usepackage{lipsum,zhlipsum}
+\usetikzlibrary{arrows,calc,intersections}
+
+\def\maketitle{%
+    \titlepage%
+    \begin{tikzpicture}[overlay, remember picture]
+        \fill[gray!30] (current page.north west) rectangle (current page.south east);
+        \fill (current page.north west) rectangle ++(\paperwidth, -.16\paperheight);
+        \node[text=white,inner sep=0pt,font=\fontsize{25}{18}\bfseries,xshift=-.33\paperwidth,yshift=-.12\paperheight] at (current page.north east) {重庆XX大学数学与统计学院};
+        \fill ([yshift = -.33\paperheight]current page.north west) rectangle ++(.2\paperwidth, -.07\paperheight);
+
+        \node[font=\fontsize{40}{18}\bfseries] at ([xshift =.48\paperwidth,yshift = -.365\paperheight]current page.north west) {非线性分析讲义};
+        \fill ([xshift=.23\paperwidth,yshift = -.48\paperheight]current page.north west) rectangle ++(.8cm, .8cm);
+        \node[font=\fontsize{20}{18}\bfseries] at ([xshift =.40\paperwidth,yshift = -.46667\paperheight]current page.north west) {陈X杰\quad 编著};
+        \node[anchor = north west] at ([shift = {(.05\paperwidth, .43333\paperheight)}]current page.south west) {%
+            \begin{tikzpicture}
+                \foreach \x in {1,...,9} {
+                    \foreach \y in {1,...,8} {
+                        \pgfmathsetmacro\cx{\x * 1.4}
+                        \pgfmathsetmacro\cy{\y * -1.25}
+                        \fill (\cx, \cy) circle (2.5pt);
+                    }
+                }
+            \end{tikzpicture}
+            };
+        \fill[fill=black] (current page.south west)rectangle ++(\paperwidth,.05\paperheight);   
+    \end{tikzpicture}
+    \endtitlepage
+}
+\begin{document}
+    
+    \maketitle
+
+    \lipsum[1]
+
+    \zhlipsum[3]
+\end{document}

@@ -1,0 +1,63 @@
+% https://mp.weixin.qq.com/s?__biz=MzI2MTEzMzc0MA==&mid=2247483819&idx=1&sn=a7dbef1d16a05c903c59330d557346ff&chksm=ea5e4568dd29cc7ed58d5c8882a75588875b74b2e713bcd1f016a4bfb948472c16fc4e4a126d&cur_album_id=3386283006327439368&scene=189#wechat_redirect
+\documentclass{ctexart}
+\usepackage{tikz}
+\usepackage{fontspec}
+\newfontfamily\ru{CMU Sans Serif}
+\usepackage[paperwidth = 18.3cm, paperheight = 26cm]{geometry}
+\usepackage{qrcode}
+
+\definecolor{bgc}{RGB}{79, 42, 16}
+\definecolor{main}{RGB}{245, 171, 0}
+\definecolor{second}{RGB}{255, 243, 63}
+
+\def\maketitle{%
+\titlepage 
+    \begin{tikzpicture}[overlay, remember picture]
+        \fill[bgc] (current page.south west) rectangle (current page.north east);
+        \fill[main] (current page.north east) --++ (-.22\paperwidth, 0) --++ (0, -.21\paperheight) arc[start angle = 180, end angle = 270, radius = .1\paperwidth] -- ++ (.5\paperwidth, 0) -- cycle;
+        \draw[main!70!black, line width = 1pt] ([shift = {(.09\paperwidth, -\dimexpr .21\paperheight + .1\paperwidth\relax)}]current page.north west) -- ++ (\dimexpr \paperwidth - 0.09\paperwidth - .22\paperwidth + .08\paperwidth\relax,0);
+        \node[align = center, anchor = west, scale = 6.2, text = second, font = \heiti] at ([shift = {(-.25\paperwidth, -.15\paperheight)}]current page.north east) {朗\\[-1ex]道};
+        \node[anchor = west, text = main, scale = 1.6, font = \ru] at ([shift = {(.09\paperwidth, -.1\paperheight)}]current page.north west) {ТЕОРЕТИЧЕСКАЯ ФИЗИКА TOM I};
+        \node[anchor = west, text = main, scale = 1.3, align = left, font = \ru] at ([shift = {(.09\paperwidth, -.15\paperheight)}]current page.north west) {Л.Д.ЛАНДАУ \\
+        E.M.ЛИФШИЦ};
+        \node[text = main!80, scale = 2.9, align = left, font = \ru\bfseries] at ([shift = {(.46\paperwidth, -.15\paperheight)}]current page.north west) {МЕХАНИКА};
+        \node[anchor = west, text = main!80, scale = 2.5] at ([shift = {(.09\paperwidth, -.25\paperheight)}]current page.north west) {《理论物理学教程》};
+        \node[anchor = west, text = main!80, scale = 1.7] at ([shift = {(.55\paperwidth, -.25\paperheight)}]current page.north west) {解读丛书};
+        \node[anchor = west, text = white, scale = 5, font = \heiti] at ([shift = {(.09\paperwidth, -.35\paperheight)}]current page.north west) {朗道《力学》\tiny 解读};
+        \node[anchor = west, text = main, scale = 1.5, font = \heiti] at ([shift = {(.09\paperwidth, -.5\paperheight)}]current page.north west) {鞠国兴\hspace*{\ccwd}编著};
+        \node[anchor = west, text = main, scale = 1.5, font = \heiti] at ([shift = {(.09\paperwidth, .1\paperheight)}]current page.south west) {高等教育出版社};
+    \end{tikzpicture}
+\endtitlepage
+}
+
+\def\maketitleback{%
+\titlepage 
+    \begin{tikzpicture}[overlay, remember picture]
+        \fill[bgc] (current page.south west) rectangle (current page.north east);
+        \fill[main] (current page.north east) --++ (-.1\paperwidth, 0) --++ (0, -.27\paperheight) --++ (.1\paperwidth, 0) -- cycle;
+        \node[anchor = north west, text = white, font = \large, text width = .75\paperwidth] at ([shift = {(.096\paperwidth, -.13\paperheight)}]current page.north west) {%
+        \begin{minipage}{.75\paperwidth}
+            \linespread{1.4}\selectfont
+            \hspace*{2em} 朗道和栗弗席兹的《理论物理学教程》（共十卷）是国际公认的一套著名的物理学经典教材,以其内容广博、讲解精炼、方法独特等优点著称。《教程》对物理学各学科的基本原理、基础理论和应用等方面进行了认真、细致地梳理,精心选材和组织材料,试图将从事理论物理所必需的物理学基础知识纳入一个统一的框架,其中特别包含了作者在相关领域的许多重要研究成果。《教程》从出版至今赢得了广泛的好评,成为物理学工作者案头常备的参考书,在物理学以及相关领域也是经常引用的重要参考文献。
+
+            \hspace*{2em} 本书是为学习《理论物理学教程》第一卷《力学》所编写的辅导书, 是作者在广泛调研相关文献资料和在南京大学匡亚明学院多年从事理论力学课程教学的基础之上完成的。书中每节包含《教程》对应节的内容提要,内容补充和习题解答三个部分:
+    
+            \hspace*{2em} 内容提要部分概括了力学中的基本方法、基本原理和重要的结论； 内容补充部分包括对基本概念、基本方法的详细讨论,一些结论的完整导出过程和补充说明,方法和结论在其它问题中的一些应用,与物理学相关进展之间的联系等；习题解答部分给出《力学》中原有习题的详细求解过程,并补充了一些习题以说明相关概念、方法等。书中还讨论了一些问题的矢量力学处理方法, 注意到了力学与非线性物理、量子力学等其它物理学分支学科之间的一些关联性。特别是,为了方便读者深入学习和理解有关内容,书中列出了许多参考文献。
+    
+            \hspace*{2em} 本书可作为理工类院校物理专业或相关专业的学生学习理论力学课程的参考书，也可供大专院校物理教师以及物理学研究工作者参考。            
+        \end{minipage}
+        };
+
+        \node[align = left, text = white, font = \large, anchor = north west] at ([shift = {(-.291\paperwidth, .243\paperheight)}]current page.south east) {%
+            学科类别：物理\\[.2cm]
+            \qrcode[hyperlink, height = 0.2\paperwidth]{https://mp.weixin.qq.com/s/Q7j0dQiBC2gdy1XUXEhCgA} \\[.2cm]
+            academic.hep.com.cn
+        };
+    \end{tikzpicture}
+\endtitlepage
+}
+
+\begin{document}
+\maketitle
+\maketitleback
+\end{document}
