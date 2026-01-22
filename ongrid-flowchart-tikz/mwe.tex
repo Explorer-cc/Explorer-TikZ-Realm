@@ -1,0 +1,33 @@
+\documentclass[tikz,border=5pt]{standalone}
+\usetikzlibrary{positioning,arrows.meta,fit}
+\usepackage[fontset=fandol]{ctex}
+\begin{document}
+\sffamily
+\begin{tikzpicture}[
+    every node/.style={draw,node distance=2cm,on grid},
+    header/.style={font=\bfseries},
+    mytip/.style={-Stealth,ultra thick,shorten <=#1pt,shorten >=#1pt},
+    mylabel/.style={draw=none,scale=.75}
+    ]
+   \node[header] (root) {脂滴在WSSV感染时的功能};
+   \node[header,below left=2cm and 4.5cm of root] (L1A)  {WSSV诱导脂滴形成};
+   \node[header,below right=2cm and 3.5cm of root] (L1B) {脂滴抗病毒感染功能};
+   \node[below=of L1A] (L2A) {脂滴含量检测};
+   \node[below left=2cm and 1.75cm of L1B] (L2B) {减少脂滴含量};
+   \node[below right=2cm and 1.75cm of L1B] (L2C) {增加脂滴含量};
+   \node[below=5cm of L1B,align=left] (L3) {WSSV蛋白表达量检测\\WSSV病毒滴度检测\\对虾存活率检测};
+   \draw[mytip={5}] (root) -| (L1A);
+   \draw[mytip={5}] (root) -| (L1B);
+   \draw[mytip={5}] (L1A) -- node[right=3pt,mylabel] {WSSV检测} (L2A);
+   \draw[mytip={30}] (L1A) -- (L1B);
+   \draw[mytip={3}] (L1B.south -| L2B) -- (L2B.north) ;
+   \draw[mytip={3}] (L1B.south -| L2C) -- (L2C.north) ;
+   \coordinate (mid) at ([yshift=1cm]L3.north);
+   \draw[mytip={3},-] (L2B) 
+            |- node[right,pos=.25,mylabel] {C75处理} (mid) 
+            -| node[left,pos=.75,mylabel] {油酸处理} (L2C);
+   \draw[mytip={3},shorten <=0pt] (mid) 
+        -- node[right=3pt,mylabel] {WSSV感染} (L3.north);
+   \node[draw,ultra thick,inner sep=10pt,fit=(root) (L1A) (L1B) (L2B) (L2C) (L3)] (fit) {};
+\end{tikzpicture}
+\end{document}
