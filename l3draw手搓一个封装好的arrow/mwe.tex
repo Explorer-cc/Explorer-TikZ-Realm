@@ -1,0 +1,70 @@
+\documentclass[border=5pt]{standalone}
+\usepackage{l3draw}
+\begin{document}
+\ExplSyntaxOn
+\dim_new:N \l_deltax_dim
+\dim_new:N \l_deltay_dim
+\dim_new:N \l_deltad_dim
+\dim_set:Nn \l_deltax_dim { 7.5pt }
+\dim_set:Nn \l_deltay_dim { 7.5pt }
+\dim_set:Nn \l_deltad_dim { 12.5pt }
+\fp_new:N \l_theta_fp
+\fp_new:N \l_sine_fp
+\fp_new:N \l_cosine_fp
+\cs_new:Npn \draw_arrow:nnnnn #1#2#3#4#5
+  {
+    \draw_scope_begin:
+    \draw_set_linewidth:n { .1cm }
+    \color_fill:n { #1 }
+    \color_stroke:n { #1 }
+    \fp_set:Nn \l_theta_fp { atan( (#5 - #3) , (#4 - #2) ) }
+    \fp_set:Nn \l_cosine_fp { cos( \l_theta_fp ) }
+    \fp_set:Nn \l_sine_fp { sin( \l_theta_fp ) }
+    \draw_path_moveto:n { #2 , #3 }
+    \draw_path_lineto:n {  #4 + (- \l_deltad_dim)*\l_cosine_fp , #5 + (- \l_deltad_dim)*\l_sine_fp }
+    \draw_path_use_clear:n { stroke }
+    % \draw_path_moveto:n { #4 - \l_deltax_dim - \l_deltad_dim , #5 - \l_deltay_dim }
+    % \draw_path_lineto:n { #4 , #5 }
+    % \draw_path_lineto:n { #4 - \l_deltax_dim - \l_deltad_dim , #5 + \l_deltay_dim }
+    % \draw_path_lineto:n { #4 - \l_deltad_dim , #5 }
+    \draw_path_moveto:n { 
+        #4 + (-\l_deltax_dim - \l_deltad_dim)*\l_cosine_fp - (-\l_deltay_dim)*\l_sine_fp , 
+        #5 + (-\l_deltax_dim - \l_deltad_dim)*\l_sine_fp + (-\l_deltay_dim)*\l_cosine_fp 
+    }
+    \draw_path_lineto:n {  #4 , #5  }
+    \draw_path_lineto:n { 
+        #4 + (-\l_deltax_dim - \l_deltad_dim)*\l_cosine_fp - (+\l_deltay_dim)*\l_sine_fp , 
+        #5 + (-\l_deltax_dim - \l_deltad_dim)*\l_sine_fp + (+\l_deltay_dim)*\l_cosine_fp 
+    }
+    \draw_path_lineto:n { #4 + (- \l_deltad_dim)*\l_cosine_fp , #5 + (- \l_deltad_dim)*\l_sine_fp }
+    \draw_path_use_clear:n { fill }
+    \draw_scope_end:
+  }
+\NewDocumentCommand{\drawarrow}{ O{black} m m m m }{
+    \draw_arrow:nnnnn { #1 } { #2 } { #3 } { #4 } { #5 }
+}
+
+\draw_begin:
+    \color_set:nnn { orange } { RGB } { 255, 128, 0 }
+        \draw_set_cap_round:
+        \draw_path_rectangle_corners:nn { -5mm , -5mm } { 35mm , 35mm }
+        \color_fill:n { orange!15 }
+        \draw_path_use_clear:n { fill }
+        \draw_path_grid:nnnn
+            { 1cm } { 1cm } 
+            { -5mm , -5mm } 
+            { 35mm , 35mm }
+        \color_fill:n { orange }
+        \color_stroke:n { orange }
+        \draw_path_use_clear:n { stroke, fill }
+        \draw_set_linewidth:n { .1cm }
+        \draw_arrow:nnnnn { orange } { 0pt } { 0pt } { 0cm } { 1cm }
+        \draw_arrow:nnnnn { magenta } { 0pt } { 0pt } { 2cm } { 0cm }
+        \draw_arrow:nnnnn { black } { 0pt } { 0pt } { 2cm } { 2cm }
+        \draw_arrow:nnnnn { cyan } { 3cm } { 1cm } { 0cm } { 3cm } 
+        \draw_arrow:nnnnn { green } { 3cm } { 3cm } { 0cm } { 2cm } 
+\draw_end:
+
+\ExplSyntaxOff
+
+\end{document}

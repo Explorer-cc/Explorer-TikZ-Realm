@@ -1,0 +1,20 @@
+% https://tex.stackexchange.com/a/758435
+\documentclass{article}
+\usepackage{scalerel,tikz}
+\usetikzlibrary{arrows.meta,bending}
+\newsavebox{\veeto}
+\newsavebox{\veefrom}
+
+\sbox{\veeto}{\tikz{\draw[-{Stealth[flex']},shorten >=-3pt, line width=2pt, line join=round, line cap=round] (0,1)to[out=-10, in=90](.5,0)to[out=90, in=190](1,1)}}
+\sbox{\veefrom}{\tikz{\draw[{Stealth[flex']}-,shorten <=-3pt, line width=2pt, line join=round, line cap=round] (0,1)to[out=-10, in=90](.5,0)to[out=90, in=190](1,1)}}
+
+\newcommand{\vto}{\mathbin{\scalerel*{\usebox{\veeto}}{t}}}
+\newcommand{\vfrom}{\mathbin{\scalerel*{\usebox{\veefrom}}{t}}}
+
+\begin{document}
+
+$a\vto b=b, X_{a\vto b}$
+
+$a\vfrom b=a, X_{a\vfrom b}$
+
+\end{document}

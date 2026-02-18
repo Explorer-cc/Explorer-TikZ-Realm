@@ -1,0 +1,85 @@
+% https://tex.stackexchange.com/a/759334/322482
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{l3draw,xcolor}
+
+\makeatletter
+\ExplSyntaxOn
+%---------------------------------------------------------
+\box_new:N \l__azetina_math_plus_box
+\box_new:N \l__azetina_math_cplus_box
+\dim_new:N \l__azetina_math_plus_width_dim
+\fp_new:N \l__azetina_cplus_fp
+
+\cs_new_protected:Nn \azetina_cplus:n
+ {
+  \hbox_set:Nn \l__azetina_math_plus_box {$\m@th#1+$}
+  \dim_set:Nn \l__azetina_math_plus_width_dim
+   { \box_ht:N \l__azetina_math_plus_box + \box_dp:N \l__azetina_math_plus_box}
+  \draw_begin:
+  \draw_set_linewidth:n { \l__azetina_cplus_fp }
+  \draw_set_cap_round:
+  \draw_set_join_round:
+  \draw_path_moveto:n { 0.5\l__azetina_math_plus_width_dim , 0.0\l__azetina_math_plus_width_dim }
+  \draw_path_lineto:n { 0.5\l__azetina_math_plus_width_dim , 1.0\l__azetina_math_plus_width_dim }
+  \draw_path_use_clear:n { stroke }
+  \draw_path_moveto:n { 0.0\l__azetina_math_plus_width_dim , 0.5\l__azetina_math_plus_width_dim }
+  \draw_path_lineto:n { 1.0\l__azetina_math_plus_width_dim , 0.5\l__azetina_math_plus_width_dim }
+  \draw_path_use_clear:n { stroke }
+  \draw_path_circle:nn { 0.5\l__azetina_math_plus_width_dim , 0.5\l__azetina_math_plus_width_dim } {0.25\l__azetina_math_plus_width_dim }
+  \draw_path_use_clear:n { stroke }
+  \draw_end:
+ }
+
+\cs_new_protected:Npn \explcplusimpl #1#2
+{
+    \fp_set:Nn \l__azetina_cplus_fp { 0.08ex }
+    \hbox_set:Nn \l__azetina_math_cplus_box { $\mspace{1mu}$ \azetina_cplus:n {#1} $\mspace{1mu}$ }
+    \vcenter { \box_use:N \l__azetina_math_cplus_box }
+}
+
+\NewDocumentCommand{\explcplus}{}
+{
+  \mathbin{\mathpalette\explcplusimpl\relax}
+}
+%---------------------------------------------------------
+\ExplSyntaxOff
+\makeatother
+
+\begin{document}
+
+\makebox[0pt][l]{$\explcplus$}\textcolor{red}{$+$}\quad
+\makebox[0pt][l]{\textcolor{red}{$+$}}$\explcplus$
+
+$a+b\explcplus c_{+\explcplus}$
+
+$a\explcplus b+c_{+\explcplus}$
+
+\medskip
+
+{\LARGE$a\explcplus b+c_{+\explcplus}$}
+
+\medskip 
+
+$A_{a+b}^{B^{a+b}}$
+
+$A_{a\explcplus b}^{B^{a\explcplus b}}$
+
+\medskip 
+
+\begin{align*}
+  \text{Display style:}      &\quad a \explcplus b \\
+  \text{Text style:}         &\quad \textstyle a \explcplus b \\
+  \text{Script style:}       &\quad \scriptstyle a \explcplus b \\
+  \text{Scriptscript style:} &\quad \scriptscriptstyle a \explcplus b
+\end{align*}
+
+\setlength{\fboxsep}{-0.1pt}%
+\setlength{\fboxrule}{0.1pt}%
+\fbox{$+$}\fbox{$\explcplus$}
+
+\medskip 
+
+\fbox{$\explcplus$}\fbox{$+$}
+
+\end{document}

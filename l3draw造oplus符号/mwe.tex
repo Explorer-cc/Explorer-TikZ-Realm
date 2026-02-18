@@ -1,0 +1,58 @@
+% Source - https://tex.stackexchange.com/q/570116
+% Chat - https://chat.stackexchange.com/rooms/116014/discussion-between-azetina-and-egreg
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{l3draw}
+\ExplSyntaxOn
+%---------------------------------------------------------
+\box_new:N \default_math_plus
+\hbox_set:Nn \default_math_plus {$+$}
+\box_new:N \cplus_box
+
+
+\dim_new:N \l__default_math_plus_width
+\dim_set:Nn \l__default_math_plus_width { \box_wd:N \default_math_plus} % with of `+'
+\fp_new:N \l__expl_cplus_fp % linewidth
+
+\cs_new_protected:Nn \expl_cplus:
+{
+    \draw_begin:
+        \draw_set_linewidth:n { \l__expl_cplus_fp }
+        \draw_set_cap_round: \draw_set_join_round:
+        \draw_path_moveto:n { 0.5\l__default_math_plus_width , 0.0\l__default_math_plus_width }
+        \draw_path_lineto:n { 0.5\l__default_math_plus_width , 1.0\l__default_math_plus_width }
+        \draw_path_use_clear:n { stroke }
+        \draw_path_moveto:n { 0.0\l__default_math_plus_width , 0.5\l__default_math_plus_width }
+        \draw_path_lineto:n { 1.0\l__default_math_plus_width , 0.5\l__default_math_plus_width }
+        \draw_path_use_clear:n { stroke }
+        \draw_path_circle:nn { 
+            0.5\l__default_math_plus_width , 0.5\l__default_math_plus_width 
+        } {0.25\l__default_math_plus_width}
+        \draw_path_use_clear:n { stroke }
+    \draw_end:
+}
+\NewDocumentCommand{\explcplus}{}
+ {
+  \mathbin
+   {
+    \fp_set:Nn \l__expl_cplus_fp { 0.08ex }
+    \hbox_set:Nn \cplus_box { $\mspace{1mu}$ \expl_cplus: $\mspace{1mu}$ }
+    \box_move_down:nn  { \box_dp:N \default_math_plus }{ \box_use:N \cplus_box }
+   }
+ }
+ 
+
+%---------------------------------------------------------
+\ExplSyntaxOff
+
+\begin{document}
+$a+b\explcplus c_{+\explcplus}$
+
+$a\explcplus b+c_{+\explcplus}$
+
+\medskip
+
+% test for larger size
+
+{\LARGE$a\explcplus b+c_{+\explcplus}$}
+\end{document}

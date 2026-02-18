@@ -1,0 +1,67 @@
+% https://chat.stackexchange.com/transcript/message/56104404#56104404
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{l3draw,xparse,xcolor}
+\ExplSyntaxOn
+%---------------------------------------------------------
+
+\box_new:N \l__azetina_math_plus_box
+\box_new:N \l__azetina_math_cplus_box
+\dim_new:N \l__azetina_math_plus_width_dim
+\fp_new:N \l__azetina_cplus_fp
+
+\cs_new_protected:Nn \azetina_cplus:
+ {
+  \hbox_set:Nn \l__azetina_math_plus_box {$+$}
+  \dim_set:Nn \l__azetina_math_plus_width_dim
+   { \box_ht:N \l__azetina_math_plus_box + \box_dp:N \l__azetina_math_plus_box}
+  \draw_begin:
+  \draw_set_linewidth:n { \l__azetina_cplus_fp }
+  \draw_set_cap_round:
+  \draw_set_join_round:
+  \draw_path_moveto:n { 0.5\l__azetina_math_plus_width_dim , 0.0\l__azetina_math_plus_width_dim }
+  \draw_path_lineto:n { 0.5\l__azetina_math_plus_width_dim , 1.0\l__azetina_math_plus_width_dim }
+  \draw_path_use_clear:n { stroke }
+  \draw_path_moveto:n { 0.0\l__azetina_math_plus_width_dim , 0.5\l__azetina_math_plus_width_dim }
+  \draw_path_lineto:n { 1.0\l__azetina_math_plus_width_dim , 0.5\l__azetina_math_plus_width_dim }
+  \draw_path_use_clear:n { stroke }
+  \draw_path_circle:nn { 0.5\l__azetina_math_plus_width_dim , 0.5\l__azetina_math_plus_width_dim } {0.25\l__azetina_math_plus_width_dim }
+  \draw_path_use_clear:n { stroke }
+  \draw_end:
+ }
+
+\NewDocumentCommand{\explcplus}{}
+ {
+  \mathbin
+   {
+    \fp_set:Nn \l__azetina_cplus_fp { 0.08ex }
+    \hbox_set:Nn \l__azetina_math_cplus_box { $\mspace{1mu}$ \azetina_cplus: $\mspace{1mu}$ }
+    \vcenter { \box_use:N \l__azetina_math_cplus_box }
+   }
+ }
+
+%---------------------------------------------------------
+\ExplSyntaxOff
+
+\begin{document}
+
+\makebox[0pt][l]{$\explcplus$}\textcolor{red}{$+$}\quad
+\makebox[0pt][l]{\textcolor{red}{$+$}}$\explcplus$
+
+$a+b\explcplus c_{+\explcplus}$
+
+$a\explcplus b+c_{+\explcplus}$
+
+\medskip
+
+% test for larger size
+
+{\LARGE$a\explcplus b+c_{+\explcplus}$}
+
+\medskip 
+
+$A_{a+b}^{B^{a+b}}$
+
+$A_{a\explcplus b}^{B^{a\explcplus b}}$
+
+\end{document}

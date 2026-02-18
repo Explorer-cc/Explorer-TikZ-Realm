@@ -1,0 +1,46 @@
+\documentclass[tikz,border=5pt]{standalone}
+\usepackage{esint}
+\tikzset{
+    pi/.pic={\node[rotate=#1]{$\pi$};},
+    pipic/.pic={
+        \pic[orange] at (0,-.1) {pi=0};
+        \pic[red] at (0,.1) {pi=180};
+        \pic[magenta] at (-.16,0) {pi=90};
+        \pic[teal] at (.16,0) {pi=270};
+    }
+}
+\newcommand*\ljhknot[1]{%
+    \tikz{\foreach \x in {0,...,#1}{
+        \foreach \y in {0,...,#1}{
+            \pic at ({(\x-\y)*.25},{(\x+\y)*.27}) {pipic};
+        }
+        \node[red,yshift={-.4cm*(\x+1)}] {$\iint$};
+    }}
+}
+\begin{document}
+
+% \begin{tikzpicture}[
+%     pi/.pic={\node[rotate=#1]{$\pi$};},
+%     pipic/.pic={
+%         \pic[orange] at (0,-.1) {pi=0};
+%         \pic[red] at (0,.1) {pi=180};
+%         \pic[magenta] at (-.16,0) {pi=90};
+%         \pic[teal] at (.16,0) {pi=270};
+%     }
+% ]
+% \pic {pipic};
+% \pic at (.25,.27) {pipic};
+% \def\NN{2}
+% \foreach \x in {0,...,\NN}{
+%     \foreach \y in {0,...,\NN}{
+%         \pic at ({(\x-\y)*.25},{(\x+\y)*.27}) {pipic};
+%     }
+%     \node[red,yshift={-.4cm*(\x+1)}] {$\iint$};
+% }
+% \end{tikzpicture}
+
+\ljhknot{2}
+
+\ljhknot{8}
+
+\end{document}

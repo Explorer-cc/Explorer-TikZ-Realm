@@ -1,0 +1,87 @@
+% https://tex.stackexchange.com/a/759334
+
+\documentclass{article}
+\usepackage{amsmath,pict2e}
+
+\makeatletter
+% Configuration constants
+\newdimen\expl@cplus@totalheight    % Total height of reference + symbol
+\newdimen\expl@cplus@symbolwidth    % Width of reference + symbol
+\def\expl@cplus@thickness{0.06}     % Line thickness as fraction of height
+\def\expl@cplus@circlesize{0.5}     % Circle diameter as fraction of height
+
+% Main user command
+% Usage: $a \explcplus b$
+\newcommand{\explcplus}{%
+  \mathbin{\mathpalette\expl@cplus@impl\relax}%
+}
+
+% Internal implementation
+% #1 = math style (\displaystyle, \textstyle, etc.)
+% #2 = unused (required by \mathpalette)
+\newcommand{\expl@cplus@impl}[2]{%
+  \vcenter{\hbox{%
+    \expl@cplus@measure{#1}%
+    \expl@cplus@draw
+  }}%
+}
+
+% Measure reference + symbol in current math style
+% Sets: \expl@cplus@totalheight, \expl@cplus@symbolwidth
+\newcommand{\expl@cplus@measure}[1]{%
+  \sbox\z@{$\m@th#1+$}%
+  \expl@cplus@totalheight=\dimexpr\ht\z@ + \dp\z@\relax
+  \expl@cplus@symbolwidth=\wd\z@
+}
+
+% Draw the circled plus using picture environment
+\newcommand{\expl@cplus@draw}{%
+  \linethickness{\expl@cplus@thickness\expl@cplus@totalheight}%
+  \unitlength=\expl@cplus@totalheight
+  %
+  \begin{picture}(\expl@cplus@symbolwidth,1)
+    % Circle centered at (width/2, 0.5)
+    \put(0.5\expl@cplus@symbolwidth, 0.5){%
+      \circle{\expl@cplus@circlesize}%
+    }%
+    % Vertical stroke from bottom to top
+    \put(0.5\expl@cplus@symbolwidth, 0){%
+      \line(0,1){1}%
+    }%
+    % Horizontal stroke from left to right
+    \put(0, 0.5){%
+      \line(1,0){\expl@cplus@symbolwidth}%
+    }%
+  \end{picture}%
+}
+\makeatother
+
+
+\begin{document}
+
+\section*{Circled Plus Symbol Tests}
+
+\subsection*{Basic usage}
+$a + b \explcplus c_{+\explcplus}$
+
+$a \explcplus b + c_{+\explcplus}$
+
+\subsection*{Size scaling}
+{\LARGE $a \explcplus b + c_{+\explcplus}$}
+
+\subsection*{All math styles}
+\begin{align*}
+  \text{Display style:}      &\quad a \explcplus b \\
+  \text{Text style:}         &\quad \textstyle a \explcplus b \\
+  \text{Script style:}       &\quad \scriptstyle a \explcplus b \\
+  \text{Scriptscript style:} &\quad \scriptscriptstyle a \explcplus b
+\end{align*}
+
+\subsection*{Bounding box verification}
+\setlength{\fboxsep}{-0.1pt}%
+\setlength{\fboxrule}{0.1pt}%
+\fbox{$+$}\fbox{$\explcplus$}
+\par\nointerlineskip
+\fbox{$\explcplus$}\fbox{$+$}
+
+\end{document}
