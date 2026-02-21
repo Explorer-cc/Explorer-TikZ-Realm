@@ -1,0 +1,76 @@
+% https://tex.stackexchange.com/questions/85594/how-to-change-color-of-edge-of-characters
+% https://tex.stackexchange.com/questions/730964/how-to-improve-the-achievement-of-gradient-colormap-path
+\documentclass[a4paper,12pt]{article}
+\usepackage[margin=1.2in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usepackage{lipsum}
+\usepackage{lmodern}
+\usetikzlibrary{arrows,calc,intersections}
+\usepackage[outline]{contour}
+\definecolor{FillColor}{RGB}{0,113,200}
+\definecolor{darkred}{RGB}{140,30,90}
+\definecolor{lightred}{RGB}{220,190,200}
+\pgfmathsetmacro{\redN}{8}
+\pgfmathsetmacro{\redCradius}{1.2}
+\pgfmathsetmacro{\redXradius}{2.4}
+\pgfmathsetmacro{\redYradius}{1.5}
+\def\maketitle{%
+    \titlepage%
+    \begin{tikzpicture}[overlay, remember picture,line cap=round,line join=round]
+        \node[font=\fontsize{45}{15}\bfseries] at ([yshift=.3\paperheight]current page.center) {\textcolor{FillColor}{\contour{black}{ Algebraic Topology}}};
+        \node[font=\Large\bfseries] at ([yshift=.22\paperheight]current page.center) {Allen Hatcher};
+        \draw [draw,double=FillColor,double distance=5pt, line width=1.5pt] ([xshift=.05\paperwidth,yshift=-.05\paperheight]current page.north west) -- ([xshift=-.05\paperwidth,yshift=-.05\paperheight]current page.north east) -- ([xshift=-.05\paperwidth,yshift=.05\paperheight]current page.south east) -- ([xshift=.05\paperwidth,yshift=.05\paperheight]current page.south west) -- cycle;
+        \node[align=left,font=\bfseries\Large] at ([xshift=.34\paperwidth,yshift=.12\paperheight]current page.south west) {Copyright 2001 \copyright{} By Allen Hatcher};
+        \node[align=left,font=\footnotesize] at ([xshift=.5\paperwidth,yshift=.09\paperheight]current page.south west) {Paper or electronic copies for noncommercial use may be made freely without explicit permission from the author.\\
+        All other rights reserved.};
+        \node at ([yshift=-2cm]current page.center) {
+            \begin{tikzpicture}[scale=1.5]
+                \foreach \i in {1,...,\redN}{
+                    \begin{scope}[transform canvas={rotate=-(\i-0.5)*360/\redN}]
+                    \clip (-\redXradius,0) rectangle (2*\redXradius,-\redYradius);
+                    \shade[top color=darkred, bottom color=lightred, even odd rule] (0:\redXradius-\redCradius) ellipse[x radius=\redXradius, y radius=\redYradius] ellipse[x radius=\redXradius-0.06, y radius=\redYradius-0.12];
+                    \end{scope}
+                    }
+                    \foreach \i in {1,...,\redN}{
+                    \begin{scope}[transform canvas={rotate=-(\i-0.5)*360/\redN}]
+                    \clip (-\redXradius,0) rectangle (2*\redXradius,\redYradius);
+                    \shade[top color=darkred, bottom color=lightred, even odd rule] (0:\redXradius-\redCradius) ellipse[x radius=\redXradius, y radius=\redYradius] ellipse[x radius=\redXradius-0.06, y radius=\redYradius-0.12];
+                    \end{scope}
+                    }
+                    \definecolor{darkblue}{RGB}{0,65,125}
+                    \definecolor{lightblue}{RGB}{170,190,225}
+                    \pgfmathsetmacro{\blueN}{16}
+                    \pgfmathsetmacro{\blueCradius}{0.4}
+                    \pgfmathsetmacro{\blueXradius}{2.4}
+                    \pgfmathsetmacro{\blueYradius}{1.2}
+                    \foreach \i in {1,...,\blueN}{
+                    \begin{scope}[transform canvas={rotate=-(\i-0.5)*360/\blueN}]
+                    \clip (-\blueXradius,0) rectangle (2*\blueXradius,-\blueYradius);
+                    \shade[top color=darkblue, bottom color=lightblue, even odd rule] (0:\blueXradius-\blueCradius) ellipse[x radius=\blueXradius, y radius=\blueYradius] ellipse[x radius=\blueXradius-0.06, y radius=\blueYradius-0.12];
+                    \end{scope}
+                    }
+                    \foreach \i in {1,...,\blueN}{
+                    \begin{scope}[transform canvas={rotate=-(\i-0.5)*360/\blueN}]
+                    \clip (-\blueXradius,0) rectangle (2*\blueXradius,\blueYradius);
+                    \shade[top color=darkblue, bottom color=lightblue, even odd rule] (0:\blueXradius-\blueCradius) ellipse[x radius=\blueXradius, y radius=\blueYradius] ellipse[x radius=\blueXradius-0.06, y radius=\blueYradius-0.12];
+                    \end{scope}
+                    }
+                    \useasboundingbox (-4.4,-4.4) rectangle (4.4,4.4);
+                \end{tikzpicture}
+        };
+    \end{tikzpicture}
+    \endtitlepage
+}
+\begin{document}
+    
+    \maketitle
+
+    \lipsum[1]
+
+\end{document}
+
+
+
+
+  

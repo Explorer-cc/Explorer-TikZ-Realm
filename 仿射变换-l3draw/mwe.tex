@@ -1,0 +1,53 @@
+\documentclass[border=5pt]{standalone}
+\usepackage{l3draw}
+\usepackage{xcolor}
+\begin{document}
+
+\ExplSyntaxOn
+\draw_begin:
+\draw_set_linewidth:n { .03cm }
+%%%%%%%%%%%%%%%%
+\draw_path_moveto:n {-3cm , 0cm}
+\draw_path_lineto:n {3cm , 0cm}
+\draw_path_use_clear:n {stroke}
+\draw_path_moveto:n { 3cm - 2.5pt , 0cm - 5pt }
+\draw_path_lineto:n { 3cm + 7.5pt , 0cm + 0pt }
+\draw_path_lineto:n { 3cm - 2.5pt , 0cm + 5pt }
+\draw_path_lineto:n { 3cm , 0cm + 0pt }
+\draw_path_use_clear:n { fill }
+%%%%%%%%%%%%%%%%
+\draw_path_moveto:n {0cm , -3cm}
+\draw_path_lineto:n {0cm , 3cm}
+\draw_path_use_clear:n {stroke}
+\draw_path_moveto:n { 0cm - 5pt , 3cm - 2.55pt }
+\draw_path_lineto:n { 0cm + 0pt , 3cm + 7.5pt }
+\draw_path_lineto:n { 0cm + 5pt , 3cm - 2.5pt }
+\draw_path_lineto:n { 0cm + 0pt , 3cm + 0pt }
+\draw_path_use_clear:n { fill }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\cs_generate_variant:Nn \color_set:nn { ne }
+\int_step_inline:nn { 10 } {
+    \draw_scope_begin:
+    % \draw_transform_shift:n { -5.5 * 0.25cm , -5.5 * 0.25cm }
+    % \draw_transform_matrix:nnnn {  }{ 0 }{ 0 }{ 1 }
+    % \draw_transform_rotate:n { 45 }
+    \draw_transform_xscale:n { 2 }
+    %%%%%%%%%%%
+    % \draw_transform_xscale:n { 0.75 }
+    % \draw_transform_xslant:n { 2 }
+    % \draw_transform_rotate:n { -135 }
+    %%%%%%%%%%%
+    \int_step_inline:nn { 10 } {
+        \color_set:ne {tmp} { yellow!\int_eval:n {##1*10}!blue }
+        \color_fill:n {tmp}
+        \draw_path_circle:nn { 
+            (#1 -5.5) * 0.25cm ,(##1 -5.5) * 0.25cm 
+        } { 2pt }
+        \draw_path_use_clear:n { fill }
+    }
+    \draw_scope_end:
+}
+\draw_end:
+\ExplSyntaxOff
+
+\end{document}

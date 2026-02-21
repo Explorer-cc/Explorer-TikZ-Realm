@@ -1,0 +1,97 @@
+% https://tex.stackexchange.com/a/746534/322482
+
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{l3draw}
+
+\ExplSyntaxOn
+\int_new:N \joseline_signf_count_int
+\dim_new:N \joseline_signf_section_dim
+\box_new:N \joseline_signf_draw_box
+\coffin_new:N \joseline_signf_node_coffin
+
+\NewDocumentCommand { \signfunction } { O{25pt} m } {
+    \dim_set:Nn \joseline_signf_section_dim {#1}
+    \int_zero:N \joseline_signf_count_int
+    \hbox_set:Nn \joseline_signf_draw_box {
+        \draw_begin:
+            \tl_map_inline:nn {#2} { % 循环每个输入
+                \draw_scope_begin:
+                    \draw_transform_xshift:n { 
+                        \joseline_signf_section_dim * \joseline_signf_count_int
+                    }
+                    \draw_path_moveto:n { 0pt , 0pt }
+                    \draw_path_lineto:n { \joseline_signf_section_dim , 0pt }
+                    \draw_path_use_clear:n { stroke }
+                    \str_if_eq:eeTF { \clist_item:nn {##1} { 1 } } { x } {
+                        \draw_path_moveto:n { \joseline_signf_section_dim / 2 - 2.5pt , 2.5pt }
+                        \draw_path_lineto:n { \joseline_signf_section_dim / 2 + 2.5pt , -2.5pt }
+                        \draw_path_moveto:n { \joseline_signf_section_dim / 2 + 2.5pt , 2.5pt }
+                        \draw_path_lineto:n { \joseline_signf_section_dim / 2 - 2.5pt , -2.5pt }
+                        \draw_path_use_clear:n { stroke }
+                    } {
+                        \hcoffin_set:Nn \joseline_signf_node_coffin
+                            { \centering $ \clist_item:nn {##1} { 1 } $ }
+                        \draw_coffin_use:Nnnn \joseline_signf_node_coffin
+                            { hc } { b } { \joseline_signf_section_dim / 2 , 5pt }
+                    }
+                    \int_compare:nNnTF { \clist_count:n {##1} } = 3 {
+                        \draw_path_moveto:n { \joseline_signf_section_dim , -2.5pt }
+                        \draw_path_lineto:n { \joseline_signf_section_dim , 2.5pt }
+                        \draw_path_use_clear:n { stroke }
+                        \hcoffin_set:Nn \joseline_signf_node_coffin
+                            { \centering $ \clist_item:nn {##1} { 2 } $ }
+                        \draw_coffin_use:Nnnn \joseline_signf_node_coffin
+                            { hc } { t } { \joseline_signf_section_dim , -5pt }
+                        \hcoffin_set:Nn \joseline_signf_node_coffin
+                            { \centering $ \clist_item:nn {##1} { 3 } $ }
+                        \draw_coffin_use:Nnnn \joseline_signf_node_coffin
+                            { hc } { b } { \joseline_signf_section_dim , 5pt }
+                    } { % 到第三个参数的时候手动绘制箭头...
+                        \draw_path_moveto:n { \joseline_signf_section_dim - 2pt , -2.5pt }
+                        \draw_path_lineto:n { \joseline_signf_section_dim + 3pt , 0pt }
+                        \draw_path_lineto:n { \joseline_signf_section_dim - 2pt , 2.5pt }
+                        \draw_path_lineto:n { \joseline_signf_section_dim , 0pt }
+                        \draw_path_use_clear:n { fill }
+                        \hcoffin_set:Nn \joseline_signf_node_coffin
+                            { $ \clist_item:nn {##1} { 2 } $ }
+                        \draw_coffin_use:Nnnn \joseline_signf_node_coffin
+                            { l } { vc } { \joseline_signf_section_dim + 5pt , 0pt }
+                    }
+                \draw_scope_end:
+                \int_incr:N \joseline_signf_count_int
+            }
+        \draw_end:
+    }
+    \mode_if_math:TF {
+        \vcenter { \box_use:N \joseline_signf_draw_box }
+    } {
+        \box_use:N \joseline_signf_draw_box
+    }
+}
+\ExplSyntaxOff
+
+\begin{document}
+
+\[
+\text{sign}f(x) \quad 
+    \signfunction[30pt]{
+        { + , -5 , \nexists }
+        { - , 2 , -6 }
+        { x , 4 , 0 }
+        { - , 6 , 0 }
+        { + , x }
+    }
+\]
+
+\[
+    \text{sign}f(x) \quad 
+    \signfunction[30pt]{
+        { - , 1 , 0 }
+        { + , 2 , 0 }
+        { - , 3 , 0 }
+        { + , x }
+    }
+\]
+
+\end{document}

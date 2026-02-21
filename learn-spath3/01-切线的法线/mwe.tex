@@ -1,0 +1,32 @@
+% https://tex.stackexchange.com/q/751203/86
+\documentclass{article}
+\usepackage{tikz}
+\usetikzlibrary{spath3,calc,arrows.meta}
+
+\begin{document}
+\begin{tikzpicture}[foo/.tip={Latex[length=1mm]}]
+  % Quadratic Bézier control points
+  \coordinate (QB1) at (0,0);
+  \coordinate (QB2) at (0,3);
+  \coordinate (QB3) at (8,3);
+
+  % Convert quadratic to cubic control points
+  \path let%
+    \p1 = (QB1), 
+    \p2 = (QB2), 
+    \p3 = (QB3),
+    \p4 = ({(1/3)*\x1 + (2/3)*\x2},{(1/3)*\y1 + (2/3)*\y2}),
+    \p5 = ({(2/3)*\x2 + (1/3)*\x3},{(2/3)*\y2 + (1/3)*\y3})
+  in
+    coordinate (QB_aux1) at (\p4)
+    coordinate (QB_aux2) at (\p5);
+
+  % The curve
+  \draw[thick,black,spath/save=curve] (QB1) .. controls (QB_aux1) and (QB_aux2) .. (QB3);
+
+  \foreach \k in {1,...,9} {
+    \draw[blue, foo-foo,spath/transform to={curve}{\k/10}] (0,0) +(0.5,0) -- (0,0) -- +(0,0.5);
+    \draw[red, foo-foo] (spath cs:curve \k/10) +(0,0.5) -- +(0,0) -- +(0.5,0);
+  }
+\end{tikzpicture}
+\end{document}

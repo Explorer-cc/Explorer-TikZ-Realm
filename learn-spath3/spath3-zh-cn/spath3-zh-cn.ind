@@ -1,0 +1,265 @@
+\begin{theindex}
+
+  \item font 
+    \subitem \verb*&adjust and close globally&}, 
+		\hdpindex{usage}{MMMMI-9}
+  \item font 
+    \subitem \verb*&adjust and close&}, \hdpindex{usage}{MMMMI-9}
+  \item font 
+    \subitem \verb*&append no move&}, \hdpindex{usage}{MMMMI-5}
+  \item font 
+    \subitem \verb*&append reverse no move&}, \hdpindex{usage}{MMMMI-5}
+  \item font 
+    \subitem \verb*&append reverse&}, \hdpindex{usage}{MMMMI-5}
+  \item font 
+    \subitem \verb*&append&}, \hdpindex{usage}{MMMMI-5}
+  \item font 
+    \subitem \verb*&arrow shortening&}, \hdpindex{usage}{MMMMI-10}
+
+  \indexspace
+
+  \item font 
+    \subitem \verb*&clone globally&}, \hdpindex{usage}{MMMMI-3}
+  \item font 
+    \subitem \verb*&clone&}, \hdpindex{usage}{MMMMI-3}
+  \item font 
+    \subitem \verb*&close globally with curve&}, 
+		\hdpindex{usage}{MMMMI-9}
+  \item font 
+    \subitem \verb*&close globally with&}, \hdpindex{usage}{MMMMI-9}
+  \item font 
+    \subitem \verb*&close globally&}, \hdpindex{usage}{MMMMI-9}
+  \item font 
+    \subitem \verb*&close with curve&}, \hdpindex{usage}{MMMMI-9}
+  \item font 
+    \subitem \verb*&close with&}, \hdpindex{usage}{MMMMI-9}
+  \item font 
+    \subitem \verb*&close&}, \hdpindex{usage}{MMMMI-9}
+  \item font 
+    \subitem \verb*&current&}, \hdpindex{usage}{MMMMI-3}
+
+  \indexspace
+
+  \item font 
+    \subitem \verb*&draft mode&}, \hdpindex{usage}{MMMMI-11}
+
+  \indexspace
+
+  \item font 
+    \subitem \verb*&export to svg&}, \hdpindex{usage}{MMMMI-11}
+
+  \indexspace
+
+  \item font 
+    \subitem \verb*&get components of globally&}, 
+		\hdpindex{usage}{MMMMI-7}
+  \item font 
+    \subitem \verb*&get components of&}, \hdpindex{usage}{MMMMI-7}
+  \item font 
+    \subitem \verb*&
+      \subsubitem \getComponentOf&}, \hdpindex{usage}{MMMMI-7}
+  \item font 
+    \subitem \verb*&global knot&}, \hdpindex{usage}{MMMMI-11}
+
+  \indexspace
+
+  \item font 
+    \subitem \verb*&insert gaps after components&}, 
+		\hdpindex{usage}{MMMMI-7}
+  \item font 
+    \subitem \verb*&insert gaps after segments&}, 
+		\hdpindex{usage}{MMMMI-7}
+  \item font 
+    \subitem \verb*&insert gaps globally after components&}, 
+		\hdpindex{usage}{MMMMI-7}
+  \item font 
+    \subitem \verb*&insert gaps globally after segments&}, 
+		\hdpindex{usage}{MMMMI-7}
+  \item font 
+    \subitem \verb*&insert reverse&}, \hdpindex{usage}{MMMMI-5}
+
+  \indexspace
+
+  \item font 
+    \subitem \verb*&join components globally upright with&}, 
+		\hdpindex{usage}{MMMMI-8}
+  \item font 
+    \subitem \verb*&join components globally with curve&}, 
+		\hdpindex{usage}{MMMMI-8}
+  \item font 
+    \subitem \verb*&join components globally with&}, 
+		\hdpindex{usage}{MMMMI-8}
+  \item font 
+    \subitem \verb*&join components globally&}, 
+		\hdpindex{usage}{MMMMI-8}
+  \item font 
+    \subitem \verb*&join components upright with&}, 
+		\hdpindex{usage}{MMMMI-8}
+  \item font 
+    \subitem \verb*&join components with curve&}, 
+		\hdpindex{usage}{MMMMI-8}
+  \item font 
+    \subitem \verb*&join components with&}, \hdpindex{usage}{MMMMI-8}
+  \item font 
+    \subitem \verb*&join components&}, \hdpindex{usage}{MMMMI-8}
+  \item font 
+    \subitem \verb*&join with&}, \hdpindex{usage}{MMMMI-5}
+
+  \indexspace
+
+  \item font 
+    \subitem \verb*&knot&}, \hdpindex{usage}{MMMMI-11}
+
+  \indexspace
+
+  \item font 
+    \subitem \verb*&open globally&}, \hdpindex{usage}{MMMMI-9}
+  \item font 
+    \subitem \verb*&open&}, \hdpindex{usage}{MMMMI-9}
+
+  \indexspace
+
+  \item font 
+    \subitem \verb*&prefix&}, \hdpindex{usage}{MMMMI-2}
+
+  \indexspace
+
+  \item font 
+    \subitem \verb*&remove components globally&}, 
+		\hdpindex{usage}{MMMMI-9}
+  \item font 
+    \subitem \verb*&remove components&}, \hdpindex{usage}{MMMMI-9}
+  \item font 
+    \subitem \verb*&remove empty components globally&}, 
+		\hdpindex{usage}{MMMMI-8}
+  \item font 
+    \subitem \verb*&remove empty components&}, 
+		\hdpindex{usage}{MMMMI-8}
+  \item font 
+    \subitem \verb*&render components&}, \hdpindex{usage}{MMMMI-7}
+  \item font 
+    \subitem \verb*&replace lines globally&}, \hdpindex{usage}{MMMMI-6}
+  \item font 
+    \subitem \verb*&replace lines&}, \hdpindex{usage}{MMMMI-6}
+  \item font 
+    \subitem \verb*&restore reverse  insert&}, 
+		\hdpindex{usage}{MMMMI-5}
+  \item font 
+    \subitem \verb*&restore&}, \hdpindex{usage}{MMMMI-5}
+  \item font 
+    \subitem \verb*&reverse global&}, \hdpindex{usage}{MMMMI-5}
+  \item font 
+    \subitem \verb*&reverse&}, \hdpindex{usage}{MMMMI-5}
+
+  \indexspace
+
+  \item font 
+    \subitem \verb*&save global&}, \hdpindex{usage}{MMMMI-3}
+  \item font 
+    \subitem \verb*&save to aux&}, \hdpindex{usage}{MMMMI-11}
+  \item font 
+    \subitem \verb*&save&}, \hdpindex{usage}{MMMMI-3}
+  \item font 
+    \subitem \verb*&set prefix&}, \hdpindex{usage}{MMMMI-2}
+  \item font 
+    \subitem \verb*&set suffix&}, \hdpindex{usage}{MMMMI-2}
+  \item font 
+    \subitem \verb*&shorten at both ends&}, \hdpindex{usage}{MMMMI-10}
+  \item font 
+    \subitem \verb*&shorten at end&}, \hdpindex{usage}{MMMMI-10}
+  \item font 
+    \subitem \verb*&shorten at start&}, \hdpindex{usage}{MMMMI-10}
+  \item font 
+    \subitem \verb*&shorten globally at both ends&}, 
+		\hdpindex{usage}{MMMMI-10}
+  \item font 
+    \subitem \verb*&shorten globally at end&}, 
+		\hdpindex{usage}{MMMMI-10}
+  \item font 
+    \subitem \verb*&shorten globally at start&}, 
+		\hdpindex{usage}{MMMMI-10}
+  \item font 
+    \subitem \verb*&show current path&}, \hdpindex{usage}{MMMMI-4}
+  \item font 
+    \subitem \verb*&show&}, \hdpindex{usage}{MMMMI-4}
+  \item font 
+    \subitem \verb*&span global&}, \hdpindex{usage}{MMMMI-6}
+  \item font 
+    \subitem \verb*&span&}, \hdpindex{usage}{MMMMI-6}
+  \item font 
+    \subitem \verb*&spath cs&}, \hdpindex{usage}{MMMMI-12}
+  \item font 
+    \subitem \verb*&splice global&}, \hdpindex{usage}{MMMMI-9}
+  \item font 
+    \subitem \verb*&splice&}, \hdpindex{usage}{MMMMI-9}
+  \item font 
+    \subitem \verb*&split at intersections with&}, 
+		\hdpindex{usage}{MMMMI-6}
+  \item font 
+    \subitem \verb*&split at intersections&}, \hdpindex{usage}{MMMMI-6}
+  \item font 
+    \subitem \verb*&split at into&}, \hdpindex{usage}{MMMMI-10}
+  \item font 
+    \subitem \verb*&split at keep end&}, \hdpindex{usage}{MMMMI-10}
+  \item font 
+    \subitem \verb*&split at keep middle&}, \hdpindex{usage}{MMMMI-10}
+  \item font 
+    \subitem \verb*&split at keep start&}, \hdpindex{usage}{MMMMI-10}
+  \item font 
+    \subitem \verb*&split at self intersections&}, 
+		\hdpindex{usage}{MMMMI-6}
+  \item font 
+    \subitem \verb*&split at&}, \hdpindex{usage}{MMMMI-10}
+  \item font 
+    \subitem \verb*&split globally at intersections with&}, 
+		\hdpindex{usage}{MMMMI-6}
+  \item font 
+    \subitem \verb*&split globally at intersections&}, 
+		\hdpindex{usage}{MMMMI-6}
+  \item font 
+    \subitem \verb*&split globally at into&}, 
+		\hdpindex{usage}{MMMMI-10}
+  \item font 
+    \subitem \verb*&split globally at keep end&}, 
+		\hdpindex{usage}{MMMMI-10}
+  \item font 
+    \subitem \verb*&split globally at keep middle&}, 
+		\hdpindex{usage}{MMMMI-10}
+  \item font 
+    \subitem \verb*&split globally at keep start&}, 
+		\hdpindex{usage}{MMMMI-10}
+  \item font 
+    \subitem \verb*&split globally at self intersections&}, 
+		\hdpindex{usage}{MMMMI-6}
+  \item font 
+    \subitem \verb*&split globally at&}, \hdpindex{usage}{MMMMI-10}
+  \item font 
+    \subitem \verb*&spot weld globally&}, \hdpindex{usage}{MMMMI-8}
+  \item font 
+    \subitem \verb*&spot weld&}, \hdpindex{usage}{MMMMI-8}
+  \item font 
+    \subitem \verb*&suffix&}, \hdpindex{usage}{MMMMI-2}
+
+  \indexspace
+
+  \item font 
+    \subitem \verb*&to&}, \hdpindex{usage}{MMMMI-5}
+  \item font 
+    \subitem \verb*&transform global&}, \hdpindex{usage}{MMMMI-6}
+  \item font 
+    \subitem \verb*&transform to&}, \hdpindex{usage}{MMMMI-12}
+  \item font 
+    \subitem \verb*&transform&}, \hdpindex{usage}{MMMMI-6}
+  \item font 
+    \subitem \verb*&translate global&}, \hdpindex{usage}{MMMMI-5}
+  \item font 
+    \subitem \verb*&translate&}, \hdpindex{usage}{MMMMI-5}
+
+  \indexspace
+
+  \item font 
+    \subitem \verb*&upright transform to&}, \hdpindex{usage}{MMMMI-12}
+  \item font 
+    \subitem \verb*&use&}, \hdpindex{usage}{MMMMI-4}
+
+\end{theindex}

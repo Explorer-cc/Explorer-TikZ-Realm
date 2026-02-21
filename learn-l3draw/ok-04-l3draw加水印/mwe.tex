@@ -1,0 +1,34 @@
+% https://tex.stackexchange.com/a/741373/322482
+\documentclass{article}
+\usepackage[vmargin=3cm]{geometry}
+\usepackage{l3draw}
+\usepackage{lipsum}
+
+\ExplSyntaxOn
+
+% Command to draw the notepad background
+\cs_new_protected:Nn \azetina_notepad_draw_background:
+{
+  \draw_begin:
+    \bool_set_false:N \l_draw_bb_update_bool % 重点!不能调整边界框，否则会影响图片的基线
+    \draw_set_linewidth:n { 6pt }
+    \color_select:n { teal }
+    \draw_path_moveto:n { 2cm, -2cm }
+    \draw_path_lineto:n { 2cm , -27cm } %<-这里的坐标...
+    \draw_path_use_clear:n { stroke }
+  \draw_end:
+}
+
+% Hook to draw background on every page
+\AddToHook{shipout/background}
+{
+  \azetina_notepad_draw_background:
+}
+
+\ExplSyntaxOff
+
+\begin{document}
+
+\lipsum[1-14]
+
+\end{document}

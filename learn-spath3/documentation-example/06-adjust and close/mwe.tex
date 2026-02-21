@@ -1,0 +1,14 @@
+\documentclass[tikz,border=5pt]{standalone}
+\usetikzlibrary{spath3}
+\begin{document}
+\begin{tikzpicture}
+    \draw[line width=.2cm] (0,0) -- +(1,0) -- +(1,1) -- +(0,1) -- +(.01,.01);
+
+    \draw[line width=.2cm] (2,0) -- +(1,0) -- +(1,1) -- +(0,1) -- +(.01,.01) -- cycle;
+
+    \draw[line width=.2cm] (4,0) -- +(1,0) -- +(1,1) -- +(0,1) -- +(.01,.01) [spath/close=current];
+
+    \draw[line width=.2cm] (6,0) -- +(1,0) -- +(1,1) -- +(0,1) -- +(.01,.01)
+    [spath/adjust and close=current];
+\end{tikzpicture}
+\end{document}

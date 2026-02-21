@@ -1,0 +1,129 @@
+\documentclass{standalone}
+\usepackage{tikz,pgf,tikz-3dplot,xcolor}
+\usetikzlibrary{decorations.pathreplacing}
+\begin{document}
+    \tdplotsetmaincoords{70}{130}
+        \begin{tikzpicture}[line join=bevel,tdplot_main_coords, fill opacity=.7]  
+            \foreach \i in {-4,...,4}{
+                \draw[thin] (-4/2,0,\i/2)--(4/2,0,\i/2);
+                \draw[thin] (\i/2,0,-4/2)--(\i/2,0,4/2);
+            }
+            \node(OriginalData)[xslant=0.5,rotate=27,xscale=0.7,color=black]at(0,0.01,1.8){Original Data};
+            \filldraw[draw=green!90!yellow!90,fill=green!50!yellow!50](-0.5,0,0)--(1,0,0)--(1,0,1.5)--(-0.5,0,1.5)--cycle;
+
+            \draw[very thick,dashed,color=orange](-0.5,0,0)--(-0.5,3,2);
+            \draw[very thick,dashed,color=orange](1,0,0)--(1,3,2);
+            \draw[very thick,dashed,color=orange](1,0,1.5)--(1,3,3.5);
+            \draw[very thick,dashed,color=orange](-0.5,0,1.5)--(-0.5,3,3.5);
+            \foreach \i in {-1,...,2}{
+                \draw[thin] (\i/2,3,2)--(\i/2,3,3.5);
+                \draw[thin] (1,3,\i/2+2.5)--(-0.5,3,\i/2+2.5);
+            }
+            \filldraw[draw=orange!90,fill=orange!50](-0.5,3,2)--(1,3,2)--(1,3,3.5)--(-0.5,3,3.5)--cycle;
+            \node(Map1)[xslant=0.5,rotate=27,xscale=0.7,color=black]at(0.2,3.01,2.75){Map 1};
+
+            \draw[very thick,dashed](-0.5,0,0)--(-0.5,3,0);
+            \draw[very thick,dashed](1,0,0)--(1,3,0);
+            \draw[very thick,dashed](1,0,1.5)--(1,3,1.5);
+            \draw[very thick,dashed](-0.5,0,1.5)--(-0.5,3,1.5);
+            \foreach \i in {-1,...,2}{
+                \draw[thin] (\i/2,3,0)--(\i/2,3,1.5);
+                \draw[thin] (1,3,\i/2+0.5)--(-0.5,3,\i/2+0.5);
+            }
+            \filldraw[draw=blue!90,fill=blue!50](-0.5,3,0)--(1,3,0)--(1,3,1.5)--(-0.5,3,1.5)--cycle;
+            \node(Map2)[xslant=0.5,rotate=27,xscale=0.7,color=black]at(0.2,3.01,0.75){Map 2};
+
+            \draw[very thick,dashed,color=black](-0.5,3,0)--(0,6,0);
+            \draw[very thick,dashed,color=black](1,3,0)--(0.5,6,0);
+            \draw[very thick,dashed,color=black](1,3,1.5)--(0.5,6,0.5);
+            \draw[very thick,dashed,color=black](-0.5,3,1.5)--(0,6,0.5);
+            \filldraw[draw=blue!90,fill=blue!80](0.5,6,0)--(0,6,0)--(0,6,0.5)--(0.5,6,0.5)--cycle;
+            \foreach \i in {-3,...,3}{
+                \draw[thin] (\i/2,6,-1.5)--(\i/2,6,1.5);
+                \draw[thin] (-1.5,6,\i/2)--(1.5,6,\i/2);
+            }
+            \filldraw[draw=blue!90,fill=blue!50] (-1.5,6,-1.5)--(1.5,6,-1.5)--(1.5,6,1.5)--(-1.5,6,1.5)--cycle;
+            \node(FeatureMap2)[xslant=0.5,rotate=27,xscale=0.7,color=black]at(0,6.01,-0.5){Feature Map 2};
+
+            \draw[very thick,dashed,color=orange](-0.5,3,2)--(0,6,4);
+            \draw[very thick,dashed,color=orange](1,3,2)--(0.5,6,4);
+            \draw[very thick,dashed,color=orange](1,3,3.5)--(0.5,6,4.5);
+            \draw[very thick,dashed,color=orange](-0.5,3,3.5)--(0,6,4.5);
+            \filldraw[draw=orange!90,fill=orange!80](0.5,6,4)--(0,6,4)--(0,6,4.5)--(0.5,6,4.5)--cycle;
+            \foreach \i in {-3,...,3}{
+                \draw[thin] (\i/2,6,2.5)--(\i/2,6,5.5);
+                \draw[thin] (-1.5,6,\i/2+4)--(1.5,6,\i/2+4);
+            }
+            \filldraw[draw=orange!90,fill=orange!50] (-1.5,6,2.5)--(1.5,6,2.5)--(1.5,6,5.5)--(-1.5,6,5.5)--cycle;
+            \node(FeatureMap1)[xslant=0.5,rotate=27,xscale=0.7,color=black]at(0,6.01,3.5){Feature Map 1};
+
+            \draw[thick,color=gray,dashed](-1.5,6,-1.5)--(-1,9,0);
+            \draw[thick,color=gray,dashed](1.5,6,-1.5)--(0.5,9,0);
+            \draw[thick,color=gray,dashed](1.5,6,1.5)--(0.5,9,1.5);
+            \draw[thick,color=gray,dashed](-1.5,6,1.5)--(-1,9,1.5);
+            \foreach \i in {-2,...,1}{
+                \draw[thin] (\i/2,9,0)--(\i/2,9,1.5);
+                \draw[thin] (0.5,9,\i/2+1)--(-1,9,\i/2+1);
+            }
+            \filldraw[draw=blue!90,fill=blue!50] (-1,9,0)--(0.5,9,0)--(0.5,9,1.5)--(-1,9,1.5)--cycle;
+            \node(FeatureMap2tie)[xslant=0.5,rotate=27,xscale=0.7,color=black]at(-0.5,9.01,0.75){Feature Map 2};
+
+            \draw[thick,color=gray,dashed](-1.5,6,2.5)--(-1,9,3);
+            \draw[thick,color=gray,dashed](1.5,6,2.5)--(0.5,9,3);
+            \draw[thick,color=gray,dashed](1.5,6,5.5)--(0.5,9,4.5);
+            \draw[thick,color=gray,dashed](-1.5,6,5.5)--(-1,9,4.5);
+            \foreach \i in {-2,...,1}{
+                \draw[thin] (\i/2,9,3)--(\i/2,9,4.5);
+                \draw[thin] (0.5,9,\i/2+4)--(-1,9,\i/2+4);
+            }
+            \filldraw[draw=orange!90,fill=orange!50] (-1,9,3)--(0.5,9,3)--(0.5,9,4.5)--(-1,9,4.5)--cycle;
+            \node(FeatureMap1tie)[xslant=0.5,rotate=27,xscale=0.7,color=black]at(-0.5,9.01,3.75){Feature Map 1};
+
+            \foreach \i in {1,...,9}{
+                \filldraw[draw=blue!90,fill=blue!50](0.5,12,\i/5)--(0,12,\i/5)--(0,12,\i/5+0.2)--(0.5,12,\i/5+0.2)--cycle;
+                \filldraw[draw=orange!90,fill=orange!50](0.5,12,\i/5+9/5)--(0,12,\i/5+9/5)--(0,12,\i/5+0.2+9/5)--(0.5,12,\i/5+0.2+9/5)--cycle;
+                
+            }
+            \foreach \i in {1,...,9}{
+                \draw[blue!90, fill=blue!50, thin, domain=0:360] plot ({0.1*cos(\x)+0.1},{0.1*sin(\x)+12},{\i/5});
+                \draw[orange!90, fill=orange!50, thin, domain=0:360] plot ({0.1*cos(\x)+0.1},{0.1*sin(\x)+12},{\i/5+9/5});
+            }
+
+            \foreach \i in {1,...,5}{
+                \foreach \j in {1,...,9}{
+                    \pgfmathrandominteger{\isdraw}{1}{10}
+                    \ifnum \isdraw>4
+                        \draw[very thin, color=gray](0.1,12.1,\j/5+9/5)--(\i/2,15,2.5);
+                    \else\relax
+                    \fi
+                    \pgfmathrandominteger{\isdrawsec}{1}{10}\
+                    \ifnum \isdrawsec>4
+                        \draw[very thin, color=gray](0.1,12.1,\j/5)--(\i/2,15,2.5);
+                    \else\relax
+                    \fi
+                }
+            }
+            \foreach \i in {1,...,5}{
+                \draw[blue!90, fill=blue!50, thin, domain=0:360] plot ({\i/2},{0.1*cos(\x)+15.1},{0.1*sin(\x)+2.5});
+            }
+
+            \foreach \i in {1,4}{
+                \foreach \j in {1,...,5}{
+                    \draw[very thin, color=gray](\j/2,15.2,2.5)--(0,16,\i);
+                }
+            }
+            \foreach \i in {1,4}{
+                \draw[blue!90, fill=blue!50, thin, domain=0:360] plot ({0.2*cos(\x)},{0.2*sin(\x)+16.2},{\i});
+            }
+            \node(OutputNodeds)[xslant=-1,yslant=-0.5,rotate=37,yscale=0.6,xscale=1.2,color=black]at(0,16,2.5){Output Nodes};
+
+            \node(Convolution)[xslant=0.5,rotate=27,xscale=0.7,color=black]at(0.2,3,4.6){\fcolorbox{black!50}{gray!20}{Convolution}};
+            \draw [decorate, decoration={brace, amplitude=10pt,raise=3pt},] (0,0,2) --(0,6,5.5);
+            \draw [decorate, decoration={brace, amplitude=10pt,raise=3pt},] (0,6,5.5) -- (0,9,4.5);
+            \draw [decorate, decoration={brace, amplitude=10pt,raise=3pt},] (0,9,4.5) -- (0,12,19/5);
+            \draw [decorate, decoration={brace, amplitude=10pt,raise=3pt},] (0,12,19/5) -- (0,16,4);
+            \node(Pooling)[xslant=0.5,rotate=27,xscale=0.7,color=black]at(-0.2,7.5,5.6){\fcolorbox{black!50}{gray!20}{Pooling}};
+            \node(Flatten)[xslant=0.5,rotate=27,xscale=0.7,color=black]at(-0.2,10.5,4.8){\fcolorbox{black!50}{gray!20}{Flatten}};
+            \node(FullyConnection)[xslant=0.5,rotate=27,xscale=0.7,color=black]at(0.2,14,4.7){\fcolorbox{black!50}{gray!20}{Fully Connection}};
+        \end{tikzpicture}
+\end{document}

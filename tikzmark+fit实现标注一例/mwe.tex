@@ -1,0 +1,48 @@
+% https://tex.stackexchange.com/a/754023/322482
+\documentclass{article}
+\usepackage{lipsum}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{anyfontsize}
+\usepackage{newtxmath}
+\usetikzlibrary{tikzmark,fit,calc}
+\NewDocumentCommand{\labelscope}{ O{.5} O{.1} O{.25} m m }{
+  % #1 pos of the start point
+  % #2 voffset of the horizontal line
+  % #3 voffset of the vertical line
+  \draw ([yshift=-#2cm]#4.south west) -- ([yshift=-#2cm]#4.south east);
+  \coordinate (aux1) at (#4.south west);
+  \coordinate (aux2) at (#4.south east);
+  \coordinate (aux) at ($(aux1)!#1!(aux2)$);
+  \draw[-latex] ([yshift=-#2cm]aux) -- ++(0,-#3cm) -| ([yshift=-#2cm]#5.south);
+}
+\pagestyle{empty}
+\tikzset{every tikzmarknode/.style={inner xsep=0pt}}
+\begin{document}
+\lipsum[2]
+\[
+    \tikzmarknode{q1}{\forall} 
+    y\tikzmarknode{e1}{(A(\overset{\uparrow}{x},y)}
+    \lor 
+    \ \tikzmarknode{n1}{\exists} y\ \tikzmarknode{n2}{B(y)} 
+    \to 
+    \tikzmarknode{m1}{\exists} x\ \tikzmarknode{m2}{(A(x,\bar{y})}
+    \land 
+    \ \tikzmarknode{n3}{\forall} y\ \tikzmarknode{n4}{B(y)}
+    \tikzmarknode{p1}{)}\tikzmarknode{p2}{)}
+\]
+\begin{tikzpicture}[remember picture,overlay,thick] 
+  \labelscope{n2}{n1}
+  \labelscope{n4}{n3}
+  \coordinate[yshift=-12.5pt] (c) at (n4);
+  \node [fit=(m2) (n3) (n4) (c) (p1),inner xsep=0pt] (a) {};
+  \labelscope{a}{m1}
+  \coordinate[yshift=-10pt] (d) at (c);
+  \node [fit=(a) (d) (n2) (e1) (p2),inner xsep=0pt] (b) {};
+  \labelscope[.2]{b}{q1}
+  \labelscope[.75]{b}{q1}
+\end{tikzpicture}
+\bigskip
+
+\lipsum[2]
+\end{document}

@@ -1,0 +1,9 @@
+\documentclass[tikz,border=5pt]{standalone}
+\usetikzlibrary{spath3}
+\begin{document}
+\begin{tikzpicture}
+\path[spath/save=curve] (0,0) to[out=0,in=180] +(1,1);
+\draw (0,0) -- (2,0) 
+[spath/append=curve] node[pos=.5,auto,sloped] {node} -- +(2,0);
+\end{tikzpicture}
+\end{document}

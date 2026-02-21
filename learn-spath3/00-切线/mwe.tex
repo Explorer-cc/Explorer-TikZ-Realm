@@ -1,0 +1,11 @@
+% https://tex.stackexchange.com/q/25928/86
+\documentclass{article}
+\usepackage{tikz}
+\usetikzlibrary{spath3}
+\begin{document}
+\begin{tikzpicture}
+    \path[draw,spath/save=curve] (0,9) to[out=-90,in=180] 
+    node[pos=0.7,circle,draw,fill=cyan] (P) {} (9,0); %确定切点P
+    \draw[spath/transform to={curve}{0.7}] (-3,0) -- (3,0); %将(-3,0)--(3,0)变换到曲线上，恰为P点的切线
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,71 @@
+% https://tex.stackexchange.com/a/751662/322482
+\documentclass[border=5pt]{standalone}
+\usepackage{l3draw}
+
+\ExplSyntaxOn
+\cs_new:Npn \intuition_pentagon_point:n #1 {
+    \draw_point_polar:nn { 2cm } { 90 + #1 * 360 / 5 }
+    % 绘制极坐标上的点 ({90 + #1 * 360 / 5}:2cm)
+}
+\cs_new:Npn \intuition_pentagon_line:nn #1#2 {
+    % 移动到点 #1 绘制线段到点 #2
+    \draw_path_moveto:n { \intuition_pentagon_point:n {#1} }
+    \draw_path_lineto:n { \intuition_pentagon_point:n {#2} }
+}
+\ExplSyntaxOff
+
+\begin{document}
+\ExplSyntaxOn
+\draw_begin:
+\draw_scope_begin:
+    \draw_set_linewidth:n { .2cm }
+    \color_stroke:n { red!25 }
+    \int_step_inline:nn { 4 } { % 绘制四条红色的线段
+        \intuition_pentagon_line:nn { 0 } { #1 }
+        \draw_path_use_clear:n { stroke }
+    }
+    \intuition_pentagon_line:nn { 2 } { 3 } % 绘制对边的红色线段
+    \draw_path_use_clear:n { stroke }
+    
+    \color_stroke:n { yellow!25 } % 绘制黄色线段
+    \intuition_pentagon_line:nn { 1 } { 4 }
+    \draw_path_use_clear:n { stroke }
+    
+    \color_stroke:n { red!50!yellow!25 } % 绘制橙色线段
+    \intuition_pentagon_line:nn { 1 } { 2 }
+    \draw_path_use_clear:n { stroke }
+    
+    \color_stroke:n { red!50!blue!25 } % 绘制紫色线段
+    \intuition_pentagon_line:nn { 3 } { 4 }
+    \draw_path_use_clear:n { stroke }
+    
+    \color_stroke:n { blue!25 } % 绘制两条蓝色线段
+    \intuition_pentagon_line:nn { 1 } { 3 }
+    \intuition_pentagon_line:nn { 2 } { 4 }
+    \draw_path_use_clear:n { stroke }
+\draw_scope_end:
+
+\draw_path_moveto:n { % 回到起始点
+    \intuition_pentagon_point:n { 0 }
+}
+\int_step_inline:nn { 5 } {
+    \draw_path_lineto:n {
+        \intuition_pentagon_point:n {#1}
+    }
+}
+\int_step_inline:nn { 5 } {
+    \draw_path_lineto:n {
+        \intuition_pentagon_point:n { #1 * 2 } % 利用了360度的周期性
+    }
+}
+\draw_path_use_clear:n { stroke }
+
+\int_step_inline:nn { 5 } {
+    \draw_path_circle:nn { % 绘制黑色圆点
+        \intuition_pentagon_point:n {#1}
+    } { 6pt }
+    \draw_path_use_clear:n { fill }
+}
+\draw_end:
+\ExplSyntaxOff
+\end{document}

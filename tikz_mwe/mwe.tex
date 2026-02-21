@@ -1,0 +1,43 @@
+\documentclass[margin=1.5cm]{standalone}
+\usepackage{ctex}
+\usepackage{tikz}
+\usetikzlibrary{shapes.symbols,positioning,calc}
+\begin{document}
+\begin{tikzpicture}[auto,rect/.style={rectangle,rounded corners=1mm,fill=blue!30,draw=blue}]
+    %\draw[help lines] (-5,-5) grid (5,5);
+    \node[cloud,fill=gray!20,aspect=2] at (0,0) {\phantom{1234567890\\1234567890\\1234567890}};%
+    \node[rect,minimum height=1.2cm,minimum width=.5cm] (A) at (-2.5,.5) {A};
+    \node[rect,minimum height=.8cm,minimum width=1cm] (B) at (-1,.5) {B};
+    \node[rect,minimum height=1cm,minimum width=1.2cm] (C) at (.5,-1) {C};
+    \node[rect,minimum height=1.3cm,minimum width=1.5cm] (D) at (2.3,.5) {D};
+    \node[above=.6cm] at (A) {筛选器};%想要缩到4行的上面的定义式中
+    \node[above=.6cm] at (B) {短时记忆};
+    \node[left=.6cm] at (C) {工作记忆};
+    \node[above=.6cm] at (D) {长时记忆};
+    \draw[<-,dashed] (A.west) -- ++(-3cm,0);
+    \draw[<-,dashed] ($(A.south west)!0.75!(A.north west)$) -- ++(-3cm,0);
+    \draw[<-,dashed] ($(A.south west)!0.25!(A.north west)$) node[below left] {1} -- ++(-3cm,0);
+    \draw[->,dashed] ($(A.south east)!0.6!(A.north east)$) -- ($(B.south west)!0.64!(B.north west)$);
+    \draw[->,dashed] ($(A.south east)!0.4!(A.north east)$) -- ($(B.south west)!0.34!(B.north west)$) node[midway,below] {2};
+    \draw[->,dashed] (B.south east) -- (C.north west) node[midway,below left=-3pt] {3};
+    \draw[<-,dashed] (C.north east)  -- (D.south west) node[midway,below right=-3pt] {4};
+\end{tikzpicture}
+
+\begin{tikzpicture}[auto, rect/.style 2 args = {rectangle,rounded corners=1mm,fill=blue!30,draw=blue, minimum height = #1, minimum width = #2}]
+    %\draw[help lines] (-5,-5) grid (5,5);
+    \node[cloud,fill=gray!20,aspect=2] at (0,0) {\phantom{1234567890\\1234567890\\1234567890}};%
+    \node[rect = {1.2cm}{0.5cm}, label = above:筛选器] (A) at (-2.5,.5) {A};
+    \node[rect = {0.8cm}{1.0cm}, label = above:短时记忆] (B) at (-1,.5) {B};
+    \node[rect = {1.0cm}{1.2cm}, label = left:工作记忆] (C) at (.5,-1) {C};
+    \node[rect = {1.3cm}{1.5cm}, label = above:长时记忆] (D) at (2.3,.5) {D};
+
+    \draw[<-, dashed] (A.west) -- ++(-3cm,0);
+    \draw[<-, dashed, transform canvas = {yshift = .3cm}] (A.west) -- ++ (-3cm, 0);
+    \draw[<-, dashed, transform canvas = {yshift = -.3cm}] (A.west) -- ++ (-3cm, 0);
+    \draw[<-, dashed, transform canvas = {yshift = .15cm}] (B.west) --  (A.east);
+    \draw[<-, dashed, transform canvas = {yshift = -.15cm}] (B.west) --  (A.east);
+
+    \draw[->,dashed] (B.south east) -- (C.north west) node[midway,below left=-3pt] {3};
+    \draw[<-,dashed] (C.north east)  -- (D.south west) node[midway,below right=-3pt] {4};
+\end{tikzpicture}
+\end{document}

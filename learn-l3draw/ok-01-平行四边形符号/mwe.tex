@@ -1,0 +1,19 @@
+% https://tex.stackexchange.com/a/741499/322482
+\documentclass[border=10pt]{standalone}
+\usepackage{l3draw}
+
+\ExplSyntaxOn
+\NewDocumentCommand{\Parallelogramm}{}{
+    \draw_begin:
+        \draw_transform_xslant:n { .6 } % 在编组内设置倾斜变换
+        \draw_path_rectangle:nn { 0pt , 0pt } { .60em , .65em }
+        \draw_path_use_clear:n { stroke }
+    \draw_end:
+}
+\ExplSyntaxOff
+
+\begin{document}
+
+$A \Parallelogramm B$
+
+\end{document}

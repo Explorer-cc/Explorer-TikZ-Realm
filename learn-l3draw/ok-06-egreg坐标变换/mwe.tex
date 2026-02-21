@@ -1,0 +1,60 @@
+% https://tex.stackexchange.com/a/742535/322482
+\documentclass{article}
+
+\usepackage{l3draw}
+\usepackage{graphicx}
+
+\ExplSyntaxOn
+
+\NewDocumentCommand{\boxaffine}{m>{\SplitList{,}}m}
+{% #1:content; #2:matrix
+    \boxaffine_if_zero_det:nnnnTF #2
+    {
+        ZERO~DET
+    }
+    {
+        \group_begin:
+            \draw_begin:
+                \draw_transform_matrix_absolute:nnnn #2
+                \hbox_set:Nn \l_tmpa_box {#1}
+                \draw_box_use:N \l_tmpa_box
+            \draw_end:
+        \group_end:
+    }
+}
+
+\prg_new_conditional:Nnn \boxaffine_if_zero_det:nnnn { T,F,TF,p }
+{
+    \fp_compare:nTF 
+    { #1*#4 - #2*#3 == 0 } 
+    { \prg_return_true: } 
+    { \prg_return_false: }
+}
+
+\ExplSyntaxOff
+
+\linespread{2} % just for the example
+
+\begin{document}
+
+Original Text: XXX
+
+$\det(A) = 0$: \boxaffine{XXX}{0, 0, 0, 2}
+
+Unit Matrix: \boxaffine{XXX}{1, 0, 0, 1}
+
+Scale Matrix: \boxaffine{XXX}{2, 0, 0, 2}
+
+$x$-scale Matrix: \boxaffine{XXX}{2, 0, 0, 1}
+
+$y$-scale Matrix: \boxaffine{XXX}{1, 0, 0, 2}
+
+$x$-shear Matrix: \boxaffine{XXX}{1, 0, 1, 1}
+
+$y$-shear Matrix: \boxaffine{XXX}{1, 1, 0, 1}
+
+Graphics: \includegraphics[width=1cm]{example-image}
+
+\boxaffine{\includegraphics[width=1cm]{example-image}}{1, 0, .5, 1}
+
+\end{document}

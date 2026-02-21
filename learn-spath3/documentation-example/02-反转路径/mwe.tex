@@ -1,0 +1,19 @@
+\documentclass[tikz,border=5pt]{standalone}
+\usetikzlibrary{spath3}
+\begin{document}
+\begin{tikzpicture}
+    \path[spath/save=apath] (0,0) 
+    to[out=0,in=180] (2,1) 
+    to[out=0,in=180] (4,0); 
+    \filldraw[
+        green,draw=black, 
+        ultra thick, 
+        spath/use=apath
+    ] -- ++(0,-2) [
+        spath/use={
+            apath, reverse, 
+            move, weld
+        }
+    ] -- cycle; 
+\end{tikzpicture}
+\end{document}

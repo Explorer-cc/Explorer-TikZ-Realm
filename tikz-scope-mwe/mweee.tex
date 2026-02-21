@@ -1,0 +1,39 @@
+% https://ask.latexstudio.net/ask/question/17535.html
+\documentclass[border=1.2cm]{standalone}
+\usepackage{tkz-euclide}
+\usetikzlibrary{calc}
+\pgfmathtruncatemacro{\NN}{10}
+\newcommand*{\stepfurther}[2]{
+    \ifodd#1
+        \tkzDefSquare(B#1,A#1)\tkzGetPoints{A#2}{C#2}
+        \tkzDrawPolygon[fill=gray!20](B#1,A#1,A#2,C#2)
+        \tkzDefTriangle[equilateral](C#2,A#2)\tkzGetPoint{B#2}
+        \tkzDrawPolygon(A#2,C#2,B#2)
+        \tkzDefTriangle[equilateral](B#1,C#2)\tkzGetPoint{E#2}
+        \tkzDrawPolygon(B#1,C#2,E#2)
+        \tkzDefTriangle[equilateral](A#2,A#1)\tkzGetPoint{D#2}
+        \tkzDrawPolygon(A#2,A#1,D#2)
+    \else
+        \tkzDefSquare(B#1,A#1)\tkzGetPoints{C#2}{B#2}
+        \tkzDrawPolygon[fill=gray!20](B#1,A#1,C#2,B#2)
+        \tkzDefTriangle[equilateral](B#1,B#2)\tkzGetPoint{D#2}
+        \tkzDrawPolygon(B#1,B#2,D#2)
+        \tkzDefTriangle[equilateral](C#2,A#1)\tkzGetPoint{E#2}
+        \tkzDrawPolygon(C#2,A#1,E#2)
+        \tkzDefTriangle[equilateral](B#2,C#2)\tkzGetPoint{A#2}
+        \tkzDrawPolygon(C#2,B#2,A#2)
+    \fi
+    % \node at (A#2) {$A_#2$};
+    % \node at (B#2) {$B_#2$}; 
+}
+\begin{document}
+	\begin{tikzpicture}
+		\tkzDefPoint(0,0){B0}
+        \tkzDefPoint(-120:1){A0}
+        \tkzDefPoint(-1,0){C0}
+        \tkzDrawPolygon(A0,B0,C0)
+        \foreach \i[count = \cnt from 0] in {1,...,\NN}{
+            \stepfurther{\cnt}{\i}
+        }
+	\end{tikzpicture}
+\end{document}

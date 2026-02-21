@@ -1,0 +1,12 @@
+\documentclass{article}
+\usepackage{tikz}
+\usetikzlibrary {decorations.shapes,shapes.geometric}
+\begin{document} 
+\tikzset{
+    paint/.style={ draw=#1!50!black, fill=#1 },
+    decorate with/.style={decorate,decoration={shape backgrounds,shape=#1,shape size=1pt,shape sep=4pt}}}
+\begin{tikzpicture}
+    \draw [decorate with=circle, paint=black] (0,0) -- (3,0);
+    \draw [decorate with=circle, paint=black] (0,0) to [out=45, in=125] (2,2) to [in=0,out=-45] (3,0);
+\end{tikzpicture}
+\end{document}

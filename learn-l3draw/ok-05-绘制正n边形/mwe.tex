@@ -1,0 +1,47 @@
+% https://tex.stackexchange.com/a/717173/322482
+\documentclass[border=10pt]{standalone}
+\usepackage{l3draw}
+\ExplSyntaxOn
+\NewDocumentCommand { \Polygon } { m m m } {
+    % #1: number of sides
+    % #2: big(invisible) circle radius
+    % #3: small circle radius
+    \draw_begin:
+        \int_step_inline:nn { #1 } {
+            \draw_path_moveto:n { 
+                \draw_point_intersect_line_circle:nnnnn % 相邻两点连线与前一个点构成的圆的交点
+                    { \draw_point_polar:nn { #2 } { 90 - ( ##1 - 1 ) * 360 / #1 } } 
+                    { \draw_point_polar:nn { #2 } { 90 - ##1 * 360 / #1 }  } 
+                    { \draw_point_polar:nn { #2 } { 90 - ( ##1 - 1 ) * 360 / #1 } } 
+                    { #3 } { 1 }
+            } 
+            \draw_path_lineto:n { 
+                \draw_point_intersect_line_circle:nnnnn % 相邻两点连线与后一个点构成的圆的交点
+                    { \draw_point_polar:nn {#2} { 90 - ( ##1 - 1 ) * 360 / #1 } } 
+                    { \draw_point_polar:nn {#2} { 90 - ##1 * 360 / #1 } } 
+                    { \draw_point_polar:nn {#2} { 90 - ##1 * 360 / #1 } } 
+                    { #3 } { 0 }
+            } 
+            % 这里不需要担心 「最后一个点与首个点相连的」的原因是因为角度天然具有周期性
+            \draw_path_use_clear:n { stroke } % 连接多边形的边
+            \draw_path_circle:nn { \draw_point_polar:nn { #2 } { 90 - ( ##1 - 1 ) * 360 / #1 } } { #3 } % 在大圆的各个顶点绘制小圆
+            \draw_path_use_clear:n { stroke }
+            \hcoffin_set:Nn \l_tmpa_coffin { \int_to_Alph:n {##1} } % 准备盒子内容
+            \draw_scope_begin: % 防止transform_shift:n 影响全局位置
+                \draw_transform_shift:n { % 将 coffin 盒子移动到对应顶点的圆心
+                    \draw_point_polar:nn { #2 } { 90 - ( ##1 - 1 ) * 360 / #1 } 
+                }
+                \draw_coffin_use:Nnn \l_tmpa_coffin { hc } { vc } % 设置coffin的放置锚点
+            \draw_scope_end:
+        }
+    \draw_end:
+}
+\ExplSyntaxOff
+
+\begin{document}
+
+\Polygon{7}{5em}{1em}
+
+\Polygon{3}{4em}{2em}
+
+\end{document}

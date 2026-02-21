@@ -1,0 +1,66 @@
+% https://tex.stackexchange.com/a/746117/322482
+\documentclass{article}
+\usepackage{l3draw}
+\setlength{\parindent}{0pt}
+\ExplSyntaxOn
+\NewDocumentCommand{\SmallGraph}{m}{
+    \draw_begin:
+        % 绘制四个圆点的路径
+        \draw_path_circle:nn { 0em , 0cm } { 1pt }
+        \draw_path_circle:nn { 0.5em , 0cm } { 1pt }
+        \draw_path_circle:nn { 1em , 0cm } { 1pt }
+        \draw_path_circle:nn { 0.5em , 0.5em } { 1pt }
+        % 填充这些小圆点
+        \draw_path_use_clear:n { fill }
+        % 分类实现不同的绘图操作
+        \tl_if_in:nnT {#1} { a } {
+            \draw_path_moveto:n { 0em , 0em }
+            \draw_path_lineto:n { 0.5em , 0.5em }
+        }
+        \tl_if_in:nnT {#1} { b } {
+            \draw_path_moveto:n { 0.5em , 0em }
+            \draw_path_lineto:n { 0.5em , 0.5em }
+        }
+        \tl_if_in:nnT {#1} { c } {
+            \draw_path_moveto:n { 1em , 0em }
+            \draw_path_lineto:n { 0.5em , 0.5em }
+        }
+        \tl_if_in:nnT {#1} { d } {
+            \draw_path_moveto:n { 0em , 0em }
+            \draw_path_lineto:n { 0.5em , 0em }
+        }
+        \tl_if_in:nnT {#1} { e } {
+            \draw_path_moveto:n { 0.5em , 0em }
+            \draw_path_lineto:n { 1em , 0em }
+        }
+        \draw_path_use_clear:n { draw } % 绘制上述条件判断线段
+        \bool_set_false:N \l_draw_bb_update_bool % 不要扩展图形边界
+        \hcoffin_set:Nn \l_tmpa_coffin { \scriptsize 1 } % 按锚点放置coffin
+        \draw_coffin_use:Nnnn \l_tmpa_coffin { hc } { t } { 0em , -0.25em }
+        \hcoffin_set:Nn \l_tmpa_coffin { \scriptsize 2 }
+        \draw_coffin_use:Nnnn \l_tmpa_coffin { hc } { t } { 0.5em , -0.25em }
+        \hcoffin_set:Nn \l_tmpa_coffin { \scriptsize 3 }
+        \draw_coffin_use:Nnnn \l_tmpa_coffin { hc } { t } { 1em , -0.25em }
+    \draw_end:
+}
+\ExplSyntaxOff
+
+\begin{document}
+
+\linespread{2}\selectfont
+
+\texttt{a}: \SmallGraph{a} \quad
+\texttt{b}: \SmallGraph{b} \quad
+\texttt{c}: \SmallGraph{c} \quad  
+\texttt{d}: \SmallGraph{d} \quad
+\texttt{e}: \SmallGraph{e} 
+
+\hrulefill
+
+\verb|\SmallGraph{}|: A \SmallGraph{} B
+
+\verb|\SmallGraph{cad}|: A \SmallGraph{cad} B
+
+\verb|\SmallGraph{abcd}|: A \SmallGraph{abcd} B
+
+\end{document}
