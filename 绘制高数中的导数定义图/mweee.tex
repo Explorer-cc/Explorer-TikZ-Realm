@@ -1,0 +1,38 @@
+% https://tex.stackexchange.com/a/758592/322482
+\documentclass[margin=5pt]{standalone}
+\usepackage{fouriernc}
+\usepackage[mini]{tkz-euclide}
+\usepackage{tkz-elements}
+\begin{document}
+\begin{luacode}
+    function f(t)
+        return math.sqrt(2) * math.sin(t) + 1
+    end
+    function def_curve(t0, t1, n)
+        local p = path()
+        local dt = (t1-t0)/n
+        for t = t0, t1, dt do
+            local y = f(t)
+            local pt = point(t, y)
+                p:add_point(pt)
+        end
+        return p
+    end
+    PA.curve = def_curve(0,1.5*math.pi,200)
+    function drawMarkedPoint(x,labelA,labelB)
+        local y = f(x)
+        tex.sprint("\\draw[densely dotted,semithick,cyan] (0,"..y..") node[mydot,label=left:$"..labelA.."$] {} -- ("..x..","..y..") -- ("..x..",0) node[mydot,label=below:$"..labelB.."$] {};")
+    end
+\end{luacode}
+\begin{tikzpicture}[mydot/.style={circle,fill,inner sep=.75pt,text=black},line cap=round,line join=round]
+\tkzGetNodes
+\tkzInit[xmin = 0,xmax=5,ymin = 0, ymax=3]
+\tkzDrawX\tkzDrawY
+\tkzDrawCoordinates[smooth,purple](PA.curve)
+\directlua{
+    drawMarkedPoint(.75,"xx","yy")
+    drawMarkedPoint(math.pi/2,"\\frac{\\pi}{2}","")
+    drawMarkedPoint(math.pi+.5,"","")
+}
+\end{tikzpicture}
+\end{document}
