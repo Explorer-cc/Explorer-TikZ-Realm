@@ -1,0 +1,22 @@
+% https://tex.stackexchange.com/a/760115
+
+\documentclass[tikz,border=5pt]{standalone}
+\usetikzlibrary{arrows.meta, graphs, graphs.standard, graphdrawing, bending}
+\usegdlibrary{routing, circular}
+
+\begin{document}
+
+\def\NN{10}
+\begin{tikzpicture}[thick]
+  \graph [
+    simple necklace layout,
+    node distance=3cm,
+    necklace routing,
+    nodes={gray!75, draw=black, fill=gray!75, circle},
+    edges={<->, >={Stealth}}
+  ]
+  { subgraph K_n [n=\NN] }
+  ;
+\end{tikzpicture}
+
+\end{document}
