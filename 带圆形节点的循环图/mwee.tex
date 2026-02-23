@@ -1,0 +1,35 @@
+% https://www.zhihu.com/question/527454423
+\documentclass[tikz,border=5pt]{standalone}
+\usetikzlibrary{arrows.meta}
+\def\RR{5}
+\def\rr{0.5}
+\tikzset{thick,>=Stealth,shortstyle/.style={shorten >=\rr cm,shorten <=\rr cm}}
+\newcommand*\mygraph[1]{
+    \def\NN{#1}
+    \def\deltaang{\fpeval{360/\NN}}
+    \def\deltaangg{\fpeval{acosd((2*\RR^2-\rr^2)/(2*\RR^2))}} % cosine rule
+    \begin{tikzpicture}
+    \foreach \i in {1,...,\NN}{
+        \def\ang{\fpeval{\deltaang*(\i-1)}}
+        \path[draw,fill=gray!75] (\ang:\RR cm) circle[radius=\rr cm];
+        \def\startang{\fpeval{\ang+\deltaangg}}
+        \def\endang{\fpeval{\ang+\deltaang-\deltaangg}}
+        \draw[<->] ([{shift=(\startang:\RR cm)}]0,0) arc[radius=\RR cm,start angle=\startang,end angle=\endang];
+        \foreach[parse=true] \j in {2,...,{\NN-2}}{
+            \def\nextang{\fpeval{\ang+\deltaang*\j}}
+            \draw[shortstyle,<->] (\ang:\RR cm) -- (\nextang:\RR cm);
+        }
+    }
+    \end{tikzpicture}
+}
+
+\begin{document}
+\def\RR{5}
+\def\rr{0.5}
+\mygraph{12}
+
+\def\RR{10}
+\def\rr{0.1}
+\mygraph{20}
+
+\end{document}

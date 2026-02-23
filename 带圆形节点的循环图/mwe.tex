@@ -1,0 +1,29 @@
+% https://www.zhihu.com/question/527454423
+% https://ask.latexstudio.net/ask/question/285.html
+% https://ask.latexstudio.net/ask/question/7292.html
+\documentclass[tikz,border=5pt]{standalone}
+\usetikzlibrary{arrows.meta}
+\begin{document}
+
+\def\NN{5}
+\def\RR{5}
+\def\rr{0.5}
+\def\deltaang{\fpeval{360/\NN}}
+\def\deltaangg{\fpeval{acosd((2*\RR^2-\rr^2)/(2*\RR^2))}} % cosine rule
+\begin{tikzpicture}[
+    thick,>=Stealth,shortstyle/.style={shorten >=\rr cm,shorten <=\rr cm}]
+    \foreach \i in {1,...,\NN}{
+        \def\ang{\fpeval{\deltaang*(\i-1)}}
+        \path[draw,fill=gray!75] (\ang:\RR cm) circle[radius=\rr cm];
+        \def\startang{\fpeval{\ang+\deltaangg}}
+        \def\endang{\fpeval{\ang+\deltaang-\deltaangg}}
+        % https://tex.stackexchange.com/a/66265/322482
+        \draw[<->] ([{shift=(\startang:\RR cm)}]0,0) arc[radius=\RR cm,start angle=\startang,end angle=\endang];
+        \foreach[parse=true] \j in {2,...,{\NN-2}}{
+            \def\nextang{\fpeval{\ang+\deltaang*\j}}
+            \draw[shortstyle,<->] (\ang:\RR cm) -- (\nextang:\RR cm);
+        }
+    }
+\end{tikzpicture}
+
+\end{document}
