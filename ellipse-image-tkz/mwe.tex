@@ -1,0 +1,45 @@
+
+\documentclass[border=2mm]{standalone}
+\usepackage[mini]{tkz-euclide}
+\usepackage{tkz-elements}
+\usepackage{fouriernc}
+\begin{document}
+
+\directlua{
+    init_elements()
+    z.O = point(0, 0)
+    z.A = point(3, 0)
+    z.B = point(0, 1)
+    CO.EL = conic(EL_points(z.O, z.A, z.B))
+    PA.curve = CO.EL:points(0, 1, 100)
+    z.X = point(-2.5,1.5)
+    z.Y = point(2.5,1)
+    L.XY = line(z.X, z.Y)
+    z.P = L.XY:point(0.8)
+    z.T = CO.EL:point(0.3)
+    L.tan = CO.EL:tangent_at(z.T)
+    z.t1, z.t2 = L.tan:get()
+    L.norm = L.tan:ortho_from(z.T)
+    z.n1, z.n2 = L.norm:get()
+    z.Q = L.norm:report(-1.5, z.T)
+    L.tan_shifted = L.tan:collinear_at_distance(-0.2)
+    z.tt1, z.tt2 = L.tan_shifted:get()
+    z.H = point(0.5,2.25)
+    z.HO = L.tan_shifted:projection(z.H)
+}
+\begin{tikzpicture}
+    \tkzGetNodes  
+    \tkzDrawCoordinates[smooth,ultra thick](PA.curve)
+    \tkzDrawSegments[dashed,thick](T,Q H,HO)
+    \tkzDrawSegments[densely dotted](X,Q X,H X,Y)
+    \tkzDrawSegments[add = 3cm and 1cm](tt1,tt2)
+    \tkzDrawPoints[black](P,T,Q,H,X,Y)
+    \tkzLabelPoint[left](X){$x^k$}
+    \tkzLabelPoint[right](P){$x^{k+1}$}
+    \tkzLabelPoint[below right=-3pt](Y){$S(t^k)$}
+    \tkzLabelPoint[above](Q){$x^k-\tau f(x^k)$}
+    \tkzLabelPoint[above](H){$x^k-\tau f(y^k)$}
+    \tkzLabelPoint[above right=.6cm](Y){$T_k$}
+\end{tikzpicture}  
+
+\end{document}
