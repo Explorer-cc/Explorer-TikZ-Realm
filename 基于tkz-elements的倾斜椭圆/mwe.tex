@@ -1,0 +1,45 @@
+% https://ask.latexstudio.net/ask/question/8120.html
+\documentclass[border=5pt]{standalone}
+\usepackage[mini]{tkz-euclide}
+\usepackage{tkz-elements}
+\directlua{
+    init_elements()
+    z.O = point(0.15, 0.6) 
+    C.OW = circle(through(z.O, 0.5))
+    z.W = C.OW.through
+    z.M = point(-0.25, -1)
+    z.N = point(1,4)
+    z.C = tkz.midpoint(z.M, z.N)
+    
+    L.MN = line(z.M, z.N)
+    z.T = L.MN:orthogonal_at(z.C, {length = 1.5})
+    CO.EL = conic(EL_points(z.C, z.N, z.T))
+    PA.curve = CO.EL:points(0, 1, 100)
+    z.P = point(4,-1)
+    L.tan, _ = CO.EL:tangent_from(z.P)
+    z.Q = L.tan.pb
+    L.normal = L.tan:ortho_from(z.Q)
+    z.dir = L.normal:report(-1.5, z.Q)
+    z.H = line(z.P, z.Q):projection(z.O)
+    z.v, _ = intersection(line(z.O,z.Q), C.OW)
+    z.u, _ = intersection(line(z.O,z.H), C.OW)
+}
+\begin{document}
+
+\begin{tikzpicture}
+    \tkzGetNodes
+    \tkzDrawCoordinates[smooth,thick](PA.curve)  \tkzDrawCircle[black,thick](O,W)
+    \tkzDrawSegments[thick,-latex](Q,dir)
+    \tkzDrawSegments[thick,add=0 and 0.5](P,Q)
+    \tkzDrawSegments[thick,dashed,green](O,Q)
+    \tkzDrawSegments[thick,green,-latex](O,v)
+    \tkzDrawSegments[thick,dash dot,blue](O,H)
+    \tkzDrawSegments[thick,blue,-latex](O,u)
+    \tkzMarkRightAngle[size=.25,thick](O,H,Q)
+    \tkzMarkRightAngle[size=.25,thick](P,Q,dir)
+    \draw [magenta,decorate,decoration={brace,mirror,amplitude=10pt}] (O) -- (H) node[midway,below right,xshift=-.15cm,yshift=-.25cm,black] {$h(K,u)$};
+    % labels left is your time~
+\end{tikzpicture}
+
+
+\end{document}

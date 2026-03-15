@@ -1,0 +1,28 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{newpx}
+\directlua{
+    function get_diff_table_content(i, j, N)
+        if j == (N - 1) or i == (N - j) then
+            return "\\cdots"
+        end
+        if j == 0 then
+            return "h_{" .. i .. "}"
+        else
+            return "\\Delta h_{" .. i .. "}^{" .. j .. "}"
+        end
+    end
+}
+\def\N{15}
+\begin{document}
+\begin{tikzpicture}[x=1.8cm, y=1.2cm]
+    \pgfmathtruncatemacro{\maxRow}{\N-1}
+    \foreach \j in {0,...,\maxRow} {
+        \pgfmathtruncatemacro{\maxCol}{\N-\j}
+        \foreach \i in {0,...,\maxCol} {
+            \node at ({\i + \j*0.5}, {-\j}) {
+                $\directlua{tex.print(get_diff_table_content(\i, \j, \N))}$
+            };
+        }
+    }
+\end{tikzpicture}
+\end{document}
