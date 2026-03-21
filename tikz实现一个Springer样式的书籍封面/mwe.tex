@@ -1,0 +1,48 @@
+% https://mp.weixin.qq.com/s/UWQFtdUscBe-u-nNaHZ2fg
+\documentclass{article}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\definecolor{bg@main}{RGB}{255,236,180}
+\definecolor{bg@right}{RGB}{193,9,63}
+\definecolor{bg@leftA}{RGB}{11,160,242}
+\definecolor{bg@leftB}{RGB}{241,209,35}
+\definecolor{text@first}{RGB}{27,42,115}
+\definecolor{text@second}{RGB}{29,40,60}
+\definecolor{fg@main}{RGB}{188,184,235}
+\usepackage{fontawesome5}
+\usepackage{fourier}
+\usepackage[
+    paperwidth = 16.51cm, 
+    paperheight = 24.77cm
+    ]{geometry}
+\def\maketitle{%
+\titlepage 
+\begin{tikzpicture}[remember picture, overlay]
+    \fill[bg@main] (current page.north west) rectangle (current page.south east);
+    \coordinate (R1) at ($(current page.north east)!.25!(current page.south east)$);
+    \coordinate (L2) at ($(current page.north west)!.33!(current page.south west)$);
+    \coordinate (L3) at ($(current page.north west)!.6!(current page.south west)$);
+    \coordinate (R3) at ($(current page.north east)!.6!(current page.south east)$);
+    \coordinate (T) at ($(current page.north west)!.08!(current page.north east)$);
+    \fill[left color = bg@leftA, right color = bg@right] (current page.north west) rectangle (R1);
+    \fill[left color = bg@leftB, right color = bg@right] (current page.south west) rectangle (R3);
+    \fill[fg@main,opacity=.9] (L2) rectangle (T|-current page.south west);
+    \draw[white,ultra thick] (T) -- (T|-current page.south west);
+    \node[anchor=north,rectangle,text=white,font=\huge] at ([xshift=5cm,yshift=-.75cm]current page.north west) {University of Medea};
+    \node[rectangle,text=text@first,font=\Huge\bfseries,scale=3] at ([xshift=-.75cm,yshift=.3cm]current page.center) {Analysis 2};
+    \node[anchor=west,rectangle,text=text@second,font=\huge\bfseries] at ([xshift=2cm,yshift=-2.5cm]L3) {Rezak SOUILAH};
+    \node[anchor=east,rectangle,text=text@second,font=\huge\bfseries] at ([xshift=-.5cm,yshift=-2.5cm]L3-|current page.east) {Khaled BOUADJILA};
+    \coordinate (texttmp) at ([xshift=5.5cm,yshift=1.5cm]current page.south west);
+    \draw[line width=6pt,text@second] (texttmp) -- ++(0,1.5);
+    \node[anchor=south west,text=white,font=\huge\bfseries,scale=1.5] at ([xshift=.4cm,yshift=.25cm]texttmp) {2026};
+    \node[anchor=south east,text=text@second,font=\Large\bfseries,scale=1.5] at ([xshift=-.3cm,yshift=.35cm]texttmp) {EDITION};
+    \node[anchor = south east, scale = 7] at ([shift = {(-.5cm, .5cm)}]current page.south east) {\faCat{}};
+\end{tikzpicture}
+\endtitlepage
+}
+\usepackage{lipsum}
+\begin{document}
+\maketitle
+
+\lipsum
+\end{document}
