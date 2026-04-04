@@ -1,0 +1,29 @@
+% https://tex.stackexchange.com/a/761595
+\documentclass[tikz,border=5pt]{standalone}
+\usetikzlibrary{decorations.pathreplacing,calligraphy}
+\begin{document}
+\def\r{0.4}
+\def\MM{5}
+\def\NN{6}
+\begin{tikzpicture}[yellowball/.pic={
+        \fill[yellow] circle (\r);
+    },
+    mixedball/.pic={
+        \begin{scope}[rotate=-45,delta angle=180,radius=\r]
+            \fill[red] (\r,0) arc[start angle=0] -- cycle;
+            \fill[violet] (-\r,0) arc[start angle=180] -- cycle;
+        \end{scope}
+    }
+]
+\foreach \i in {0,...,\MM}{%
+  \foreach \j in {0,...,\NN}{%
+    \ifnum\inteval{\i+\j}>5\relax
+      \pic at (\i,\j) {mixedball};
+    \else
+      \pic at (\i,\j) {yellowball};
+    \fi
+  }
+}
+\draw[decoration={calligraphic brace,amplitude=2mm},decorate,thick] ({\MM+.6},\NN) -- node[right=4pt,font=\sffamily] {geen 6 gele} ({\MM+.6},{\NN-5});
+\end{tikzpicture}
+\end{document}
