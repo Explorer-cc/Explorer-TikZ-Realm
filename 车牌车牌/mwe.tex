@@ -1,0 +1,34 @@
+\documentclass[tikz]{standalone}
+\usetikzlibrary{positioning}
+\usepackage[fontset=ubuntu]{ctex}
+\definecolor{lightgreen}{RGB}{141,203,59}
+\definecolor{darkgreen}{RGB}{23,102,32}
+\begin{document}
+
+\begin{tikzpicture}
+\path (-6,-1.8) rectangle (6,2);
+\fill[darkgreen] (6,-.25) -- (6,-1) -- (-4.5,-1) -- (-5.5,-.625) -- (-4.5,-.25) -- cycle;
+
+\coordinate (tmpA) at (6,-.625);
+\coordinate (tmpB) at (6,-1.375);
+
+\node[text=white,font=\bfseries\sffamily\large,left=5pt of tmpA,anchor=east] {新大久保};
+\node[font=\bfseries\sffamily\Large,left=5pt of tmpB,anchor=east] {Shin-Ookubo};
+\node[text=white,font=\bfseries\sffamily\Large,left=10.25cm of tmpA,anchor=west] {代代木};
+\node[font=\bfseries\sffamily\Large,left=10.25cm of tmpB,anchor=west] (yoyo) {Yoyogi};
+\node[left=5.5cm of tmpA,fill=lightgreen,minimum size=.75cm,inner sep=0pt] (tmpC) {};
+\node[font=\bfseries\sffamily\Large,anchor=north] at ([yshift=-1pt]tmpC.south) {Shinjuku};
+\node[font=\bfseries\sffamily\Large] at ([yshift=+10pt]tmpC.north) (tmp) {しんじゅく};
+
+\node[rounded corners=1pt,draw=lightgreen,line width=2pt,minimum size=.85cm,align=center,left=15pt of yoyo,inner xsep=7pt,inner ysep=4pt,font=\sffamily\bfseries\linespread{.75}\selectfont,scale=.6] {JY\\[2pt]{\Large18}};
+\node[font=\huge\sffamily\bfseries,above=2pt of tmp,scale=1.5,anchor=south] (loc) {新\,\quad\,宿};
+\node[right=5pt of loc,align=left,font=\sffamily] {新宿\\[-2pt]신주쿠};
+
+\node[rounded corners=2pt,draw,fill=white,text=black,inner sep=2pt,minimum size=.5cm,font=\sffamily\bfseries,scale=1.3] at (4.75,1.5) {山};
+\node[rounded corners=2pt,fill=black,text=white,inner sep=2pt,minimum size=.5cm,font=\sffamily\bfseries,scale=1.3] at (5.5,1.5) {区};
+
+\node[rounded corners=5pt,fill=black,text=white,font=\sffamily\bfseries,align=center,inner xsep=3pt,inner ysep=2pt] at (-3,1.25) {SJK\\\tikz{\node[rounded corners=3pt,fill=lightgreen,inner sep=3pt] {\tikz{\node[sharp corners,fill=white,rectangle,minimum size=1cm,text=black,scale=.75]{JY\\[-3pt]{\Large17}};}};}};
+
+\end{tikzpicture}
+
+\end{document}
