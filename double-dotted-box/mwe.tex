@@ -1,0 +1,63 @@
+% https://tex.stackexchange.com/a/761994
+\documentclass{article}
+\usepackage[most]{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{lipsum}
+\tikzset{
+  dot diameter/.store in=\dotdiameter,
+  dot diameter=2.4pt,
+  dot spacing/.store in=\dotspacing,
+  dot spacing=4pt,
+}
+\newcommand\AlignedDottedRectangle[3]{%
+  \path let \p1 = ($(#2)-(#1)$),
+            \n1 = {\x1},
+            \n2 = {\y1}
+        in \pgfextra{%
+                \pgfmathsetlengthmacro{\WTmp}{\n1}\xdef\W{\WTmp}%
+                \pgfmathsetlengthmacro{\HTmp}{\n2}\xdef\H{\HTmp}%
+                \pgfmathtruncatemacro{\NxTmp}{max(1,round(\n1/\dotspacing))}\xdef\Nx{\NxTmp}%
+                \pgfmathtruncatemacro{\NyTmp}{max(1,round(\n2/\dotspacing))}\xdef\Ny{\NyTmp}%
+                \pgfmathsetlengthmacro{\SxTmp}{\n1/\Nx}\xdef\Sx{\SxTmp}%
+                \pgfmathsetlengthmacro{\SyTmp}{\n2/\Ny}\xdef\Sy{\SyTmp}%
+                \pgfmathsetlengthmacro{\RTmp}{0.5*\dotdiameter}\xdef\R{\RTmp}%
+                \pgfmathtruncatemacro{\NyMinusOneTmp}{max(0,\Ny-1)}\xdef\NyMinusOne{\NyMinusOneTmp}%
+        };%
+    \foreach \i in {0,...,\Nx}{%
+        \fill[#3] (#1) ++(\i*\Sx,0pt) circle[radius=\R];
+        \fill[#3] (#1) ++(\i*\Sx,\H)  circle[radius=\R];
+    }%
+    \foreach \j in {1,...,\NyMinusOne}{%
+        \fill[#3] (#1) ++(0pt,\j*\Sy) circle[radius=\R];
+        \fill[#3] (#1) ++(\W,\j*\Sy)  circle[radius=\R];
+    }%
+}
+
+\tcbset{
+  doubledotted/.style={
+    empty,
+    sharp corners,
+    frame empty,
+    overlay={%
+      \coordinate (A) at (frame.south west);
+      \coordinate (B) at (frame.north east);
+      \coordinate (C) at ([xshift=-\dotspacing,yshift=-\dotspacing]frame.south west);
+      \coordinate (D) at ([xshift=\dotspacing,yshift=\dotspacing]frame.north east);
+      \AlignedDottedRectangle{A}{B}{red}
+      \AlignedDottedRectangle{C}{D}{blue}
+    },
+  }
+}
+
+\begin{document}
+
+AAA \tcbox[doubledotted,nobeforeafter,box align=center]{This is a tcolorbox.} BBB
+
+\bigskip
+
+\begin{tcolorbox}[doubledotted]
+\lipsum[2]
+\end{tcolorbox}
+
+\end{document}
