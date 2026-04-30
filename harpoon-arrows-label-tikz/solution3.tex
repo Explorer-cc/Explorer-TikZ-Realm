@@ -1,0 +1,35 @@
+% Source - https://tex.stackexchange.com/a/762370
+\documentclass[tikz,border=5pt]{standalone}
+\usepackage{tikz-cd}
+\usepackage{amsmath}
+\usetikzlibrary{arrows.meta}
+\tikzcdset{foo/.tip={Stealth[harpoon,swap]}}
+    
+\begin{document}
+\begin{tikzcd}[
+    cells={nodes={draw,circle}},
+    every arrow/.style={draw,
+        -foo,
+        thick, 
+        shorten >=2pt,shorten <=2pt,
+        shift right=1pt
+        }
+    ]
+    |[fill=olive]|\text{D}\ar[ddr, "q"] &[30pt] |[fill=teal]|\text{A}\ar[dd,"\nabla"{right=1pt}] &[20pt]\\[-20pt]
+    &   & |[fill=cyan]|\text{C}\ar[dl,"g(x)"]\\
+    & |[fill=magenta]|\text{B}\ar[uul, "p"]\ar[uu,"\Delta"{left=1pt}]\ar[ur,"f(x)"{above=6pt}]
+\end{tikzcd}
+
+\begin{tikzpicture}[commutative diagrams/every diagram]
+    \node[draw,circle,fill=teal] (A) at (-3,-.25) {A};
+    \node[draw,circle,fill=magenta] (B) at (2,1) {B} ;
+    \draw[commutative diagrams/.cd,
+        -foo,
+        thick, 
+        shorten >=2pt,shorten <=2pt,
+        shift right=1pt
+        ]
+    (B) edge node[above=2pt] {$\nabla$} (A)
+    (A) edge node[below=2pt] {$\Delta$} (B);
+\end{tikzpicture}
+\end{document}
