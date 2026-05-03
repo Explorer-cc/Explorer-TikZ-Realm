@@ -1,0 +1,49 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usetikzlibrary{arrows.meta}
+\usepackage[fontset=fandol]{ctex}
+\usepackage{newtxmath}
+\usepackage[svgnames]{xcolor}
+\usepackage{siunitx}
+\newcommand{\ymeasure}[5][0.5]{%
+    \draw[Stealth-Stealth] ([xshift=#2]#3) -- node[pos=#1, fill=white] {#5} ([xshift=#2]#4);%
+}
+\newcommand{\xmeasure}[5][0.5]{%
+    \draw[Stealth-Stealth] ([yshift=#2]#3) -- node[pos=#1, fill=white] {#5} ([yshift=#2]#4);%
+}
+\newcommand{\mydot}[2][1.5pt]{%
+    \fill (#2) circle [radius=#1];%
+}
+\begin{document}
+    \begin{tikzpicture}[thick]
+        \coordinate (P) at (0,0);
+        \coordinate (City) at (9,0);
+        \coordinate (Island) at (0,-5);
+        \coordinate (XPos) at (5,0);
+        \coordinate (Boat) at (1.5,-3.5); %y = x - 5
+
+        \draw([xshift=-2cm]P) -- ([xshift=1cm]City);
+        \draw[dashed] (P) -- (Island);
+        \begin{scope}[very thick,shift={(Boat)},rotate=45,scale=.5]
+            \filldraw[draw=black,fill=PeachPuff]
+            (0,0) -- (0,0.25) -- (0.2,0.3) .. controls +(-3:0.5) and +(135:0.5) .. (1.6,0)
+            .. controls +(-135:0.5) and +(3:0.5) .. (0.2,-0.3) -- (0,-0.25) -- cycle;
+            \fill[black] (0.8,0) ellipse [x radius=0.2, y radius=0.1];
+            \draw (0.8,0) to [bend left] +(0.3,0.5);
+            \draw (0.8,0) to [bend right] +(0.3,-0.5);
+        \end{scope}
+        \draw[dashed,cyan] (Island) -- (XPos);
+        \draw (Island) -- +(-1,0);
+        \draw (XPos) -- +(0,-0.7cm);
+        \draw (City) -- +(0,-1.2cm);
+        \ymeasure{-0.6cm}{P}{Island}{$2$\;\unit{\km}}
+        \xmeasure{-0.4cm}{P}{XPos}{$x$}
+        \xmeasure{-0.4cm}{XPos}{City}{$12-x$}
+        \xmeasure[.55]{-1cm}{P}{City}{$12$\;\unit{\km}}
+        \draw[magenta] (0.25,0) |- (0,-0.25);
+        \mydot{P} \mydot{Island} \mydot{City} \mydot{XPos}
+        \node[above] at (P) {$P$};
+        \node[below,font=\small] at (Island) {岛};
+        \node[above,font=\small] at (City) {城镇};
+        \node[right=12pt] at ([shift={(0.3,0.3)}]Boat) {$d_1$};
+    \end{tikzpicture}
+\end{document}
