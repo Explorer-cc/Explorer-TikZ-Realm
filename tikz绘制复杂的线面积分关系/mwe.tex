@@ -6,21 +6,22 @@
 \everymath{\displaystyle}
 \begin{document}
     \begin{tikzpicture}[
-        mynode/.style={draw,orange,thick,rounded corners,align=center,minimum height=.8cm},mylabel/.style={scale=.75,above,text=black},>=Stealth,
+        mynode/.style={draw,orange,text=black,fill=orange!25,rounded corners,align=center,minimum height=.8cm},mylabel/.style={scale=.75,above,text=black},tmpnode/.style={text=black,draw=none,fill=none,inner sep=0pt},
+        >=Stealth,thick
     ]
         \path[nodes={mynode}] (.5,.5) node (A) {定积分} 
                             (-2,-2) node (B) {二重积分} 
                             (5,-2.5) node (C) {三重积分}
                             (-2.5,-6) node (D) {第一型曲线积分}
-                            node[above=.5cm,text=black,draw=none,inner sep=0pt] (tmp) {$\int_L \{P, Q\} \cdot \vec{i}  \d s$}
+                            node[above=.5cm,tmpnode] (tmp) {$\int_L \{P, Q\} \cdot \vec{i}  \d s$}
                             (+5.5,-6) node (E) {第一型曲面积分}
-                            node[above=.5cm,text=black,draw=none,inner sep=0pt]  {$\iint \{P, Q, R\} \cdot \vec{i}  \d S$}
+                            node[above=.5cm,tmpnode]  {$\iint \{P, Q, R\} \cdot \vec{i}  \d S$}
                             (-2.5,-10) node (F) {第二型曲线积分} 
-                            node[below=.5cm,text=black,draw=none] {$\int_{L} P\d x + Q \d y$}
+                            node[below=.5cm,tmpnode] {$\int_{L} P\d x + Q \d y$}
                             (+5.5,-10) node (G) {第二型曲面积分}
-                            node[below=.5cm,align=center,text=black,draw=none] {$
+                            node[below=.5cm,tmpnode] {$
                                 \begin{aligned}
-                                \oint_L P  \d x + Q  \d y + R  \d z
+                                \oint_L P \d x + Q \d y + R \d z
                                 &= \pm \iint_{\Sigma} \operatorname{rot}\{P, Q, R\} \cdot \{\cos\alpha, \cos\beta, \cos\gamma\}  \d S \\
                                 &= \pm \iint_{\Sigma}
                                     \begin{vmatrix}
@@ -32,13 +33,13 @@
                                 \end{aligned}
                                 $}
                             ;
-        \draw[->,myyellow,thick] (F.west) to[bend left] node[mylabel,sloped] {$\int_L P \d x + Q \d y \xlongequal{\text{Green公式}} \pm \iint_D \left( \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} \right) \d x \d y$} (B.south west);
-        \draw[->,myyellow,thick] (B) -- node[mylabel,sloped] {$\d x \d y = \d\rho \d\theta$} (A);
-        \draw[->,myyellow,thick] (C) -- 
+        \draw[->,myyellow] (F.west) to[bend left] node[mylabel,sloped] {$\int_L P \d x + Q \d y \xlongequal{\text{Green公式}} \pm \iint_D \left( \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} \right) \d x \d y$} (B.south west);
+        \draw[->,myyellow] (B) -- node[mylabel,sloped] {$\d x \d y = \d\rho \d\theta$} (A);
+        \draw[->,myyellow] (C) -- 
             node[mylabel,sloped,pos=.45,below,scale=.8] {$\d x\d y\d z=r^2\sin\phi \d r\d\phi\d\theta$} 
             node[mylabel,sloped,pos=.45] {先一后二，先二后一} 
             (A.east);
-        \draw[<->,myyellow,thick] (G) 
+        \draw[<->,myyellow] (G) 
             -- node[mylabel,left] {
                 $\begin{gathered}
                 \iint\limits_{\Sigma} P  \d y\d z + Q  \d z \d x + R  \d x \d y \\
@@ -46,27 +47,26 @@
                 = \iint\limits_{\Sigma} \left( P \cos\alpha + Q \cos\beta + R \cos\gamma \right) \d S
                 \end{gathered}$
             } (E);
-        \draw[<->,myyellow,thick] (F) 
+        \draw[<->,myyellow] (F) 
             -- node[mylabel,sloped] {
                 $\int_L \left( P \frac{\d x}{\d S} + Q \frac{\d y}{\d S} \right) \d S$
             } (D);
-        \draw[<->,myyellow,thick] (F) 
+        \draw[<->,myyellow] (F) 
             -- node[mylabel,above] {Stokes 公式} 
             (G);
-        \draw[->,myyellow,thick] (G.east) 
+        \draw[->,myyellow] (G.east) 
             to[bend right=50] node[mylabel,pos=.65,sloped,above=3pt] {Gauss 公式} 
             (C); 
-        \draw[<->,myyellow,thick] (D) 
+        \draw[<->,myyellow] (D) 
             -- node[mylabel] {$\d S=g(x,y)\d s$} 
             (E);
-        \draw[->,myyellow,thick] 
-            (tmp.north east) -- node[mylabel,sloped,pos=.4] {$\d s = \sqrt{(x'_t)^2 + (y'_t)^2+(z'_t)^2}\d t$} 
+        \draw[->,myyellow] (tmp.north east)
+            -- node[mylabel,sloped,pos=.4] {$\d s = \sqrt{(x'_t)^2 + (y'_t)^2+(z'_t)^2}\d t$} 
             (A);
-        \draw[->,myyellow,thick] 
-            (E.north west) -- node[mylabel,sloped,pos=.45] {$\d S = \sqrt{1 + \left(\frac{\partial f}{\partial x}\right)^2 + \left(\frac{\partial f}{\partial y}\right)^2} \d x \d y$} 
+        \draw[->,myyellow] (E.north west)
+            -- node[mylabel,sloped,pos=.45] {$\d S = \sqrt{1 + \left(\frac{\partial f}{\partial x}\right)^2 + \left(\frac{\partial f}{\partial y}\right)^2} \d x \d y$} 
             (B);
-        \draw[->,myyellow,thick] 
-            (F.north east) 
+        \draw[->,myyellow] (F.north east)
             -- node[mylabel,sloped,pos=.4] {$\d x =x'(t)\d t \enspace \d y = y'(t)\d t$} 
             (A);
     \end{tikzpicture}
