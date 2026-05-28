@@ -1,0 +1,62 @@
+\documentclass[border=5pt]{standalone}
+\usepackage{luadraw}
+\usepackage{fourier}
+\begin{document}
+\begin{luadraw}{name=imo_problem}
+    local ld = luadraw
+    local Z,Zp,pi = ld.cpx.Z, ld.cpx.Zp, math.pi
+    local g = ld.graph:new{window={-1,8,-6,3}, size={20,20}}
+    local C,M,N,D = Z(0,0), Z(1.5,0), Z(4.8,0), Z(7.5,0)
+    local r1,r2 = M.re-C.re, D.re-N.re
+    -- 圆圆交点
+    local B, A = table.unpack(ld.interCC({M,r1}, {N,r2}))
+    -- 外心
+    local P, r_P = ld.circumcircle(A, C, D)
+    -- 垂心（builtin support?）
+    local h1 = ld.perp({M, N - M}, P)
+    local h2 = ld.perp({P, N - P}, M)
+    local H = ld.interD(h1, h2)
+
+    local AP = {A, P - A}
+    local _, E = table.unpack(ld.interDC(AP, {M, r1}))
+    local _, F = table.unpack(ld.interDC(AP, {N, r2}))
+
+    local H_line = ld.parallel(AP, H)
+    g:Dline({C,D-C})
+    g:Dline(AP,"cyan,dashed,thick")
+    -- g:Dline(H_line,"cyan,dashed,thick")
+    -- normal
+    h0, u = table.unpack(H_line)
+    local tmpA, tmpB = h0 - 0.25 * u, h0 + 0.5 * u
+    g:Dseg({tmpA, tmpB},"cyan,dashed,thick")
+    
+    g:Darc(D, P, C, r_P, 1, "red")
+
+    for _, v in ipairs({B,C,D,M,N}) do
+        g:Dseg({P, v},"gray")
+    end
+    g:Dcircle(M, r1, "gray")
+    g:Dcircle(N, r2, "gray")
+    local G, r_G = ld.circumcircle(B, E, F)
+    g:Dcircle(G, r_G, "red,dashed")
+    g:Ddots({A, B, C, M, N, D, H, E, F, P})
+
+    g:Dlabel(
+        "$A$", A, {pos="N"}, 
+        "$M$", M, {}, 
+        "$N$", N, {}, 
+        "$B$", B, {pos="E"},
+        "$C$", C, {pos="NW"}, 
+        "$E$", E, {}, 
+        "$D$", D, {pos="NE"}, 
+        "$F$", F, {}, 
+        "$H$", H, {pos="E"}, 
+        "$G$", G, {pos="above"},
+        "$P$", P, {pos="S"},
+        "$\\Omega$", M+Zp(r1+.1,2*pi/3),{pos="center"},
+        "$\\Gamma$", N+Zp(r2+.1,pi/3),{}
+    )
+    g:Show()
+\end{luadraw}
+
+\end{document}

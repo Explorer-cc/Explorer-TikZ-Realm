@@ -1,0 +1,273 @@
+\documentclass[tikz,border=5pt]{standalone}
+\usepackage{luacode}
+\begin{luacode*}
+    physics = physics or {}
+
+    function physics.trapezoid_walls(left_top, left_bottom, right_bottom, right_top)
+        return {
+            {left_top[1], left_top[2], left_bottom[1], left_bottom[2]},
+            {left_bottom[1], left_bottom[2], right_bottom[1], right_bottom[2]},
+            {right_bottom[1], right_bottom[2], right_top[1], right_top[2]},
+        }
+    end
+
+    function physics.prepare_walls(raw_walls)
+        local walls = {}
+        for _, raw in ipairs(raw_walls) do
+            local x1, y1, x2, y2 = raw[1], raw[2], raw[3], raw[4]
+            local dx = x2 - x1
+            local dy = y2 - y1
+            local len = math.sqrt(dx * dx + dy * dy)
+            local nx = -dy / len
+            local ny = dx / len
+            table.insert(walls, {
+                x1 = x1, y1 = y1, x2 = x2, y2 = y2,
+                dx = dx, dy = dy, len = len,
+                nx = nx, ny = ny,
+                c = nx * x1 + ny * y1,
+            })
+        end
+        return walls
+    end
+
+    function physics.draw_walls(walls, style)
+        for _, wall in ipairs(walls) do
+            tex.print(string.format("\\draw[%s] (%.3f,%.3f) -- (%.3f,%.3f);",
+                style, wall.x1, wall.y1, wall.x2, wall.y2))
+        end
+    end
+
+    function physics.draw_packed_balls(num_balls, r, raw_walls, options)
+        if type(options) ~= "table" then
+            options = {seed = options}
+        end
+
+        local seed = options.seed
+        local ball_style = options.ball_style or "line width=0.6pt, fill=orange!80!yellow"
+        local wall_style = options.wall_style or "ultra thick, line cap=rect"
+        local highlight_style = options.highlight_style or "fill=white, opacity=0.6"
+        local draw_highlight = options.draw_highlight
+        if draw_highlight == nil then
+            draw_highlight = true
+        end
+
+        if seed then math.randomseed(seed) end
+        local walls = physics.prepare_walls(raw_walls)
+        local placed_balls = {}
+
+        local eps = 1e-7
+        local contact_dist = 2 * r
+        local x_left = math.huge
+        local x_right = -math.huge
+        for _, wall in ipairs(walls) do
+            x_left = math.min(x_left, wall.x1, wall.x2)
+            x_right = math.max(x_right, wall.x1, wall.x2)
+        end
+
+        local function wall_projection(wall, x, y)
+            return ((x - wall.x1) * wall.dx + (y - wall.y1) * wall.dy) / (wall.len * wall.len)
+        end
+
+        local function touches_wall_segment(wall, x, y)
+            local t = wall_projection(wall, x, y)
+            return t >= -eps and t <= 1 + eps
+        end
+
+        local function inside_container(x, y)
+            for _, wall in ipairs(walls) do
+                if wall.nx * x + wall.ny * y < wall.c + r - eps then
+                    return false
+                end
+            end
+            return true
+        end
+
+        local function overlaps_any(x, y)
+            for _, ball in ipairs(placed_balls) do
+                local dx = x - ball.x
+                local dy = y - ball.y
+                if dx * dx + dy * dy < contact_dist * contact_dist - eps then
+                    return true
+                end
+            end
+            return false
+        end
+
+        local function add_candidate(candidates, x, y, kind)
+            if inside_container(x, y) and not overlaps_any(x, y) then
+                table.insert(candidates, {x = x, y = y, kind = kind})
+            end
+        end
+
+        local function add_two_ball_candidates(candidates, a, b)
+            local dx = b.x - a.x
+            local dy = b.y - a.y
+            local d2 = dx * dx + dy * dy
+            local d = math.sqrt(d2)
+            if d < eps or d > 2 * contact_dist + eps then
+                return
+            end
+
+            local mx = (a.x + b.x) / 2
+            local my = (a.y + b.y) / 2
+            local h2 = contact_dist * contact_dist - (d / 2) * (d / 2)
+            if h2 < -eps then
+                return
+            end
+
+            local h = math.sqrt(math.max(0, h2))
+            local px = -dy / d
+            local py = dx / d
+
+            local x1 = mx + h * px
+            local y1 = my + h * py
+            local x2 = mx - h * px
+            local y2 = my - h * py
+
+            if y1 > a.y + eps and y1 > b.y + eps then
+                add_candidate(candidates, x1, y1, "two-balls")
+            end
+            if y2 > a.y + eps and y2 > b.y + eps then
+                add_candidate(candidates, x2, y2, "two-balls")
+            end
+        end
+
+        local function add_wall_wall_candidate(candidates, a, b)
+            local det = a.nx * b.ny - a.ny * b.nx
+            if math.abs(det) < eps then
+                return
+            end
+
+            local ca = a.c + r
+            local cb = b.c + r
+            local x = (ca * b.ny - a.ny * cb) / det
+            local y = (a.nx * cb - ca * b.nx) / det
+            if touches_wall_segment(a, x, y) and touches_wall_segment(b, x, y) then
+                add_candidate(candidates, x, y, "two-walls")
+            end
+        end
+
+        local function add_wall_drop_candidate(candidates, wall, x_start)
+            if wall.ny <= 0.9 or math.abs(wall.ny) < eps then
+                return
+            end
+
+            local y = (wall.c + r - wall.nx * x_start) / wall.ny
+            if touches_wall_segment(wall, x_start, y) then
+                add_candidate(candidates, x_start, y, "floor-wall")
+            end
+        end
+
+        local function add_wall_ball_candidate(candidates, wall, ball)
+            local signed_dist = wall.nx * ball.x + wall.ny * ball.y - (wall.c + r)
+            local h2 = contact_dist * contact_dist - signed_dist * signed_dist
+            if h2 < -eps then
+                return
+            end
+
+            local base_x = ball.x - signed_dist * wall.nx
+            local base_y = ball.y - signed_dist * wall.ny
+            local h = math.sqrt(math.max(0, h2))
+            local tx = wall.dx / wall.len
+            local ty = wall.dy / wall.len
+
+            local x1 = base_x + h * tx
+            local y1 = base_y + h * ty
+            local x2 = base_x - h * tx
+            local y2 = base_y - h * ty
+
+            if y1 > ball.y + eps and touches_wall_segment(wall, x1, y1) then
+                add_candidate(candidates, x1, y1, "wall-ball")
+            end
+            if y2 > ball.y + eps and touches_wall_segment(wall, x2, y2) then
+                add_candidate(candidates, x2, y2, "wall-ball")
+            end
+        end
+
+        local function choose_candidate(candidates, x_start)
+            local best = nil
+            for _, candidate in ipairs(candidates) do
+                if not best
+                    or candidate.y < best.y - eps
+                    or (math.abs(candidate.y - best.y) <= eps
+                        and math.abs(candidate.x - x_start) < math.abs(best.x - x_start)) then
+                    best = candidate
+                end
+            end
+            return best
+        end
+
+        for i = 1, num_balls do
+            local x_start = x_left + math.random() * (x_right - x_left)
+
+            local candidates = {}
+            for _, wall in ipairs(walls) do
+                add_wall_drop_candidate(candidates, wall, x_start)
+            end
+            for a = 1, #walls - 1 do
+                for b = a + 1, #walls do
+                    add_wall_wall_candidate(candidates, walls[a], walls[b])
+                end
+            end
+            for _, ball in ipairs(placed_balls) do
+                for _, wall in ipairs(walls) do
+                    add_wall_drop_candidate(candidates, wall, ball.x - contact_dist)
+                    add_wall_drop_candidate(candidates, wall, ball.x + contact_dist)
+                    add_wall_ball_candidate(candidates, wall, ball)
+                end
+            end
+            for a = 1, #placed_balls - 1 do
+                for b = a + 1, #placed_balls do
+                    add_two_ball_candidates(candidates, placed_balls[a], placed_balls[b])
+                end
+            end
+
+            local best = choose_candidate(candidates, x_start)
+            if not best then
+                tex.error("no stable position found for ball " .. i)
+                return
+            end
+
+            local best_x = best.x
+            local best_y = best.y
+            table.insert(placed_balls, {x = best_x, y = best_y})
+            tex.print(string.format("\\draw[%s] (%.3f,%.3f) circle (%.3f);", ball_style, best_x, best_y, r))
+            if draw_highlight then
+                tex.print(string.format("\\fill[%s] (%.3f, %.3f) circle (%.3f);",
+                    highlight_style, best_x - 0.35 * r, best_y + 0.35 * r, 0.22 * r))
+            end
+        end
+
+        physics.draw_walls(walls, wall_style)
+    end
+\end{luacode*}
+
+\begin{document}
+\begin{tikzpicture}
+    \directlua{
+        physics.draw_packed_balls(50, 0.1,
+            physics.trapezoid_walls({-1.3, 0}, {-0.8, -3}, {0.8, -3}, {1.3, 0}),
+            {
+                seed = 233333,
+                ball_style = "line width=0.5pt, draw=orange!60!black, fill=orange!80!yellow",
+                wall_style = "ultra thick, draw=black, line cap=rect",
+                highlight_style = "fill=white, opacity=0.55",
+            })
+    }
+\end{tikzpicture}
+
+\begin{tikzpicture}
+    \directlua{
+        physics.draw_packed_balls(
+            30,0.15,
+            physics.trapezoid_walls({-3, -1}, {-1, -3}, {1, -2}, {1, 0}),
+            {
+                seed = 42,
+                ball_style = "draw=magenta, fill=magenta!45",
+                wall_style = "very thick, draw=teal!70, line cap=rect",
+                highlight_style = "fill=white, opacity=0.55",
+            }
+        )
+    }
+\end{tikzpicture}
+\end{document}

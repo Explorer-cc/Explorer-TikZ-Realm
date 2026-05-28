@@ -1,0 +1,38 @@
+\documentclass[border=5pt]{standalone}
+\usepackage{stix2}% STIX Two Math
+\usepackage[svgnames]{xcolor}
+\usepackage{tkz-euclide}
+\tkzSetUpStyle[
+    postaction=decorate,
+    decoration={
+        markings,
+        mark=at position .6 with {\arrow[thick]{#1}}
+    }
+]{myarrow}
+\begin{document}
+    \begin{tikzpicture}
+        \tkzSetUpLine[thick]
+        \tkzDefPoints{0/0/O,-1/0/ny,2/0/y,-1.25/-1/x,0/3/z}
+        \tkzDrawSegments[-Stealth,shorten >=-2pt](O,x ny,y O,z)
+        \tkzDefPoints{-1/0/A,1/0/C}
+        \tkzDefPoints{-.8/-.64/B,.8/.64/D}
+        \tkzDefPoints{-1/2/AA,1/1/CC}
+        \tkzDefPoints{-.8/{-.64+1}/BB,.8/{.64+2}/DD}
+        \tkzFillPolygon[Gold](A,B,C,D)
+        \tkzFillPolygon[Gold](AA,BB,CC,DD)
+        \tkzDrawSegments[myarrow=Stealth](AA,BB BB,CC CC,DD DD,AA)
+        \tkzDefPoints{0/1/z1,0/1.5/z2,0/2/z3}
+        \tkzDrawSegments(A,AA B,BB C,CC A,B B,C)
+        \tkzDrawSegments[dashed](O,B A,C O,z D,DD z1,BB z1,CC D,DD A,D D,C AA,z3 DD,z3)
+        \tkzLabelPoints[right=1pt](x,y,z)
+        \tkzLabelPoint(.2,1.4){$1$}
+        \tkzLabelPoint(.2,1.8){$2$}
+        \tkzLabelPoint(.2,2.2){$3$}
+        \tkzLabelPoints[above right=-2pt](O)
+        \tkzLabelPoint[below right](AA){$\Sigma$}
+        \draw[-Stealth,semithick] (.5,1.85) --++(1,.5) node[right=-2pt] {$n$};
+    \tkzLabelPoint[left](A){$-1$}
+    \tkzLabelPoint[below](C){$1$}
+    \tkzLabelPoint[below right=-2pt](B){$1$}
+    \end{tikzpicture}
+\end{document}

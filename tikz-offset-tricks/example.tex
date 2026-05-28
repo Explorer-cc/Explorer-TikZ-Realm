@@ -1,0 +1,16 @@
+% Source - https://tex.stackexchange.com/a/681200
+\documentclass[tikz,border=5pt]{standalone}
+\usetikzlibrary{nfold}
+\begin{document}
+\begin{tikzpicture}
+  \path[save path=\mypath]
+    (0,0) -- (5,0) to[out=0, in=180] (7,.75) to[out=0, in=180] (9,0) -- (10,0);
+  \pgfsetlinewidth{1pt}
+  \foreach \mycolor [count=\i] in {9DC634,F39614,FF00FF,AB7CB5}{
+    \definecolor{tempcolor}{HTML}{\mycolor}
+    \color{tempcolor}
+    \pgfoffsetpathindex{\mypath}{8pt}{\i}{4}
+    \pgfusepathqstroke
+  }
+\end{tikzpicture}
+\end{document}
