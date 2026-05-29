@@ -1,0 +1,41 @@
+% https://tex.stackexchange.com/a/762399
+% https://tex.stackexchange.com/a/763175
+\documentclass[tikz,border=5pt]{standalone}
+\usetikzlibrary{ext.arrows,nfold,positioning,decorations.markings}
+\makeatletter
+
+\tikzset{
+    mydouble/.style={double distance=5pt,thick},
+    DoubleTriangle/.style={ext_Double Cap-ext_Double Triangle,mydouble},
+    myslash/.style={
+        -Triangle,draw,ultra thick,
+        postaction={
+            decorate,
+            decoration={
+                markings,
+                mark=at position 0.5 with {%
+                \begin{scope}[shift only]%
+                    \draw[-,shrink=0pt,rotate=#1] (-.5cm,0) -- (.5cm,0);
+                \end{scope}
+                }
+            }
+        }
+    },
+    myslash/.default=90
+}
+\makeatother
+\begin{document}
+\begin{tikzpicture}[
+    node distance=2cm and 1cm,
+    shrink/.style={shorten >=#1,shorten <=#1},
+    ]
+    \node[draw] (A) {AAAAAAAA};
+    \node[draw] (B)[below left=of A]{BBBBBBBBB};    
+    \node[draw] (C)[below right=of A]{CCCCCCCCC};
+    \draw[DoubleTriangle,shrink=.75cm,transform canvas={xshift=.5cm}] (A) -- (B);
+    \draw[myslash,shrink=.75cm,transform canvas={xshift=-.75cm}] (B) -- (A);
+    \draw[DoubleTriangle,shrink=.75cm,transform canvas={xshift=-.25cm}] (A) -- (C);
+    \draw[myslash,shrink=.75cm,transform canvas={xshift=1cm}] (C) -- (A);
+    \draw[myslash=-45,shrink=1cm] (C) -- (B);
+\end{tikzpicture}
+\end{document}
