@@ -1,0 +1,87 @@
+% Source - https://tex.stackexchange.com/a/763043
+% Posted by Qrrbrbirlbel, modified by community. See post 'Timeline' for change history
+% Retrieved 2026-05-24, License - CC BY-SA 4.0
+
+\documentclass[tikz]{standalone}
+\usetikzlibrary{decorations, decorations.pathmorphing, arrows.meta}
+\usetikzlibrary{nfold}
+\makeatletter % see Code B in https://tex.stackexchange.com/a/728379
+\let\nfold@orig@tikz@finish\tikz@finish
+\def\tikz@finish{\tikz@nfold@do\nfold@orig@tikz@finish}
+\let\tikz@nfold@do\relax
+\tikzset{offset/.code=%
+  \edef\tikz@temp{#1}\ifx\tikz@temp\tikz@nonetext \let\tikz@nfold@do\relax
+  \else\def\tikz@nfold@do{\pgfgetpath\tikz@temp\pgfsetpath\pgfutil@empty\pgfoffsetpath\tikz@temp{#1}}%
+  \fi}
+\makeatother
+\newif\ifpgfmultiarrowsuppress
+\pgfset{
+  decoration/multiarrow shortening/.initial=+1mm,
+  decoration/multiarrow arrows/.initial=->,
+  decoration/multiarrow start minimum/.initial=.2*\pgfmetadecorationsegmentlength,
+}
+\pgfdeclaremetadecoration{arrows}{initial}{
+  \state{initial}[
+    width=\pgfkeysvalueof{/pgf/decoration/multiarrow shortening},
+    next state=start arrow
+  ]{
+    % set arrows (survives for all states)
+    \expanded{\noexpand\pgfsetarrows{\pgfkeysvalueof{/pgf/decoration/multiarrow arrows}}}
+    %
+    % evaluate if the first partial arrow should be drawn
+    % \pgfmultiarrowpartial = length of the first arrow
+    \pgfmathsetlengthmacro\pgfmultiarrowpartial{
+      frac(\pgfmetadecoratedpathlength/\pgfmetadecorationsegmentlength)*\pgfmetadecorationsegmentlength
+      -2*(\pgfkeysvalueof{/pgf/decoration/multiarrow shortening})
+    }
+    \pgfmathsetlengthmacro\pgfmultiarrowstartminimum{\pgfkeysvalueof{/pgf/decoration/multiarrow start minimum}}
+    % if length of first arrow is shorter than start minimum → don't draw it
+    \ifdim\pgfmultiarrowpartial<\pgfmultiarrowstartminimum\relax
+      \pgfmultiarrowsuppresstrue
+    \else
+      \pgfmultiarrowsuppressfalse
+    \fi
+    % so that we don't have to evaluate it over and over again
+    \pgfmathsetlengthmacro\pgfmultiarrowarrowlength{\pgfmetadecorationsegmentlength-2*(\pgfkeysvalueof{/pgf/decoration/multiarrow shortening})}
+    \pgfmathsetlengthmacro\pgfmultiarrowmovelength{2*(\pgfkeysvalueof{/pgf/decoration/multiarrow shortening})}
+  }
+  \state{start arrow}[width=\pgfmultiarrowpartial, next state=move]{
+    \unless\ifpgfmultiarrowsuppress
+      \decoration{curveto}
+      \afterdecoration{\pgfusepath{stroke}}
+    \fi
+  }
+  \state{arrow}[width=+\pgfmultiarrowarrowlength, next state=move]{
+    \decoration{curveto}
+    \afterdecoration{\pgfusepath{stroke}}
+  }
+  \state{move}[width=+\pgfmultiarrowmovelength, next state=arrow]{}% do nothing
+  \state{final}{} % do even less
+}
+\tikzset{
+  multiarrow/.style={
+    decorate, decoration={
+      name=arrows, meta-segment length=1cm, multiarrow shortening=1pt}
+    }}
+\begin{document}
+    \begin{tikzpicture}[>=Latex, rotate=90] % Example from the manual
+    \foreach \dist in {0, ..., 5}
+    \draw[
+        offset=\dist mm,
+        decorate,
+        decoration={
+            name=arrows,
+            meta-segment length=1cm,
+            multiarrow shortening=1mm
+        },
+    ] (0,0) .. controls (0,  2) and (3,  2) .. (3, 0)
+            .. controls (3, -2) and (0, -2) .. (0,-4)
+            .. controls (0, -6) and (3, -6) .. (3,-8)
+            .. controls (3,-10) and (0,-10) .. (0,-8);
+    \end{tikzpicture}
+
+    \begin{tikzpicture}
+        \draw[help lines]                        (0,0) -- (3,1);
+        \draw[offset=5\pgflinewidth, multiarrow,>=latex] (0,0) -- (3,1);
+    \end{tikzpicture}
+\end{document}

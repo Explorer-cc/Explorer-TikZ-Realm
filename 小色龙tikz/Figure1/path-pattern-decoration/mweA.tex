@@ -1,0 +1,102 @@
+%  https://tex.stackexchange.com/a/762995
+\documentclass[tikz,border=5pt]{standalone}
+\usepackage{fourier}
+\usetikzlibrary{bending,patterns,patterns.meta,angles,quotes,decorations}
+
+% BEGIN from https://tex.stackexchange.com/a/419558/
+\newcounter{tmp}
+\newif\ifpathisclosed
+\tikzset{EDR/.style={
+    preaction={draw,ultra thick,line width=1pt},
+    preaction={decorate,decoration={contour lineto closed, contour distance=10pt}},%<-- distance of the contour
+    %%%%%%%%%%%%<- add `fill=white' to `preaction
+    preaction={%<- preaction
+      insert path={%
+        \pgfextra{%
+          \pgfinterruptpath
+          \path[fill=white,even odd rule] 
+          \mySecondList \myList 
+          ;
+        \endpgfinterruptpath}
+    }},
+    %%%%%%%%%%%<- add `fill=white' to `preaction
+    postaction={
+      insert path={%
+        \pgfextra{%
+          \pgfinterruptpath
+        % \path[pattern=north west lines,even odd rule] 
+          \path[pattern={Lines[angle=-45,distance={5pt}]},even odd rule] 
+          \mySecondList \myList 
+          ;
+        \endpgfinterruptpath}
+    }},
+}}
+\makeatletter
+\def\pgfdecoratedcontourdistance{0pt}
+\pgfset{
+  decoration/contour distance/.code=%
+\pgfmathsetlengthmacro\pgfdecoratedcontourdistance{#1}}
+\pgfdeclaredecoration{contour lineto closed}{start}{%
+  \state{start}[
+  next state=draw,
+  width=0pt,
+  persistent precomputation=\let\pgf@decorate@firstsegmentangle\pgfdecoratedangle]{%
+    %\xdef\myList{}\xdef\mySecondList{}%
+    \setcounter{tmp}{0}%
+    \global\pathisclosedfalse%
+    \pgfpathmoveto{\pgfpointlineattime{.5}
+      {\pgfqpoint{0pt}{\pgfdecoratedcontourdistance}}
+    {\pgfqpoint{\pgfdecoratedinputsegmentlength}{\pgfdecoratedcontourdistance}}}%
+  }%
+  \state{draw}[next state=draw, width=\pgfdecoratedinputsegmentlength]{%
+    \ifpgf@decorate@is@closepath@%
+      \pgfmathsetmacro\pgfdecoratedangletonextinputsegment{%
+      -\pgfdecoratedangle+\pgf@decorate@firstsegmentangle}%
+    \fi
+    \pgfmathsetlengthmacro\pgf@decoration@contour@shorten{%
+    -\pgfdecoratedcontourdistance*cot(-\pgfdecoratedangletonextinputsegment/2+90)}%
+    \pgfpathlineto
+    {\pgfpoint{\pgfdecoratedinputsegmentlength+\pgf@decoration@contour@shorten}
+    {\pgfdecoratedcontourdistance}}%
+    \stepcounter{tmp}%
+    \pgfcoordinate{muemmel\number\value{tmp}}{\pgfpoint{\pgfdecoratedinputsegmentlength+\pgf@decoration@contour@shorten}
+    {\pgfdecoratedcontourdistance}}%
+    \pgfcoordinate{feep\number\value{tmp}}{\pgfpoint{\pgfdecoratedinputsegmentlength}{0pt}}%      
+    \ifnum\value{tmp}=1\relax%
+     \pgfcoordinate{muemmel0}{\pgfpoint{0pt}{\pgfdecoratedcontourdistance}}%
+     \pgfcoordinate{feep0}{\pgfpoint{0pt}{0pt}}%      
+     \xdef\myList{(muemmel\number\value{tmp})}%
+     \xdef\mySecondList{(feep\number\value{tmp})}%
+    \else
+     \xdef\myList{\myList -- (muemmel\number\value{tmp})}%
+     \xdef\mySecondList{(feep\number\value{tmp}) -- \mySecondList}%
+    \fi 
+    \ifpgf@decorate@is@closepath@%
+      \pgfpathclose
+      \global\pathisclosedtrue%
+    \fi
+  }%
+  \state{final}{%\typeout{\myList,\mySecondList}%
+    \ifpathisclosed%
+      \xdef\myList{\myList -- cycle}% 
+      \xdef\mySecondList{\mySecondList -- cycle}%
+      %\typeout{closed \mySecondList \myList }
+    \else
+      %\typeout{\number\value{tmp}}%
+      \xdef\myList{(muemmel0) -- \myList -- cycle}% 
+      \xdef\mySecondList{\mySecondList -- (feep0) --}%
+      %\typeout{not closed \mySecondList \myList }%   
+    \fi
+  }%
+}
+\makeatother
+% END from https://tex.stackexchange.com/a/419558/11820
+
+\begin{document}
+\begin{tikzpicture}[>=latex]
+    \draw[thick,->] (0,0) -- (10,0) node[below] {$x$};
+    \draw[thick,->] (0,0) -- (0,-3) node[right] {$y$};
+    \draw[EDR] (7,2) -- (7,0) coordinate (A) -- (8,0) -- (8,-4) -- (7,-4) coordinate (B) -- (7,-6);
+    \draw(0,0) node[label={[label distance=-2.5mm]above left:$O$}] (O) {} -- (7,-4) pic[draw,<->,angle radius=2cm,angle eccentricity=1.15,"$\alpha$"] {angle = B--O--A};
+\end{tikzpicture}
+\end{document}

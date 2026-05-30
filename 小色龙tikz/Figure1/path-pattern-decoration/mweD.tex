@@ -1,0 +1,68 @@
+% https://tex.stackexchange.com/a/763009
+\documentclass[tikz, border=5pt]{standalone}
+\usetikzlibrary{patterns, nfold, spath3}
+%BEGIN_FOLD spath interface
+\ExplSyntaxOn
+\tikzset{
+  spath/offset/.code~n~args={3}{
+    \__tikzspath_maybe_current_path:nn {
+      \__tikzspath_check_path:nnn {
+        \__tikzspath_offset:nnnc {#2} {} {#3}
+      }
+    }{#1}{}},
+  spath/offset~global/.code~n~args={3}{
+    \__tikzspath_maybe_current_path:nn {
+      \__tikzspath_check_path:nnn {
+        \__tikzspath_offset:nnnc {#2} {~global} {#3}
+      }
+    }{#1}{}}}
+\cs_set_eq:NN \__tikzspath_pgfoffsetpath:Nn \pgfoffsetpath % alias
+\cs_new_protected_nopar:Npn \__tikzspath_offset:nnnN #1#2#3#4 {
+  \pgfinterruptpath
+    \__tikzspath_pgfoffsetpath:Nn #4 {#3}
+    \pgfkeysalso{/tikz/spath/clone~global={@@temp}{current}}
+  \endpgfinterruptpath
+  \pgfkeysalso{/tikz/spath/clone#2={#1}{@@temp}}
+}
+\cs_generate_variant:Nn \__tikzspath_offset:nnnN {nnnc}
+\ExplSyntaxOff
+%END_FOLD
+%BEGIN_FOLD border interface
+\tikzset{
+  border/.code={%
+    \pgfqkeys{/tikz/border}{#1}%
+    \tikzset{
+      preaction={
+        spath/clone={orig}{current},
+        spath/reverse=orig,
+        spath/offset global={orig}{second}{\pgfkeysvalueof{/tikz/border/offset}},
+        insert path={-- (spath cs:{second} {0})},
+        spath/use={weld, second},
+        spath/close,
+        border/area,
+      },
+      preaction={spath/use=second, border/second}}},
+  border/flip/.style={/tikz/border/offset/.expanded={-(\pgfkeysvalueof{/tikz/border/offset})}},
+  border/offset/.initial=5mm,
+  border/second/.code=, border/area/.code=,
+}
+%END_FOLD
+\tikzset{
+  EDR/.style={
+    border={
+      main/.style={draw, line width=+1pt},
+      area/.style={
+        preaction={fill=white}, 
+        pattern=north west lines, 
+        pattern color=black!75
+    },
+    offset=3mm,
+    #1}
+    }
+}
+\begin{document}
+    \begin{tikzpicture}
+    \draw[thick,teal] (-3,1) -- (3,1);
+    \draw[thick,EDR=flip] (-3,0) -- (-1,0) -- (-1,2) -- (1,2) -- (1,0) -- (3,0);
+    \end{tikzpicture}
+\end{document}

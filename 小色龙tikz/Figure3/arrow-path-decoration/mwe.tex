@@ -1,0 +1,78 @@
+% https://tex.stackexchange.com/a/763032
+\documentclass[tikz,border=20pt]{standalone}
+\usetikzlibrary{decorations.markings}
+
+\begin{document}
+    
+    \begin{tikzpicture}[
+        >=latex,Step/.store in=\Step,Step=0.1,
+        MultiArrow/.style={
+            decorate,
+            decoration={
+                markings,
+                mark= between positions 0.01 and 0.99 step \Step 
+                with {
+                        \pgfmathparse{\pgfdecoratedpathlength/28.45*100*\Step}
+                        \edef\Height{\pgfmathresult}
+                        \ifnum\pgfkeysvalueof{/pgf/decoration/mark info/sequence number}=1
+                        \path (0,0) coordinate (A);
+                        \fi
+                        \ifnum\pgfkeysvalueof{/pgf/decoration/mark info/sequence number}>1
+                        \coordinate (A) at (C);
+                        \fi
+                        \path (A)-- ++(\Height/300,0) coordinate (B);
+                        \path (A)-- ++(\Height/100,0) coordinate (C);
+                        \draw[#1!70!black,->]
+                        (B) .. controls +(0:0.2) and +(180:0.2).. (C);
+                }
+            }
+        }
+        ]
+        
+        \def\PathA{
+            (0,0) 
+            -- ++ (5,2)
+        }
+        \def\PathB{
+            (0,-4) 
+            to [in=90,out=0] ++(2.5,-1)
+            to [in=180,out=-90] ++(2.5,-1)
+            to [in=-90,out=0] ++(2,1.5)
+            to [in=-90,out=90] ++(0.5,3) arc (0:90:2)
+        }
+        
+        \def\PathC{
+            (0,-5) 
+            to [in=90,out=0] ++(1.5,-1)
+            to [in=180,out=-90] ++(4,-1)
+            to [in=-90,out=0] ++(3,2.5)
+            to [in=-90,out=90] ++(0.5,4.5) arc (0:90:2)
+        }
+    
+        \def\PathD{
+            plot[
+                   domain=-5:5,
+                   samples=100,
+                   %smooth,
+                   variable=\x
+                 ] ({\x},{sin(\x r)})
+                 -- ++(0,-2)
+                 -| cycle
+        }
+        
+        \draw[MultiArrow=red,Step=0.1]\PathA;
+        
+        \draw[MultiArrow=green!70!black,Step=0.02]\PathB;
+        
+        \draw[MultiArrow=green!50!cyan,Step=0.02]\PathC;
+        
+        \draw[MultiArrow=cyan!30!blue,Step=0.025] (0,0) circle (3);
+        
+        \draw[MultiArrow=cyan!70!blue,Step=0.05] (0,0) arc (180-45:0-45:3);
+        
+        \begin{scope}[shift={(-0.5,-0.2)}]
+            \draw[MultiArrow=black,Step=0.02] \PathD;
+        \end{scope}
+            
+    \end{tikzpicture}
+\end{document}

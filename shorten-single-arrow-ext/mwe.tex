@@ -2,8 +2,6 @@
 % https://tex.stackexchange.com/a/763175
 \documentclass[tikz,border=5pt]{standalone}
 \usetikzlibrary{ext.arrows,nfold,positioning,decorations.markings}
-\makeatletter
-
 \tikzset{
     mydouble/.style={double distance=5pt,thick},
     DoubleTriangle/.style={ext_Double Cap-ext_Double Triangle,mydouble},
@@ -23,7 +21,6 @@
     },
     myslash/.default=90
 }
-\makeatother
 \begin{document}
 \begin{tikzpicture}[
     node distance=2cm and 1cm,
