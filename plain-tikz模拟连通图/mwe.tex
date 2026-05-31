@@ -1,0 +1,39 @@
+% https://tex.stackexchange.com/a/763204/322482
+\documentclass[tikz,border=5pt]{standalone}
+\usepackage{kpfonts}%
+\begin{document}
+\tikzset{mynode/.style={draw,fill=#1,circle,minimum size=2.5pt},mynode/.default=white,x=2cm}
+\begin{tikzpicture}
+    \path 
+        (0,0) node[mynode] (A) {} node[below=5pt] {$1$}
+        (1,0) edge (A) node[mynode] (B) {} node[below=5pt] {$2$}
+        (2,0) edge[dashed] (B) node[mynode] (C) {} node[below=5pt] {$n-2$}
+        (3,0) edge (C) node[mynode] (D) {} node[below=5pt] {$n-1$}
+        (4,0) edge (D) node[mynode=black] {} node[below=5pt] {$n$}
+    ;
+\end{tikzpicture}
+
+\begin{tikzpicture}
+    \path 
+        (0,0) node[mynode] (A) {} node[below=5pt] {$0$}
+        (1,0) edge node[above] {$2$} (A) node[mynode] (B) {} node[below=5pt] {$1$}
+        (2,0) edge (B) node[mynode] (C) {} node[below=5pt] {$2$}
+        (3,0) edge[dashed] (C) node[mynode] (D) {} node[below=5pt] {$n-2$}
+        (4,0) edge (D) node[mynode] (E) {} node[below=5pt] {$n-1$}
+        (5,0) edge (E) node[mynode=black] {} node[below=5pt] {$n$}
+    ;
+\end{tikzpicture}
+
+\begin{tikzpicture}
+    \path 
+        (0,-1) node[mynode] (A) {} node[below=5pt] {$0$}
+        (0,1) node[mynode] (B) {} node[above=5pt] {$1$}
+        (1,0) edge (A) edge (B) 
+            node[mynode] (C) {} node[below=5pt] {$2$}
+        (2,0) edge (C) node[mynode] (D) {} node[below=5pt] {$3$}
+        (3,0) edge[dashed] (D) node[mynode] (E) {} node[below=5pt] {$n-1$}
+        (4,0) edge (E) node[mynode=black] {} node[below=5pt] {$n$}
+    ;
+\end{tikzpicture}
+
+\end{document}
