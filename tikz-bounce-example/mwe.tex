@@ -1,0 +1,293 @@
+% https://tex.stackexchange.com/a/763428
+
+\documentclass[tikz,border=5mm]{standalone}
+% https://tex.stackexchange.com/a/762938
+\usetikzlibrary{nfold,shadings}
+\makeatletter
+\tikzset{offset/.code=\tikz@addmode{\pgfgetpath\tikz@temp\pgfsetpath\pgfutil@empty\pgfoffsetpath\tikz@temp{#1}}}
+\makeatother
+
+\directlua{
+  tikzbounce = {}
+
+  do
+    local M = tikzbounce
+    local slash = string.char(92)
+    local eps = 1e-9
+
+    function M.rectangle(xmin, ymin, xmax, ymax)
+      return {
+        {x = xmin, y = ymax},
+        {x = xmax, y = ymax},
+        {x = xmax, y = ymin},
+        {x = xmin, y = ymin},
+      }
+    end
+
+    function M.diamond(cx, cy, rx, ry)
+      return {
+        {x = cx,      y = cy + ry},
+        {x = cx + rx, y = cy},
+        {x = cx,      y = cy - ry},
+        {x = cx - rx, y = cy},
+      }
+    end
+
+    function M.regular_polygon(cx, cy, radius, sides, rotation)
+      local points = {}
+      rotation = rotation or math.pi / 2
+
+      if sides < 3 then
+        error("regular_polygon needs at least 3 sides")
+      end
+
+      for i = 0, sides - 1 do
+        local angle = rotation - 2 * math.pi * i / sides
+        points[i + 1] = {
+          x = cx + radius * math.cos(angle),
+          y = cy + radius * math.sin(angle),
+        }
+      end
+
+      return points
+    end
+
+    function M.polygon(...)
+      return {...}
+    end
+
+    rectangle = M.rectangle
+    diamond = M.diamond
+    regular_polygon = M.regular_polygon
+    polygon = M.polygon
+
+    local function count(list)
+      local n = 0
+      for _, _ in ipairs(list) do
+        n = n + 1
+      end
+      return n
+    end
+
+    local function coord(p)
+      return "(" .. tostring(p.x) .. "," .. tostring(p.y) .. ")"
+    end
+
+    local function cross(ax, ay, bx, by)
+      return ax * by - ay * bx
+    end
+
+    local function ray_segment_intersection(p, v, a, b)
+      local wx = b.x - a.x
+      local wy = b.y - a.y
+      local qx = a.x - p.x
+      local qy = a.y - p.y
+      local denom = cross(v.x, v.y, wx, wy)
+
+      if math.abs(denom) < eps then
+        return nil
+      end
+
+      local t = cross(qx, qy, wx, wy) / denom
+      local u = cross(qx, qy, v.x, v.y) / denom
+
+      if t > eps and u >= -eps and u <= 1 + eps then
+        return {
+          t = t,
+          point = {x = p.x + t * v.x, y = p.y + t * v.y},
+          a = a,
+          b = b,
+        }
+      end
+
+      return nil
+    end
+
+    local function next_hit(p, v, polygon)
+      local best = nil
+      local n = count(polygon)
+
+      for i = 1, n do
+        local j = i + 1
+        if j > n then
+          j = 1
+        end
+
+        local hit = ray_segment_intersection(p, v, polygon[i], polygon[j])
+        if hit and (not best or hit.t < best.t) then
+          best = hit
+        end
+      end
+
+      return best
+    end
+
+    local function reflect(v, hit)
+      local a = hit.a
+      local b = hit.b
+      local ex = b.x - a.x
+      local ey = b.y - a.y
+      local len = math.sqrt(ex * ex + ey * ey)
+      local ux = ex / len
+      local uy = ey / len
+      local along = v.x * ux + v.y * uy
+
+      return {
+        x = 2 * along * ux - v.x,
+        y = 2 * along * uy - v.y,
+      }
+    end
+
+    local function draw_command(style)
+      if style and style ~= "" then
+        return slash .. "draw[" .. style .. "] "
+      end
+      return slash .. "draw "
+    end
+
+    local function polygon_path(polygon)
+      local path = ""
+      for i, p in ipairs(polygon) do
+        if i > 1 then
+          path = path .. " -- "
+        end
+        path = path .. coord(p)
+      end
+      return path
+    end
+
+    local function boundary_path(boundary)
+      return polygon_path(boundary) .. " -- cycle"
+    end
+
+    local function boundary_draw_style(style)
+      local fixed_style = "offset=.5" .. slash .. "pgflinewidth"
+      if style and style ~= "" then
+        return style .. "," .. fixed_style .. ",line join=round"
+      end
+      return fixed_style .. ",line join=round"
+    end
+
+    local function boundary_stroke_style(style)
+      return boundary_draw_style(style) .. ",fill opacity=0"
+    end
+
+    local function path_draw_style(style, length_shorten)
+      local fixed_style = "line join=bevel,shorten >=" .. tostring(length_shorten)
+      if style and style ~= "" then
+        return style .. "," .. fixed_style
+      end
+      return fixed_style
+    end
+
+    local function draw_boundary_fill(boundary, style)
+      tex.sprint(draw_command(boundary_draw_style(style)) .. boundary_path(boundary) .. ";")
+    end
+
+    local function draw_boundary_stroke(boundary, style)
+      tex.sprint(draw_command(boundary_stroke_style(style)) .. boundary_path(boundary) .. ";")
+    end
+
+    local function draw_path(boundary, start, velocity, steps, style, length_shorten)
+      local point = {x = start.x, y = start.y}
+      local v = {x = velocity.x, y = velocity.y}
+      local path = draw_command(path_draw_style(style, length_shorten)) .. coord(point)
+
+      for _ = 1, steps do
+        local hit = next_hit(point, v, boundary)
+        if not hit then
+          break
+        end
+
+        path = path .. " -- " .. coord(hit.point)
+        point = hit.point
+        v = reflect(v, hit)
+      end
+
+      tex.sprint(path .. ";")
+    end
+
+    local function ball_draw_style(color)
+      local fixed_style = "shading=ball"
+      if color and color ~= "" then
+        return fixed_style .. ",ball color=" .. color
+      end
+      return fixed_style .. ",ball color=red"
+    end
+
+    local function draw_start_ball(start, color, radius)
+      tex.sprint(
+        slash .. "shade[" .. ball_draw_style(color) .. "] " ..
+        coord(start) .. " circle[radius=" .. tostring(radius) .. "];"
+      )
+    end
+
+    function M.draw(options)
+      options = options or {}
+      local boundary = options.boundary
+      local start = options.start or {x = 0, y = 0}
+      local velocity = options.velocity or {x = 1, y = 1}
+      local steps = options.steps or 5
+      local boundary_style = options.boundary_style or "line width=3pt,draw=brown,fill=green!75"
+      local path_style = options.path_style or "black,thick,-latex"
+      local ball_color = options.ball_color or "red"
+      local ball_radius = options.ball_radius or "3pt"
+      local length_shorten = options.length_shorten or "0"
+
+      if not boundary then
+        error("missing boundary")
+      end
+
+      draw_boundary_fill(boundary, boundary_style)
+      draw_path(boundary, start, velocity, steps, path_style, length_shorten)
+      draw_start_ball(start, ball_color, ball_radius)
+      draw_boundary_stroke(boundary, boundary_style)
+    end
+
+    function bounce(options)
+      M.draw(options)
+    end
+  end
+}
+
+\begin{document}
+\begin{tikzpicture}[line cap=round]
+  \begin{scope}[xshift=-8cm]
+    \directlua{
+      bounce{
+        boundary = rectangle(-2.5, -1.6, 2.5, 1.6),
+        boundary_style = "line width=4pt,draw=orange,fill=green!50",
+        start = {x = -1.5, y = -0.8},
+        velocity = {x = 0.25, y = 0.75},
+        steps = 8, length_shorten = "2cm",
+        ball_color = "blue", ball_radius = "8pt",
+      }
+    }
+  \end{scope}
+
+  \begin{scope}
+    \directlua{
+      bounce{
+        boundary = regular_polygon(0, 0, 3, 6),
+        velocity = {x = 0.45, y = 0.45},
+        steps = 5, length_shorten = "1cm",
+        path_style = "white,ultra thick,-latex",
+      }
+    }
+  \end{scope}
+
+  \begin{scope}[xshift=8cm]
+    \directlua{
+      bounce{
+        boundary = diamond(0, 0, 4, 3),
+        start = {x = -1, y = -1},
+        velocity = {x = 3, y = 1},
+        steps = 10,
+        boundary_style = "line width=5pt,draw=blue,fill=teal!50",
+        ball_color = "violet",
+        ball_radius = "5pt",
+      }
+    }
+  \end{scope}
+\end{tikzpicture}
+\end{document}

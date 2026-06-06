@@ -1,0 +1,75 @@
+% https://tex.stackexchange.com/a/763431
+\documentclass{standalone}
+\usepackage[svgnames]{xcolor}
+\usepackage{luadraw}
+\usepackage{fourier-otf}
+\usepackage{animate}
+
+\begin{luacode*}
+luadraw.nbimages = 36
+\end{luacode*}
+
+% images creation
+\begin{luacode*}
+local ld = luadraw
+local cpx = ld.cpx
+local Z = cpx.Z
+local L, l = 8, 5
+local g = ld.graph:new{ window={0,L,0,l}, size={12,12}, bg="Brown", margin=0 }
+
+local A, v = Z(0,0), Z(1,math.sqrt(2))
+
+local function calc(A,v,nb)
+    local tx, ty, B
+    local dl = 0.5
+    local curve = {A}
+    for k = 1, nb do
+        if v.re > 0 then tx = (L-A.re)/v.re
+        elseif v.re < 0 then tx = (-A.re)/v.re
+        else tx = math.huge
+        end
+        if v.im > 0 then ty = (l-A.im)/v.im
+        elseif v.im < 0 then ty = (-A.im)/v.im
+        else ty = math.huge
+        end
+        if tx < ty then B = A+tx*v; v = Z(-v.re,v.im)
+        else B = A+ty*v; v = Z(v.re,-v.im)
+        end
+        local len = cpx.abs(B-A)
+        local n = math.ceil(len/dl)
+        local dl = len/n*cpx.normalize(B-A)
+        for k = 1, n do
+            table.insert(curve, A+k*dl)
+        end
+        A = B
+    end
+    return curve
+end
+
+local C = calc(A,v,20)
+local C1 = {}
+ld.nbimages = #C
+
+-- create the image number k, this function must be global
+function ld.makeframe(k) -- do not modify this line
+    g:Drectangle(0,L,Z(0,l), "color=Brown, fill=green!50")
+    local a = C[k]
+    table.insert(C1, a)
+    g:Dpolyline(C1,"gray") 
+    g:Dcircle(a,0.075,"ball color=red")
+    -- send image number k
+    g:Sendtotex()  -- do not modify
+    g:Cleargraph() -- do not modify
+end
+\end{luacode*}
+\newcommand*{\nb}{\directlua{tex.print(luadraw.nbimages)}}
+\newcommand*{\makeframe}[1]{\directlua{luadraw.makeframe(#1)}}%
+
+\begin{document}
+
+\begin{animateinline}[poster=first,controls,loop]{6}
+    \multiframe{\nb}{ik=1+1}{%
+    \makeframe{\ik}%
+}%
+\end{animateinline}
+\end{document} 
