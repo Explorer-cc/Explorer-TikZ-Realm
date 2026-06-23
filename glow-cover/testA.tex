@@ -1,0 +1,34 @@
+% Source - https://tex.stackexchange.com/a/763508
+
+\documentclass[tikz, border=5pt]{standalone}
+\definecolor{myyellow}{RGB}{224,239,158}
+\definecolor{myteal}  {RGB}{47,89,85}
+\usetikzlibrary{spath3, intersections}
+\newcommand*\spathset{\pgfqkeys{/tikz/spath}}
+\begin{document}
+\foreach \nextangle in {10, 15, 30, 45, 60}{%
+  \begin{tikzpicture}[
+    cover/.style={line width=3pt, draw=myyellow, fill=myteal},
+    my tile/.style={insert path={(0,0) rectangle (3,3)}}
+  ]
+  %\newcommand*\nextangle{45}
+  \path[                    my tile, spath/save=one];
+  \path[rotate=-\nextangle, my tile, spath/save=two];
+  \spathset{
+    split at intersections={one}{two},
+    get components of={one}{\cptOne},
+    get components of={two}{\cptTwo}
+  }
+  \path[
+    spath/use=\getComponentOf\cptOne{2}, 
+    spath/use={\getComponentOf\cptTwo{2}, reverse, weld}, 
+    spath/close, 
+    spath/save=realtile
+  ];
+  \foreach \i in {0, \nextangle, ..., 359} {
+    \draw[cover, spath/use={realtile, transform={rotate=\i}}];
+  }
+  \useasboundingbox (-4.5,-4.5) rectangle (4.5,4.5); % every diagram same size
+  \end{tikzpicture}
+}
+\end{document}

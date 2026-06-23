@@ -1,0 +1,42 @@
+% Source - https://tex.stackexchange.com/a/764083
+% Posted by nidarfp, modified by community. See post 'Timeline' for change history
+% Retrieved 2026-06-23, License - CC BY-SA 4.0
+
+\documentclass{standalone}%compile with lualatex only
+\usepackage[svgnames]{xcolor}
+\usepackage{luadraw}%https://github.com/pfradin/luadraw/
+\usepackage{fourier-otf}
+%https://tex.stackexchange.com/questions/764072/how-to-offset-two-bezier-paths-with-specific-ratio-elegantly#764078
+\begin{document}
+
+\begin{luadraw}{name=path_circle, exec=true, auto=false}
+local ld = luadraw
+local cpx = ld.cpx
+local Z = cpx.Z
+local g = ld.graph:new{ window={-1,1,-1,1}, size={12,12} }
+-- g:Linecap("round"); g:Linejoin("round")
+local greenpath = ld.path( {Z(-0.988,-0.155), Z(-0.689,0.093), Z(-0.531,0.081), Z(-0.454,0.114), "b", Z(-0.099,0.175), Z(0.111,0.132), Z(0.402,0.132), "b", Z(0.617,0.127), Z(0.819,0.132), Z(0.98,0.252), "b"},50 )
+local f1 = ld.curvilinear_param(greenpath)
+
+local tealpath = ld.path( {Z(-0.15,-0.349), Z(0.072,-0.109), Z(0.231,-0.119), Z(0.274,-0.119), "b", Z(0.607,-0.167), Z(0.729,-0.431), Z(0.832,-0.53), "b"},50 )
+local f2 = ld.curvilinear_param(tealpath)  
+
+local t1, t2 = 0.7, 0.35
+local magentapath = ld.concat( ld.parametric(f1,0,t1)[1], ld.parametric(f2,t2,1)[1] )
+local wd = 2*ld.pt/g:Abs(1)
+
+local blue = ld.line2strip({f1(t1), f2(t2)}, wd, nil, "round", "left")
+local green = ld.line2strip(greenpath, wd, nil, "round", "left")
+local teal = ld.line2strip(tealpath, wd, nil, "round", "left")
+local magenta = ld.line2strip(magentapath, wd, nil, "round", "right")
+--drawing
+g:Beginclip({1,0,"c"})
+    g:Dpath(blue,"draw=none,fill=blue")
+    g:Dpath(green,"draw=none,fill=green")
+    g:Dpath(teal,"draw=none,fill=teal")
+    g:Dpath(magenta,"draw=none,fill=magenta")
+g:Endclip()
+g:Dcircle(0,1,"line width=4")
+g:Show()
+\end{luadraw}
+\end{document}

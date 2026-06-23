@@ -1,0 +1,40 @@
+% Source - https://tex.stackexchange.com/a/763509
+
+\documentclass[tikz,border=5pt]{standalone}
+
+\definecolor{myyellow}{RGB}{224,239,158}
+\definecolor{myteal}{RGB}{47,89,85}
+
+\begin{document}
+
+\begin{tikzpicture}[
+    cover/.style={line width=3pt, draw=myyellow, fill=myteal},
+    myrect/.pic={\draw[cover] (0,0) rectangle (3,3);}
+]
+
+\def\step{15}
+
+\pgfmathtruncatemacro{\N}{360/\step-1}
+\pgfmathtruncatemacro{\firstclipped}{floor(270/\step)+1}
+
+% Draw the first tiles normally.
+\foreach \k in {0,...,\numexpr\firstclipped-1\relax} {
+    \pgfmathsetmacro{\ang}{\k*\step}
+    \pic[rotate=\ang] {myrect};
+}
+
+% % Draw the remaining tiles only "outside the first one".
+\foreach \k in {\firstclipped,...,\N} {
+    \pgfmathsetmacro{\ang}{\k*\step}
+    \begin{scope}[even odd rule]
+        \clip
+            (-4.5,-4.5) rectangle (4.5,4.5)
+            (-1.5pt,-1.5pt) rectangle ({3cm+1.5pt},{3cm+1.5pt})
+        ;
+        \pic[rotate=\ang] {myrect};
+    \end{scope}
+}
+
+\end{tikzpicture}
+
+\end{document}

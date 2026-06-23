@@ -1,0 +1,21 @@
+\begin{tikzpicture}[line join=round]%
+\begin{scope}%
+\pgfsetstrokecolor{myyellow}%
+\pgfsetfillcolor{myteal}%
+\pgfsetlinewidth{3.0pt}%
+\draw[fill] (5,5) -- (8,5) -- (8,8) -- (5,8)--cycle;%
+\draw[fill] (5,5) -- (7.1213,2.8787) -- (9.2426,5) -- (7.1213,7.1213)--cycle;%
+\draw[fill] (5,5) -- (5,2) -- (8,2) -- (8,5)--cycle;%
+\draw[fill] (5,5) -- (2.8787,2.8787) -- (5,0.7574) -- (7.1213,2.8787)--cycle;%
+\draw[fill] (5,5) -- (2,5) -- (2,2) -- (5,2)--cycle;%
+\draw[fill] (5,5) -- (2.8787,7.1213) -- (0.7574,5) -- (2.8787,2.8787)--cycle;%
+\draw[fill] (5,5) -- (5,8) -- (2,8) -- (2,5)--cycle;%
+\begin{scope}%
+\clip (0,10) -- (10,10) -- (10,0) -- (0,0)--cycle  (4.9473,4.9473) -- (8.0527,4.9473) -- (8.0527,8.0527) -- (4.9473,8.0527);%
+\draw[fill] (5,5) -- (7.1213,7.1213) -- (5,9.2426) -- (2.8787,7.1213)--cycle;%
+\end{scope}%
+\pgfsetstrokecolor{black}%
+\pgfsetlinewidth{0.4pt}%
+\pgfsetfillcolor{black}%
+\end{scope}%
+\end{tikzpicture}%

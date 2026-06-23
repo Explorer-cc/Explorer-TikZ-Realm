@@ -1,0 +1,84 @@
+% https://github.com/zongpingding/zTeX_bundle/tree/dev/Examples/example_x
+% https://ask.latexstudio.net/ask/question/17926.html
+% 
+\documentclass[tikz,border=12pt]{standalone}
+\usepackage[fontset=fandol]{ctex}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{forest}
+\usepackage[export]{adjustbox}
+\usetikzlibrary{arrows.meta}
+\useforestlibrary{edges}
+\forestset{
+  root node/.style={draw,fill=red!85!black,text=black,rounded corners=3pt,align=center,font=\small,text width=4cm,inner xsep=5pt,inner ysep=3pt},
+  category node/.style={draw,fill=blue!75!black,text=white,rounded corners=3pt,align=center,font=\small,inner xsep=5pt,inner ysep=3pt},
+  concept node/.style={draw,fill=green!50!black,text=white,rounded corners=3pt,align=center,font=\small,inner xsep=5pt,inner ysep=3pt},
+  note node/.style={draw,fill=white,text=black,rounded corners=3pt,align=left,font=\small,inner xsep=5pt,inner ysep=3pt}
+}
+\begin{document}
+\begin{forest}
+for tree={
+  grow'=0,
+  parent anchor=east,
+  child anchor=west,
+  anchor=west,
+  forked edge,
+  fork sep=15pt,
+  l sep=25pt,
+  s sep=5pt,
+  if level=0{root node}{
+    if level=1{category node}{
+      if level=2{concept node}{note node}
+    }
+  }
+}
+[\textbf{平面点集}\\$(S)$ 为 $\mathbb{R}^n$ 上的点集，其补集\\$\mathbb{R}^n\setminus S$ 记作 $S^c$
+  [点
+    [内点
+      [{存在 $\bar{x}$ 的一个 $\delta$ 邻域 $O(\bar{x},\delta)$ 完全落在 $S$ 中}]
+      [{全体的点记作 $\operatorname{int}S$ 或 $S^\circ$}]
+    ]
+    [界点]
+    [外点]
+    [聚点
+      [定义
+        [{定义 1：$\bar{x}$ 的任一邻域都包含 $S$ 中无数个点.}]
+        [{定义 2：$\bar{x}$ 的任一邻域都包含 $S$ 中的至少一个点.}]
+      ]
+      [{全体的点记作：$S^d$ 或 $S'$}]
+      [{直观理解：也就是点 $\bar{x}$ 附近是不是聚集了很多 $S$ 中的点.}]
+      [{内点一定是聚点，界点一定是聚点，有限集没有聚点.}]
+    ]
+    [孤立点]
+  ]
+  [点集
+    [开集]
+    [相对开集]
+    [闭集]
+    [相对闭集]
+    [紧集
+      [开覆盖
+        [{如果 $\mathbb{R}^n$ 的一组开覆盖 $\{U_\alpha\}$ 满足 $\displaystyle\bigcup_\alpha U_\alpha \supset S$，那么称 $\{U_\alpha\}$ 是 $S$ 的一个开覆盖}]
+        [{设 $E$ 是任何一个度量空间的子集，为每个 $p\in E$ 选择一个半径 $r_p$（半径可以是不同的），那么集族 $N_{r_p}(p)\mid p\in E$ 是 $E$ 的一个开覆盖}]
+      ]
+      [紧集]
+      [Heine-Borel 定理
+        [{$\mathbb{R}^n$ 上的点集 $S$ 是紧集的充分必要条件是它为有界闭集}]
+        [{一个测试插入图片:\quad\includegraphics[valign=m,width=4cm]{example-image-duck}}]
+      ]
+    ]
+  ]
+  [区域
+    [开域]
+    [闭域]
+  ]
+  [基本定理
+    [闭矩形套定理]
+    [Cantor 闭区间套定理]
+    [{凝聚定理 (Bolzano-Weierstrass 定理)：$\mathbb{R}^n$ 中的有界点列一定有收敛子列（有界无限点集一定有聚点）.}]
+    [{Cauchy 定理：收敛点列 $\leftrightarrow$ 基本点列}]
+    [{紧性定理 (Heine-Borel 定理)：一个基本测试}]
+  ]
+]
+\end{forest}
+\end{document}

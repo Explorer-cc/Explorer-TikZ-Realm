@@ -1,0 +1,40 @@
+% Source - https://tex.stackexchange.com/a/763509
+
+\documentclass[tikz,border=5pt]{standalone}
+
+\definecolor{myyellow}{RGB}{224,239,158}
+\definecolor{myteal}{RGB}{47,89,85}
+
+\begin{document}
+
+\begin{tikzpicture}
+\def\a{3}
+\def\step{30}
+
+\pgfmathsetmacro{\px}{\a*sin(\step)}
+\pgfmathsetmacro{\py}{\a*cos(\step)}
+\pgfmathsetmacro{\qy}{\a*(1-sin(\step))/cos(\step)}
+
+\tikzset{
+    cover/.style={
+        line width=3pt,
+        draw=myyellow,
+        fill=myteal
+    },
+    myrect/.pic={
+        \draw[cover]
+            (0,0) |- (\a,\a)
+            -- (\a,\qy)
+            -- (\px,\py)
+            -- cycle;
+    }
+}
+
+\pgfmathtruncatemacro{\N}{360/\step-1}
+
+\foreach \k [evaluate=\k as \ang using \k*\step] in {0,...,\N} {
+    \pic[rotate=\ang] {myrect};
+}
+\end{tikzpicture}
+
+\end{document}

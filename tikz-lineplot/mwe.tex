@@ -1,0 +1,59 @@
+% https://tex.stackexchange.com/q/763953/322482
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{fourier-otf}
+\usepackage[fontset=ubuntu]{ctex}
+\usetikzlibrary{shapes.geometric,arrows.meta}
+\begin{document}
+    \begin{tikzpicture}
+        \draw[-stealth] (0,0) -- (13,0) node[right] {球队};
+        \draw[-stealth] (0,0) -- (0,28/4) node[above] {进/失球个数};
+        \foreach \y in {0,5,...,25} \draw (0,{\y/4}) -- (-0.1,{\y/4}) node[left] {\y};
+        \foreach \y in {5,10,...,25} \draw[gray!30] (0,{\y/4}) -- (11.5,{\y/4});
+        \foreach \name[count=\n] in {九江队,上饶队,南昌队,景德镇队,鹰潭队,宜春队,赣州队,抚州队,新余队,萍乡队,吉安队} {
+             \draw (\n,0) -- (\n,-0.1) node[xshift=-.3cm,below=.4cm,rotate=45,anchor=north] {\name};
+        }
+        \foreach \i/\pos/\txt[
+            count=\n,
+            remember=\i as \iprev (initially 16)
+        ] in {
+            16/above/16,
+            4/above/4,
+            12/above/a,
+            6/below/6,
+            5/below/5,
+            16/above/16,
+            17/above/17,
+            8/above/8,
+            8/below/8,
+            15/below/15,
+            11/below/11%<-
+        } {
+            \node[fill=cyan,circle,inner sep=2pt,label={[text=cyan]\pos:$\txt$}] at (\n,{\i/4}) {};
+            \ifnum\n=1\else \draw[thick,cyan] (\n-1,{\iprev/4}) -- (\n,{\i/4});\fi
+        }
+        \foreach \i/\pos/\txt[
+            count=\n,
+            remember=\i as \iprev (initially 7)
+        ] in {
+            7/below/7,
+            4/below/4,
+            7/below/7,
+            10/above/10,
+            15/above/15,
+            4/below/4,
+            11/below/b,
+            7/below/7,
+            15/above/15,
+            20/above/20,
+            18/above/18%<-
+        } {
+            \node[fill=magenta,diamond,inner sep=2pt,label={[text=magenta]\pos:$\txt$}] at (\n,{\i/4}) {};
+            \ifnum\n=1\else \draw[thick,dashed,magenta] (\n-1,{\iprev/4}) -- (\n,{\i/4});\fi
+        }
+        \node[align=center] at (13,5.5) {%
+            \tikz[baseline=-.4em]{\draw[thick,cyan](0,0) -- node[fill=cyan,circle,inner sep=2pt] {} (1,0);}\;\;进球\\[3pt]
+            \tikz[baseline=-.4em]{\draw[thick,magenta](0,0) -- node[fill=magenta,diamond,inner sep=2pt] {} (1,0);}\;\;失球
+        };
+        \node[font=\bfseries\Large] at ({13/2},7.5) {进/失球折线统计图};
+    \end{tikzpicture}
+\end{document}

@@ -1,0 +1,17 @@
+\documentclass[tikz,border=5pt]{standalone}
+\usepackage{tkz-euclide}
+\usepackage{newtxmath}
+\begin{document}
+\tkzSetUpLabel[font=\scriptsize]
+\tkzSetUpLine[semithick]
+\begin{tikzpicture}
+    \tkzDefPoints{0/3/A,0/0/E,-1.5/-0.5/B,3/1/D,2/-1/C}
+    \tkzDrawPolygons(A,B,C A,C,D)
+    \tkzDrawSegments[dashed](A,E B,D C,E)
+    \tkzLabelPoints[above=-2pt](A)
+    \tkzLabelPoints[left=-2pt](B)
+    \tkzLabelPoints[below right=-3pt](C)
+    \tkzLabelPoints[right=-2pt](D)
+    \tkzLabelPoints[below](E)
+\end{tikzpicture}
+\end{document}

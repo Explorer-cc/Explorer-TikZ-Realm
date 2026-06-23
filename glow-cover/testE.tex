@@ -1,0 +1,29 @@
+% Source - https://tex.stackexchange.com/a/763510
+% Posted by nidarfp, modified by community. See post 'Timeline' for change history
+% Retrieved 2026-06-08, License - CC BY-SA 4.0
+
+\documentclass[tikz,border=5pt]{standalone}
+\usepackage{luadraw}
+\definecolor{myyellow}{RGB}{224,239,158}
+\definecolor{myteal}{RGB}{47,89,85}
+\begin{document}
+
+\begin{luadraw}{name=recursive_cover2}
+local ld = luadraw
+local cpx = ld.cpx
+local Z = cpx.Z
+local g = ld.graph:new{bbox=false}
+local pic = ld.rectangle(0,Z(3,3))
+local wd = 1.5*ld.pt -- Take into account the half thickness of the lines.
+local clip = ld. polyline2path( ld.rectangle(Z(-wd,-wd), Z(3+wd,3+wd)) )
+g:Linecolor("myyellow"); g:Filloptions("full","myteal"); g:Linewidth(30)
+for k = 0, 11 do
+    if k >= 10 then --last one
+        g:Beginclip(clip, true)
+    end
+    g:Dpolyline( ld.rotate(pic, -k*30), true)
+    if k >= 10 then g:Endclip() end
+end
+g:Show()
+\end{luadraw}
+\end{document}

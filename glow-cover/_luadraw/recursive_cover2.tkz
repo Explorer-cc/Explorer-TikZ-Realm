@@ -1,0 +1,28 @@
+\begin{tikzpicture}[line join=round]%
+\begin{scope}%
+\pgfsetstrokecolor{myyellow}%
+\pgfsetfillcolor{myteal}%
+\pgfsetlinewidth{3.0pt}%
+\draw[fill] (5,5) -- (8,5) -- (8,8) -- (5,8)--cycle;%
+\draw[fill] (5,5) -- (7.5981,3.5) -- (9.0981,6.0981) -- (6.5,7.5981)--cycle;%
+\draw[fill] (5,5) -- (6.5,2.4019) -- (9.0981,3.9019) -- (7.5981,6.5)--cycle;%
+\draw[fill] (5,5) -- (5,2) -- (8,2) -- (8,5)--cycle;%
+\draw[fill] (5,5) -- (3.5,2.4019) -- (6.0981,0.9019) -- (7.5981,3.5)--cycle;%
+\draw[fill] (5,5) -- (2.4019,3.5) -- (3.9019,0.9019) -- (6.5,2.4019)--cycle;%
+\draw[fill] (5,5) -- (2,5) -- (2,2) -- (5,2)--cycle;%
+\draw[fill] (5,5) -- (2.4019,6.5) -- (0.9019,3.9019) -- (3.5,2.4019)--cycle;%
+\draw[fill] (5,5) -- (3.5,7.5981) -- (0.9019,6.0981) -- (2.4019,3.5)--cycle;%
+\draw[fill] (5,5) -- (5,8) -- (2,8) -- (2,5)--cycle;%
+\begin{scope}%
+\clip (0,10) -- (10,10) -- (10,0) -- (0,0)--cycle  (4.9473,4.9473) -- (8.0527,4.9473) -- (8.0527,8.0527) -- (4.9473,8.0527);%
+\draw[fill] (5,5) -- (6.5,7.5981) -- (3.9019,9.0981) -- (2.4019,6.5)--cycle;%
+\end{scope}%
+\begin{scope}%
+\clip (0,10) -- (10,10) -- (10,0) -- (0,0)--cycle   (4.9473,4.9473) -- (8.0527,4.9473) -- (8.0527,8.0527) -- (4.9473,8.0527);%
+\draw[fill] (5,5) -- (7.5981,6.5) -- (6.0981,9.0981) -- (3.5,7.5981)--cycle;%
+\end{scope}%
+\pgfsetstrokecolor{black}%
+\pgfsetlinewidth{0.4pt}%
+\pgfsetfillcolor{black}%
+\end{scope}%
+\end{tikzpicture}%

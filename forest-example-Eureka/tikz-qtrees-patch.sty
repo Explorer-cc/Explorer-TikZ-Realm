@@ -1,0 +1,65 @@
+\ProvidesPackage{tikz-qtree-patch}
+
+\newif\iftikzqtreePatch
+\newif\tikzqtreePatchfalse
+\DeclareOption{log}{\tikzqtreePatchtrue}
+\DeclareOption*{\errmessage{Undeclared option, valid option is:'log'}}
+\ProcessOptions
+\def\patchshowlog#1{\iftikzqtreePatch\typeout{#1}\fi}
+
+% REF: https://ask.latexstudio.net/ask/question/17926.html
+\ExplSyntaxOn
+\newcommand{\stringifeq}[2]
+  {
+    \str_if_eq:VnTF #1 {#2}
+      { \use_i:nn }
+      { \use_ii:nn }
+  }
+\def\pgfsubtree#1#2{
+  \let\parentnodename\nodename
+  \pgftree@savechildx=\pgftree@childx
+  \pgftree@savechildy=\pgftree@childy
+  \pgftree@savechildi=\pgftree@childi
+  {
+    \pgftree@childx=0pt
+    \pgftree@childy=0pt
+    \pgftree@childi=0
+    \process@children #2
+  }
+  \begin{pgfsubpicture}
+    #1 \ifnum\pgftree@childi>0
+    {
+      \stringifeq\leveldirection{right}
+      {
+        \pgftransformshift{\pgfpointdiff{\pgfpoint{\the\pgf@picminx}{0}}{\pgfpoint{\the\pgf@picmaxx}{0}}}
+        \patchshowlog{----->right~patch}
+      }{ }
+      \stringifeq\leveldirection{left}
+      {
+        \pgftransformshift{\pgfpointdiff{\pgfpoint{\the\pgf@picmaxx}{0}}{\pgfpoint{\the\pgf@picminx}{0}}}
+        \patchshowlog{----->left~patch}
+      }{ }
+      \stringifeq\leveldirection{down}
+      {
+        \pgftransformshift{\pgfpointdiff{\pgfpoint{0}{\the\pgf@picmaxy}}{\pgfpoint{0}{\the\pgf@picminy}}}
+        \patchshowlog{----->down~patch}
+      }{ }
+      \stringifeq\leveldirection{up}
+      {
+        \pgftransformshift{\pgfpointdiff{\pgfpoint{0}{\the\pgf@picminy}}{\pgfpoint{0}{\the\pgf@picmaxy}}}
+        \patchshowlog{----->up~patch}
+      }{ }
+      \pgftransformshift{\pgfpointscale{-0.5}{\pgfqpoint{\the\pgftree@childx}{\the\pgftree@childy}}}
+      \pgfplacesubpicture
+    }{
+      \pgftree@childi=0
+      \process@edges #2
+    } \fi
+  \end{pgfsubpicture}
+  \global\pgftree@childi=\pgftree@savechildi
+  \global\pgftree@childx=\pgftree@savechildx
+  \global\pgftree@childy=\pgftree@savechildy
+}
+\ExplSyntaxOff
+\endinput
+% end of file 'tikz-qtree-patch.sty'

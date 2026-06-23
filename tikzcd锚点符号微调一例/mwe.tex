@@ -1,0 +1,20 @@
+% https://tex.stackexchange.com/a/733720
+\documentclass{standalone}
+\usepackage{amsmath,amssymb,mathrsfs}
+\usepackage{newtxmath}
+\usepackage{tikz-cd}
+\tikzcdset{tikzcd to/.tip={cm to[width=4pt,length=6pt]}}
+\begin{document}
+\begin{tikzcd}[
+    row sep=0.5cm, 
+    column sep=1cm,
+    mylabel/.style={sloped, scale=2,inner sep=0pt}
+    ]
+\mathbf{H}^\bullet(\mathfrak{U}, \mathscr{K}^\bullet) 
+\arrow[dd, "\sim"{mylabel}] 
+\arrow[dr, "\sim"{mylabel}, start anchor=east,end anchor=north west] & \\
+& \mathbf{H}^\bullet(f^{-1}(V), \mathscr{K}^\bullet) \\
+\mathbf{H}^\bullet(\mathfrak{U}', \mathscr{K}^\bullet) 
+\arrow[ur, "\sim"{mylabel}, start anchor=east,end anchor=south west] & 
+\end{tikzcd}
+\end{document}
