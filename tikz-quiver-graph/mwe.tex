@@ -1,0 +1,27 @@
+% Source - https://tex.stackexchange.com/a/684394
+
+\documentclass[tikz,border=5pt]{standalone}
+\tikzset{
+  polygon/.cd,
+  dot/.style={
+    shape=circle, color=black, draw, fill, inner sep=+0pt, minimum size=+2pt},
+  path/.style={draw},
+  label/.style={shape=circle, inner sep=+.05em}}
+\newcommand*\tikzpolygon[4][]{% #2 = phase, #3 = radius, #4 = number of vertices
+  \tikz[line cap=round,polygon/.cd,#1]
+  \path[polygon/path]
+    foreach[
+      count    = \j from 0,
+      evaluate = \j as \angle using {#2-360/(#4)*\j}
+    ] \i in {1,...,#4}{
+      node[
+        polygon/dot,
+        label = {[polygon/label, anchor=\angle+180]\angle:$\i$}
+      ] (pg-\i) at (\angle:{#3}) {}
+    }
+    plot[sharp cycle, samples at = {1,...,#4}] (pg-\x.center);%
+}
+\begin{document}
+\tikzpolygon{90}{80pt}{12}
+\tikzpolygon[path/.append style={fill=gray}]{180}{1cm}{17}
+\end{document}

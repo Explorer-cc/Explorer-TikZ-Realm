@@ -1,0 +1,33 @@
+% https://tex.stackexchange.com/a/684394
+% https://ask.latexstudio.net/ask/question/17498.html
+% https://tex.stackexchange.com/q/764055
+\documentclass[tikz,border=5pt]{standalone}
+\usetikzlibrary{graphs.standard,arrows.meta}
+\tikzset{
+  polygon/.cd,
+  dot/.style={shape=circle, color=black, fill, draw, inner sep=+0pt, minimum size=+5pt},
+  path/.style={draw,-latex,thick},
+  label/.style={shape=circle,inner sep=+.05em, minimum size=+2.5em}}
+\newcommand*\tikzpolygon[4][]{
+  % #2 = phase, #3 = radius, #4 = number of vertices
+  \tikz[polygon/.cd,#1]
+    \graph[
+      edges            = {polygon/path},
+      edge node        = {node[
+                            midway,auto,inner sep=+1pt,circle,anchor=\myangle,
+                            /utils/exec=\pgfmathsetmacro\myangle{#2+360/(#4)*\tikztotarget},
+                        ] {$a_{\pgfmathprint{int(mod(\tikztotarget,12))}}$}},
+      phase            = {#2},
+      radius           = {#3},
+      counterclockwise = {#4},
+      n                = {#4},
+      nodes={
+        /tikz/polygon/dot, as=,
+        /utils/exec=\pgfmathsetmacro\myangle{#2+360/(#4)*\tikzgraphnodename},
+        label/.expanded={[polygon/label, anchor=\myangle+180]\myangle:$a_{1,\tikzgraphnodename}$}
+      },
+    ]{subgraph C_n[V={0,1,...,\inteval{#4-1}}]};%
+}
+\begin{document}
+\tikzpolygon{105}{80pt}{12}
+\end{document}

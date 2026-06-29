@@ -1,0 +1,28 @@
+% Source - https://tex.stackexchange.com/a/684394
+
+\documentclass[tikz,border=5pt]{standalone}
+\usetikzlibrary{graphs.standard}
+\tikzset{
+  polygon/.cd,
+  dot/.style={
+    shape=circle, color=black, fill, draw, inner sep=+0pt, minimum size=+2pt},
+  path/.style={draw},
+  label/.style={shape=circle, inner sep=+.05em}}
+\newcommand*\tikzpolygon[4][]{% #2 = phase, #3 = radius, #4 = number of vertices
+  \tikz[polygon/.cd,#1]
+    \graph[
+      edges     = {polygon/path},
+      phase     = {#2},
+      radius    = {#3},
+      clockwise = {#4},
+      n         = {#4},
+      nodes={
+        /tikz/polygon/dot, as=,
+        /utils/exec=\pgfmathsetmacro\angle{#2-360/(#4)*(\tikzgraphnodename-1)},
+        label/.expanded={[polygon/label, anchor=\angle+180]\angle:$\tikzgraphnodename$}},
+    ]{subgraph C_n};%
+}
+\begin{document}
+\tikzpolygon{90}{80pt}{12}
+\tikzpolygon[path/.append style={green, thick}]{180}{1cm}{17}
+\end{document}
