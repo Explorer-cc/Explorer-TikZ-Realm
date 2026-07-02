@@ -1,0 +1,32 @@
+% Source - https://tex.stackexchange.com/a/764344
+
+\documentclass[tikz]{standalone}
+\usetikzlibrary{arrows.meta}
+\makeatletter
+\pgfset{
+  Foo/.tip={Straight Barb[left]},
+  Baz/.tip={Latex[left]},
+  swap arrows/.code=\pgfsetarrows{[swap]}, % TikZ: arrows={[swap]}
+%   swap arrows/.style={/tikz/arrows={[swap]}},
+  flip arrows/.code=
+    \let\pgf@temp\pgf@start@tip@sequence
+    \let\pgf@start@tip@sequence\pgf@end@tip@sequence
+    \let\pgf@end@tip@sequence\pgf@temp
+}
+\makeatother
+\begin{document}
+\begin{tikzpicture}[ultra thick]
+\foreach[count=\i] \type in {, swap arrows, flip arrows, {swap arrows, flip arrows}}
+  \draw[
+    arrows={Foo[] Baz[]-Foo[sep]. Baz[blue!50]},
+    style/.expand once=\type
+  ] (0,\i) -- +(right:2) node[right,font=\ttfamily]{\type};
+\end{tikzpicture}
+\begin{tikzpicture}[ultra thick]
+\foreach[count=\i] \type in {, swap arrows, flip arrows,{swap arrows, flip arrows}}
+  \draw[
+    style/.expand once=\type,
+    arrows={Foo[] Baz[]-Foo[sep]. Baz[blue!50]},
+  ] (0,\i) -- +(right:2) node[right,font=\ttfamily]{\type};
+\end{tikzpicture}
+\end{document}

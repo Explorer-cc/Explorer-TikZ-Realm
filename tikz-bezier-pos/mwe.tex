@@ -1,0 +1,32 @@
+\documentclass[tikz,border=5pt]{standalone}
+\usepackage[stixtwo]{fontsetup}
+\usepackage{tkz-euclide}
+\begin{document}
+\tkzSetUpLine[thick]
+\begin{tikzpicture}
+    \tkzDefPoints{0/0/A,-1/0.8/B,2.5/0/C}
+    \tkzDefPoints{0/2.5/A1,-1/3.3/B1,2.5/2.5/C1}
+    \tkzDrawPolygons(A,B,B1,A1 A,C,C1,A1)
+    \draw[thick,dashed] 
+    (B) 
+    .. controls (-0.101,1.074) and (0.325,1.074) .. 
+    (0.984,1.005) coordinate[pos=.55] (E)
+    .. controls (1.637,0.936) and (2.42,0.605) ..
+    (C) coordinate[pos=.35] (D);
+    \draw[thick] 
+    (B1)
+    .. controls (-0.101,3.574) and (0.325,3.574) ..
+    (0.984,3.505)
+    .. controls (1.637,3.436) and (2.42,3.105) ..
+    (C1) coordinate[pos=.35] (D1);
+    \tkzDrawSegments[dashed](B1,E A,E C,E D,D1 A,D1 C,D1)
+    \tkzLabelPoints[below](A,C)
+    \tkzLabelPoints[left](B)
+    \tkzLabelPoints[above right=-2pt](D,E)
+    \tkzLabelPoint[above right=-2pt](A1){$A_1$}
+    \tkzLabelPoint[left=-2pt](B1){$B_1$}
+    \tkzLabelPoint[right](C1){$C_1$}
+    \tkzLabelPoint[above](D1){$D_1$}
+\end{tikzpicture}
+
+\end{document}

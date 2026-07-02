@@ -1,0 +1,93 @@
+% https://tex.stackexchange.com/a/762399/
+% https://tex.stackexchange.com/a/764332/
+\documentclass[tikz,border=5pt]{standalone}
+\usepackage[stixtwo]{fontsetup}
+\usetikzlibrary{arrows.meta,bending,nfold,calc,ext.nodes}
+\newcommand\drawline[3][1.5]{\draw[dashed,ultra thin,black] ($(#2)!-#1cm!(#3)$) -- ($(#3)!-#1cm!(#2)$);}
+% https://tex.stackexchange.com/a/764321/
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\tikzset{
+  offset/.code=
+    \tikz@addoption{%
+      \pgfgetpath\tikz@temp
+      \pgfsetpath\pgfutil@empty
+      \pgfoffsetpath\tikz@temp{#1}%
+    },
+  % slash installer
+  slash/install/.style={
+    every to/.append style={slash side/do slashes},
+    slash/install/.code=, % and disable
+  },
+  % slash direction
+  slash direction/.is choice,
+  slash direction/forward/.style={slash direction/do/.code=},
+  slash direction/backward/.style={slash direction/do/.style={xscale=-1}},%
+  slash direction=forward,% default value
+  % slash side
+  slash side/.is choice,
+  slash side/none/.style=    {slash side/do slashes/.code=},
+  slash side/positive/.style={slash side/do slashes/.style={slash/do}},
+  slash side/negative/.style={slash side/do slashes/.style={slash/do=swap}},
+  slash side/both/.style=    {slash side/do slashes/.style={slash/do,slash/do=swap}},
+  slash side=none,% default value
+  % slash placer
+  slash/do/.style={edge node={pic[#1,midway,sloped,slash direction/do]{slash}}},
+  slash/.pic={\draw[-,line cap=round,thick,pic actions] (-.15cm,-.15cm) -- (+.15cm,+.15cm);}, 
+  % `pic actions': There, it will set the "action" keys set inside the hoptionsi of the pic
+  foo/.tip={Straight Barb[left,length=5pt]},
+  foo'/.tip={Straight Barb[right,length=5pt]},
+  shrink/.style={thick,shorten >=5pt,shorten <=5pt},
+  common harpoon/.style n args=3{
+    draw=none,auto,
+    postaction={path only,draw,#2,shrink,offset=+#1ex},
+    postaction={path only,draw,#3,shrink,offset=-#1ex},
+    ext/auto with offset,ext/auto offset=+#1ex,
+  },
+  dualharpoon/.style={common harpoon={#1}{foo'-}{-foo'}},
+  dualharpoon'/.style={common harpoon={#1}{-foo}{foo-}},
+  dualharpoon/.default=1,dualharpoon'/.default=1,
+  placeslash/.style={#1,auto,teal!50,slash/install},
+  relarrow/.style={dualharpoon,placeslash={#1}},
+  relarrow'/.style={dualharpoon',placeslash={#1}}
+}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\begin{tikzpicture}[
+        box/.style={
+            draw=violet, rounded corners=6pt, 
+            fill=violet!20,font=\small, 
+            minimum height=1cm,
+            minimum width=1.5cm,
+        }
+    ]
+    \node[box] (top) at (0,5) {TTTTTTTT};
+    \node[box] (center) at (0,2.5) {XX};
+    \node[box] (left) at (-2.5,0) {CC};
+    \node[box] (right) at (2.5,0) {EEEEEEEE};
+    %%%%%%%%%%
+    \drawline{top}{center}
+    \drawline{left}{center}
+    \drawline{right}{center}
+    %%%%%%%%%%
+    \draw[
+        relarrow',
+        slash side=negative
+    ] (top) to (center);
+    \draw[
+        relarrow,
+        slash direction=backward,
+        slash side=both
+    ] (left) to (right);
+    \draw[
+        relarrow',
+        slash direction=backward,
+        slash side=positive
+    ] (center) to (left);
+    \draw[
+        relarrow,
+        slash side=positive
+    ] (center) to (right);
+\end{tikzpicture}
+\end{document}

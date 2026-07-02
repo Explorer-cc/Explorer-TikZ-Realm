@@ -1,0 +1,63 @@
+% https://tex.stackexchange.com/a/764326
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% https://tex.stackexchange.com/a/96970
+% https://tex.stackexchange.com/a/762399
+\documentclass[tikz,border=5pt]{standalone}
+\usetikzlibrary{arrows.meta,bending,nfold,ext.nodes,decorations.markings}
+% https://tex.stackexchange.com/a/763043
+% https://tex.stackexchange.com/questions/764317/how-to-better-design-the-binary-switch-option-in-tikz-case#comment1907525_764317
+\makeatletter % see Code B in https://tex.stackexchange.com/a/728379
+\let\nfold@orig@tikz@finish\tikz@finish
+\def\tikz@finish{\tikz@nfold@do\nfold@orig@tikz@finish}
+\let\tikz@nfold@do\relax
+\tikzset{offset/.code=%
+  \edef\tikz@temp{#1}\ifx\tikz@temp\tikz@nonetext \let\tikz@nfold@do\relax
+  \else\def\tikz@nfold@do{\pgfgetpath\tikz@temp\pgfsetpath\pgfutil@empty\pgfoffsetpath\tikz@temp{#1}}%
+  \fi}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\tikzset{
+  foo/.tip={Straight Barb[harpoon,swap,length=5pt]},
+  shrink/.style={thick,shorten >=2pt,shorten <=2pt},
+  dualharpoon/.style={%
+    draw=none,
+    postaction={path only,draw,-foo,shrink,offset=-#1ex},
+    postaction={path only,draw,foo-,shrink,offset=+#1ex,
+        postaction={
+            decorate,offset=none,
+            decoration={markings, mark=at position 0.5 with {
+                \draw[-,line cap=round,thick] ++ (-.15cm,-.15cm) -- (+.15cm,+.15cm);
+                }
+            },
+        }, 
+    },
+  },
+  dualharpoon/.default=.75,
+}
+\makeatother
+\begin{document}
+\begin{tikzpicture}[
+    Qstyle/.style={
+        dualharpoon,
+        ext/auto with offset, % default true
+        ext/auto offset=1ex,
+        auto,
+    }]
+    \node[draw,circle,fill=teal] (A) at (0,1) {A};
+    \node[draw,circle,fill=magenta] (B) at (0,-1) {B};
+    \node[draw,circle,fill=cyan] (C) at (2.5,.5) {C};
+    \draw[magenta,Qstyle] (A) to[bend right] 
+        node {$\Delta$} 
+        node[swap,inner sep=0pt]{$\nabla$} 
+    (B);
+    \draw[teal,Qstyle] (B) to[bend right] 
+        node[inner sep=0pt] {$f(x)$} 
+        node[swap,inner sep=0pt]{$g(x)$} 
+    (C);
+    \draw[orange,Qstyle] (A) -- 
+        node {$x$} 
+        node[swap,inner sep=0pt]{$y$} 
+    (C);
+\end{tikzpicture}
+\end{document}

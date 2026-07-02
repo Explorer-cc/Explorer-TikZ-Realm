@@ -1,0 +1,39 @@
+% Source - https://tex.stackexchange.com/a/764344
+\documentclass[tikz,border=5pt]{standalone}
+\usepackage{xcharter-otf}
+\usetikzlibrary{arrows.meta,bending,nfold}
+\makeatletter
+\pgfset{flip arrows/.code=\let\pgf@temp\pgf@start@tip@sequence%
+    \let\pgf@start@tip@sequence\pgf@end@tip@sequence%
+    \let\pgf@end@tip@sequence\pgf@temp}
+\tikzset{
+  shrink/.style={thick,shorten >=5pt,shorten <=5pt},%
+  offset/.code=\tikz@addoption{%
+    \pgfgetpath\tikz@temp%
+    \pgfsetpath\pgfutil@empty%
+    \pgfoffsetpath\tikz@temp{#1}%
+  },%
+  foo/.tip={Straight Barb[right,length=5pt]},%
+  @dualharpoon/.style 2 args={draw=none,%
+    postaction={path only,draw,arrows={<[right]-},#2,shrink,offset=+#1ex},
+    postaction={path only,draw,arrows={->[right]},#2,shrink,offset=-#1ex}%
+  },%
+  dualharpoon/.default=.5, dualharpoon'/.default=.5,
+  dualharpoon/.style={@dualharpoon={#1}{}},%
+  dualharpoon'/.style={@dualharpoon={#1}{arrows={[swap]}, flip arrows}},%
+  relarrow/.style={dualharpoon,orange,thick,#1},%
+  relarrow'/.style={dualharpoon',orange,thick,#1},%
+}
+\makeatother
+\begin{document}
+\begin{tikzpicture}[>=Latex]
+\node[fill=cyan,    circle] (A) at (-2,-1) {Aa};
+\node[fill=magenta, circle] (B) at ( 2,-1) {Bb};
+\node[fill=teal,    circle] (C) at (-2, 1) {Cc};
+\node[fill=violet, circle] (D) at ( 2, 1) {Dd};
+\draw[relarrow=teal]    (A) -- (B);
+\draw[relarrow',>={Circle[length=8pt]}] (B) -- (D);
+\draw[relarrow,>={Stealth[magenta,open,width=8pt]},magenta] (A) -- (C);
+\draw[relarrow',>={Square[sep,width=8pt].Kite[round,width=8pt]},cyan] (C) -- (D);
+\end{tikzpicture}
+\end{document}

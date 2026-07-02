@@ -1,0 +1,68 @@
+% Source - https://tex.stackexchange.com/a/764321
+
+\documentclass[tikz,border=5pt]{standalone}
+\usetikzlibrary{arrows.meta,bending,nfold,ext.nodes}
+\makeatletter
+\tikzset{
+  foo/.tip={Straight Barb[harpoon,swap,length=5pt]},
+  shrink/.style={thick,shorten >=2pt,shorten <=2pt},
+  offset/.code=
+    \tikz@addoption{%
+      \pgfgetpath\tikz@temp
+      \pgfsetpath\pgfutil@empty
+      \pgfoffsetpath\tikz@temp{#1}%
+    },
+  dualharpoon/.style={
+    draw=none,
+    postaction={path only,draw,foo-,shrink,offset=+#1ex},
+    postaction={path only,draw,-foo,shrink,offset=-#1ex},
+  },
+  dualharpoon/.default=.75,
+%%% OPTION 1
+ % slash installer
+ slash/install/.style={
+   every to/.append style={slash side/do \pgfkeysvalueof{/tikz/slash side}},
+   slash/install/.code=, % and disable
+ },
+ % slash direction
+ slash direction/.initial=forward,
+ slash direction/do forward/.code=,
+ slash direction/do backward/.style={xscale=-1},
+ % slash side
+ slash side/.initial=none,
+ slash side/do     none/.code=,
+ slash side/do positive/.style={slash/do},
+ slash side/do negative/.style={slash/do=swap},
+ slash side/do     both/.style={slash/do, slash/do=swap},
+ % slash placer
+ slash/do/.style={
+   edge node={
+     pic[
+       midway,sloped,#1,
+       slash direction/do \pgfkeysvalueof{/tikz/slash direction},
+     ]{slash}}
+ },
+%%% END OPTION 1
+ slash/.pic={\draw[-,line cap=round,thick,pic actions] (-.15cm,-.15cm) -- (+.15cm,+.15cm);},
+  Qstyle/.style={
+    dualharpoon, % = .75(ex)
+    ext/auto with offset,
+    ext/auto offset=.75ex,
+    auto,slash/install
+  },
+}
+\makeatother
+\begin{document}
+\begin{tikzpicture}
+\node[draw,circle,fill=teal] (A) at (0,1) {A};
+\node[draw,circle,fill=magenta] (B) at (0,-1) {B};
+\node[draw,circle,fill=cyan] (C) at (2.5,.5) {C};
+
+\draw[magenta, Qstyle, slash side=both,    slash direction=backward]
+  (A) to[bend right] node {$\Delta$} node[swap]{$\nabla$} (B);
+\draw[teal,    Qstyle, slash side=positive,slash direction=forward ]
+  (B) to[bend right] node {$f(x)$}   node[swap]{$g(x)$}   (C);
+\draw[orange, Qstyle, slash side=none                              ]
+  (A) -- node {$x$} node[swap]{$y$} (C);
+\end{tikzpicture}
+\end{document}
