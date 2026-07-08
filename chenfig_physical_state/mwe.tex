@@ -1,0 +1,41 @@
+% Source - https://tex.stackexchange.com/a/764525
+\documentclass{article}
+\usepackage[stixtwo]{fontsetup}
+\usepackage{chemfig}
+\usepackage{lipsum}
+\usepackage{xpatch}
+\NewDocumentCommand{\phystate} { m } {%
+  \raisebox{-0.4\height}{\strut(#1)}%
+}
+\catcode`_=11
+\definearrow3{===}{%
+  \CF_arrowshiftnodes{#3}%
+  \path[allow upside  down]
+    (\CF_arrowstartnode)--(\CF_arrowendnode)%
+    node[pos=0,sloped,yshift=\CF_arrowdoublesep](\CF_arrowstartnode @u0){}
+    node[pos=0,sloped,yshift=-\CF_arrowdoublesep](\CF_arrowstartnode @d0){}
+    node[pos=1,sloped,yshift=\CF_arrowdoublesep](\CF_arrowstartnode @u1){}
+    node[pos=1,sloped,yshift=-\CF_arrowdoublesep](\CF_arrowstartnode @d1){};
+  \draw (\CF_arrowstartnode @u0)--(\CF_arrowstartnode @u1);
+  \draw (\CF_arrowstartnode @d1)--(\CF_arrowstartnode @d0);
+  \CF_arrowdisplaylabel{#1}{0.5}+\CF_arrowstartnode{#2}{0.5}-\CF_arrowendnode
+}
+%% https://tex.stackexchange.com/a/764527/322482
+% Patch chemfig's \hreac arrow whitelist so it accepts the custom === arrow.
+\xpatchcmd{\CF_harrow_b}{<->>\relax}{<->>\relax ===\relax}{}{}
+\CFrestorecatcode
+\begin{document}
+\lipsum[1]
+
+\setchemfig{atom sep=1.5em,baseline=(current bounding box.center)}
+\hreac%[hreac debug]
+\chemfig{CO_2}\phystate{g}
++
+\chemfig{[:210]O*3(--(-)-)}\phystate{g}
+>{===}
+\chemfig{[:-90]O=*5(-O--(-)-O-)}\phystate{l}
+\endhreac
+
+\lipsum[2]
+
+\end{document}
