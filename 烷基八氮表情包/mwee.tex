@@ -1,0 +1,13 @@
+\documentclass[border=5pt]{standalone}
+% https://tex.stackexchange.com/questions/752474/baseline-of-chemfig-and-chemname-question
+\usepackage{chemfig}
+\usepackage[fontset=fandol]{ctex}
+\begin{document}
+\hreac%[hreac debug]
+    \chemfig{N*6(-N=N-N=N-N=)}\name{苯氮}
+    +
+    \chemfig{H_2C-[:30]N=[:-30]N}\name{烷氮}
+    >
+    \chemfig{[:-22.5]*9(-N=N-N=N-N=N-N=N-)}\name{烷基八氮}
+\endhreac
+\end{document}
