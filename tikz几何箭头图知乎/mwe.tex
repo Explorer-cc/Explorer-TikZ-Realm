@@ -1,0 +1,75 @@
+% https://www.zhihu.com/question/60591842/answer/2063554389604880584
+\documentclass[tikz,border=3.14pt]{standalone}
+\usetikzlibrary{bending}
+\usepackage[times]{fontsetup}
+\usepackage{amsmath}
+\begin{document}
+
+\begin{tikzpicture}[
+    >=latex,line cap=round,
+    shrink arrow/.style={->,shorten >=#1,shorten <=#1,semithick},shrink arrow/.default=5pt,
+    phase/.pic={%
+        \draw[shrink arrow=8,cyan,dashed] (0,0) -- (1,1);
+        \draw[shrink arrow,cyan,dashed] (0,0) -- (1,0);
+        \draw[shrink arrow,cyan,dashed] (0,0) -- (0,1);
+        \foreach \x/\y in {1/1,1/2,2/1,2/2} {
+            \draw[shrink arrow=8,teal] (\x,\y) -- +(1,1);
+        }
+        \foreach \x in {1,2} {
+            \draw[shrink arrow,magenta,dashed] (0,\x) -- +(0,1);
+            \draw[shrink arrow=8,magenta,dashed] (0,\x) -- +(1,1);
+            \draw[shrink arrow,magenta,dashed] (\x,0) -- +(1,0);
+            \draw[shrink arrow=8,magenta,dashed] (\x,0) -- +(1,1);
+        }
+        \draw[cyan,dashed,semithick,->] (0,0) arc[start angle=0,end angle=330,radius=.2];
+    }
+]
+\draw[->] (-4.5,0) -- (3.5,0) node[right] {$\mathbf{e_{2i-1}}$};
+\draw[->] (0,-4.5) -- (0,3.5) node[above] {$\mathbf{e_{2i}}$};
+\foreach \x in {-4,...,3} {
+    \ifnum\x=0\relax
+    \node[below right=3pt] {$0$};
+    \else 
+    \path (\x,0) node[below=3pt] {$\x$} (0,\x) node[left=3pt] {$\x$};
+    \fi
+    \foreach \y in {-4,...,3} {
+        \fill (\x,\y) circle[radius=2pt];
+    }
+}
+\pic {phase};\draw[dashed,gray] (-.5,-.65) rectangle (3.25,3.25);
+\pic[xscale=-1] at (-1,0) {phase};
+\pic[yscale=-1] at (0,-1) {phase};
+\pic[scale=-1] at (-1,-1) {phase};
+\begin{scope}[xshift=7.5cm,yshift=-2.5cm,scale=1.75,transform shape]
+    \foreach \x in {0,...,3} {
+        \foreach \y in {0,...,3} {
+            \fill (\x,\y) circle[radius=2pt];
+            \def\dx{0}\def\dy{-.25}
+            \ifnum\x=0\relax\def\dx{-.5}\fi
+            \ifnum\y=0\relax\def\dy{-.5}\fi
+            \node[font=\small,scale=.6] at ({\x+\dx},{\y+\dy}) {($\x,\y$)};
+        }
+    }\pic {phase};\draw[dashed,gray] (-1.25,-.75) rectangle (3.25,3.25);
+    %懒得思考了...暴力加label...
+    \node[font=\small,scale=.5,anchor=east] at (0,1.5) {$b=0$};
+    \node[font=\small,scale=.5,anchor=east] at (0,2.5) {$b=0$};
+    \node[font=\small,scale=.5] at (.75,1.5) {$b=1$};
+    \node[font=\small,scale=.5] at (.75,2.5) {$b=1$};
+    \node[font=\small,scale=.5,anchor=north] at (1.5,0) {$b=0$};
+    \node[font=\small,scale=.5,anchor=north] at (2.5,0) {$b=0$};
+    \node[font=\small,scale=.5] at (1.65,.35) {$b=1$};
+    \node[font=\small,scale=.5] at (2.65,.35) {$b=1$};
+    \node[font=\small,scale=.4,anchor=east] at (-.4,0) {$(b_1,b_2)=(0,0)$};
+    \node[font=\small,scale=.4,anchor=east] at (0,.5) {$(b_1,b_2)=(0,1)$};
+    \node[font=\small,scale=.4,anchor=north] at (.5,0) {$(b_1,b_2)=(1,0)$};
+    \node[font=\small,scale=.4,anchor=north west] at (.4,.45) {$(b_1,b_2)=(1,1)$};
+    \foreach \x in {1.5,2.5} {
+        \foreach \y in {1.5,2.5} {
+            \node[font=\small,scale=.5,anchor=north west] at (\x,{\y+0.1}) {shift};   
+        }
+    }
+\end{scope}
+\draw[ultra thick,->] (3.25,1.35) to[bend left] (5.35,2);
+\end{tikzpicture}
+
+\end{document}

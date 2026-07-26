@@ -1,0 +1,54 @@
+% https://tex.stackexchange.com/a/729888
+
+\documentclass[tikz,border=8pt]{standalone}
+\usetikzlibrary{positioning}
+\usetikzlibrary{chains}
+\makeatletter
+% copy from: https://github.com/pgf-tikz/pgf/blob/master/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarypositioning.code.tex – simpler than trying to \let them to another key
+\tikzset{orig above  left/.code=\tikz@lib@place@handle@{#1}{south east}{-1}{ 1}{north west}{0.707106781}}%
+\tikzset{orig above right/.code=\tikz@lib@place@handle@{#1}{south west}{ 1}{ 1}{north east}{0.707106781}}%
+\tikzset{orig below  left/.code=\tikz@lib@place@handle@{#1}{north east}{-1}{-1}{south west}{0.707106781}}%
+\tikzset{orig below right/.code=\tikz@lib@place@handle@{#1}{north west}{ 1}{-1}{south east}{0.707106781}}%
+% I'm using the low-level PGFkeys macros since I'm using \pgfeov internally – with a few auxilliary macros this could easily be done in /key/.format=…
+\pgfkeysdef{/tikz/above right}{\pgfutil@ifnextchar\bgroup{\pgfkeysvalueof{/explorer/above right/.@cmd}}{\pgfkeysvalueof{/tikz/orig above right/.@cmd}}#1\pgfeov}
+\pgfkeysdef{/tikz/above  left}{\pgfutil@ifnextchar\bgroup{\pgfkeysvalueof{/explorer/above  left/.@cmd}}{\pgfkeysvalueof{/tikz/orig above  left/.@cmd}}#1\pgfeov}
+\pgfkeysdef{/tikz/below  left}{\pgfutil@ifnextchar\bgroup{\pgfkeysvalueof{/explorer/below  left/.@cmd}}{\pgfkeysvalueof{/tikz/orig below  left/.@cmd}}#1\pgfeov}
+\pgfkeysdef{/tikz/below right}{\pgfutil@ifnextchar\bgroup{\pgfkeysvalueof{/explorer/below right/.@cmd}}{\pgfkeysvalueof{/tikz/orig below right/.@cmd}}#1\pgfeov}
+\pgfkeysdefnargs{/explorer/above right}{2}{\pgfmathsincos{#1}\tikz@lib@place@handle@{#2}{180+#1}{\pgfmathresultx}{\pgfmathresulty}{#1}{1}}
+\pgfkeysdefnargs{/explorer/above  left}{2}{\pgfmathsincos{180-(#1)}\tikz@lib@place@handle@{#2}{#1}{\pgfmathresultx}{\pgfmathresulty}{180-(#1)}{1}}
+\pgfkeysdefnargs{/explorer/below  left}{2}{\pgfmathsincos{180+#1}\tikz@lib@place@handle@{#2}{#1}{\pgfmathresultx}{\pgfmathresulty}{180+#1}{1}}
+\pgfkeysdefnargs{/explorer/below right}{2}{\pgfmathsincos{-(#1)}\tikz@lib@place@handle@{#2}{180-(#1)}{\pgfmathresultx}{\pgfmathresulty}{-(#1)}{1}}
+\pgfkeysdefnargs{/tikz/angle}{2}{\pgfmathsincos{#1}\tikz@lib@place@handle@{#2}{180+#1}{\pgfmathresultx}{\pgfmathresulty}{#1}{1}}
+\makeatother
+
+\begin{document}
+\begin{tikzpicture}[every node/.style={draw, circle, inner sep=5pt, outer sep=0pt, fill=cyan!20}]
+\node (O) {$1$};
+\node (A) [below  left={60}{of O}] {$2$} edge (O);
+\node (B) [below right={30}{of A}] {$3$} edge (A);
+\end{tikzpicture}
+
+\begin{tikzpicture}[
+  every node/.style={draw, circle, inner sep=5pt, outer sep=0pt, fill=cyan!20},
+  start chain=going {below \ifodd\tikzchaincount right={60}\else left={30}\fi{of \tikzchainprevious}},
+  every on chain/.style={join}]
+\foreach \v in {1, ..., 9} \node[on chain] {\v};
+\end{tikzpicture}
+
+\begin{tikzpicture}[
+  every node/.style={draw, circle, inner sep=5pt, outer sep=0pt, fill=cyan!20, minimum size=1cm},
+  bl/.style={below left={60}{of #1}},
+  br/.style={below right={30}{of #1}}
+]
+\node       (1) {1};
+\node[bl=1] (2) { } node[bl=2] (3) {3};
+\node[br=1] (4) { } node[br=4] (5) {5};
+\node[left=of 5] (1') {1};
+\draw (1) -- (2) -- (3) -- (1') -- (5) -- (4) -- (1);
+\draw[red] (1) -- (1');
+\end{tikzpicture}
+
+\tikz[node distance=1.5cm and 3cm, nodes={draw, circle}, on grid]
+ \draw ellipse [x radius=3cm, y radius=1.5cm] node (O) {O}
+   node foreach \ang in {0, 30, ..., 359}[angle={\ang}{of O}]{\ang};
+\end{document}
