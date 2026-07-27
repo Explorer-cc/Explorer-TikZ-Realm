@@ -1,0 +1,23 @@
+\documentclass[tikz,border=5pt]{standalone}
+\usepackage{outilsgeomtikz}
+\usepackage{newtxmath}
+\begin{document}
+
+\begin{tikzpicture}[line cap=round,line join=round]
+\coordinate (O) at (0,0);
+\coordinate (B) at (2,0);
+\coordinate (A) at (-45:2cm and 1.25cm);
+\draw[dashed,semithick] (O) ellipse [x radius=2cm,y radius=1.25cm];
+\draw[ultra thick] (B) arc[start angle=0,end angle=-45,x radius=2cm,y radius=1.25cm];
+\draw[dashed,semithick] (O) node[left] {$O$} -- (B) node[right] {$B$} -- (A) node[below] {$A$} --cycle;
+
+\draw[ultra thick] (O) -- ++(up:1.5) (up:0.9) -- ++(1.9,0) coordinate (tmp);
+\draw[semithick] (tmp) ++(.1,0) ++(.1,0) arc[start angle=0,end angle=180,x radius=0.1cm,y radius=0.05cm];
+\tkzCrayon[Origine={(2,0)},Echelle=0.25,Longueur=8]
+\draw[semithick] (tmp) ++(.1,0) ++(.1,0) arc[start angle=360,end angle=180,x radius=0.1cm,y radius=0.05cm];
+
+\end{tikzpicture}
+
+\end{document}
+
+
