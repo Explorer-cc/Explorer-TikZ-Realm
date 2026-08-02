@@ -1,0 +1,27 @@
+% https://tex.stackexchange.com/a/762751
+\documentclass[tikz,border=3.14pt]{standalone}
+\usetikzlibrary{ext.positioning-plus}% loads positioning and fit
+
+\begin{document}
+\begin{tikzpicture}[
+    block/.style={
+        draw, fill=white, rectangle,
+        inner xsep=0pt, align=center, font=\small
+    }
+]
+\node [block, text width=3em] (B1) {Block 1};
+\node [block, text width=3em, below=5em of B1] (B2) {Block 2};
+\node [block, ext/right=5em of |(B1)(B2)] (B3) {Block 3};
+\end{tikzpicture}
+
+\begin{tikzpicture}[
+  node distance=5em,
+  block/.style={
+    draw, fill=white, rectangle,
+    inner xsep=0pt, align=center, font=\small}
+]
+\node [block, text width=3em] (B1) {Block 1};
+\node [block, text width=3em, below=of B1] (B2) {Block 2};
+\node [block, ext/right=of |(B1)(B2)] (B3) {Block 3};
+\end{tikzpicture}
+\end{document}

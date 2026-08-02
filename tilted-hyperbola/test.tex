@@ -1,0 +1,28 @@
+\documentclass[tikz,border=3.14pt]{standalone}
+
+\begin{document}
+
+\begin{tikzpicture}[>=latex]
+
+\def\rotangle{40}
+\def\deltangle{20}
+
+\begin{scope}[shift={(-1,1)},x={(\rotangle:1cm)},y={(\rotangle+90:1cm)}]
+\draw[->] (-5,0) -- (5,0);
+\draw[->] (0,-5) -- (0,5);
+
+\begin{scope}[shift only,x={(\rotangle-\deltangle:1cm)},y={(\rotangle+\deltangle:1cm)}]
+\draw[dashed] (-5,0) -- (5,0);
+\draw[dashed] (0,-5) -- (0,5);
+\draw plot[smooth,domain=0.2:5](\x,1/\x);
+\draw plot[smooth,domain=-0.2:-5](\x,1/\x);
+\end{scope}
+
+\end{scope}
+
+\draw[->] (-5,0) -- (5,0);
+\draw[->] (0,-5) -- (0,5);
+
+\end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,37 @@
+% https://ask.latexstudio.net/ask/question/18056.html
+% https://github.com/pfradin/luadraw/discussions/297
+\documentclass{standalone}
+\usepackage{luadraw}
+\usepackage[svgnames]{xcolor}
+\usepackage{fourier-otf}
+\begin{document}
+\begin{luadraw}{name=tilted_hyperbola}
+local ld = luadraw
+local Z, i = ld.cpx.Z, ld.cpx.I
+local sinh, cosh = math.sinh, math.cosh
+
+local g = ld.graph:new{window = {-6, 6, -4, 7}}
+
+local left_branch = function(t) return Z(-2 * cosh(t), sinh(t)) end
+local right_branch = function(t) return Z(2 * cosh(t), sinh(t)) end
+
+local plot_hyperbola = function(opt)
+    g:Dline({0, 1}, "-Latex,ultra thick")
+    g:Dline({0, i}, "-Latex,ultra thick")
+    g:Dparametric(right_branch, {t = {-2.5, 2.5}, nbdots = 100,draw_options = opt})
+    g:Dparametric(left_branch, {t = {-2.5, 2.5}, nbdots = 100,draw_options = opt})
+    g:Dline({0, Z(1, 1/2)}, "dashed,"..opt)
+    g:Dline({0, Z(1, -1/2)}, "dashed,"..opt)
+end
+
+plot_hyperbola("teal")
+
+g:Savematrix()
+g:Shift(Z(-2, 2))
+g:Rotate(45)
+plot_hyperbola("magenta")
+g:Restorematrix()
+
+g:Show()
+\end{luadraw}
+\end{document}

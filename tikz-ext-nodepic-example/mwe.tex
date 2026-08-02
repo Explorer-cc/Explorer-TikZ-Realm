@@ -1,0 +1,44 @@
+% https://tex.stackexchange.com/questions/85536/how-to-draw-nested-nodes
+\documentclass[tikz,border=10pt]{standalone}
+\usetikzlibrary{ext.nodes,arrows.meta,positioning,graphs}
+\begin{document}
+    \begin{tikzpicture}[
+        ext/node picture={prefix name=false, reset graphic state},
+        fixed height/.style={text depth=+0pt, text height=+.7\baselineskip},
+        n/.style={
+            shape=rectangle, rounded corners, draw, fixed height
+        },
+        b/.style={
+            shape=rectangle, draw, ext/node picture, inner xsep=4mm,
+            fill=blue!\inteval{50*(\tikzextnodepicture+1)}!red!35,
+        },
+        h/.style={above=+.333em of current bounding box, fixed height},
+        node distance=3mm and 4mm,
+    ]
+    \NewDocumentCommand{\nbox}{O{} m d() m}{%
+        \node[{
+            b,#1,style/.expanded=\IfValueT{#3}{ext/node picture/baseline={(#3.base)}}
+        }]{
+            #4
+            \node[h]{#2};
+            \node[
+                white, inner xsep=+0pt,
+                below left=0pt and 0pt of current bounding box.north east
+            ] {L\tikzextnodepicture};
+        };
+    }
+    \nbox{Pipeline}{
+        \node[n](IS){IntSrc};
+        \nbox[base right=of IS, name=BPF]{BandPassFilter}(dup){
+            \node[n](dup){dupl};
+            \node[n, above right=of dup](HPF){HPF};
+            \node[n, below right=of dup](LPF){LPF};
+            \node[n, below right=of HPF](rr) {rr(1,1)};
+        };
+        \node[n, base right=of BPF](IP){IntPrnt};
+    }
+    \graph[edge=-Latex, use existing nodes]{
+        IS -> dup ->[in=180] {HPF[>out= 90, <in= 90],LPF[>out=-90, <in=-90]}->[in distance=5mm, out=0] rr -> IP
+    };
+    \end{tikzpicture}
+\end{document}

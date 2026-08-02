@@ -1,0 +1,45 @@
+% https://github.com/pfradin/luadraw/discussions/297#discussioncomment-17850496
+\documentclass{standalone}
+\usepackage{luadraw}
+\usepackage[svgnames]{xcolor}
+\usepackage{fourier-otf}
+\begin{document}
+\begin{luadraw}{name=tilted_hyperbola}
+local ld = luadraw
+local Z, i = ld.cpx.Z, ld.cpx.I
+local sinh, cosh = math.sinh, math.cosh
+
+local g = ld.graph:new{window = {-6, 6, -4, 7}}
+require 'luadraw_decorations'
+local right_branch = function(t) return Z(2 * cosh(t), sinh(t)) end
+local left_branch = function(t) return Z(-2 * cosh(t), sinh(t)) end
+
+local plot_hyperbola = function(opt, angle, x_label, y_label, origin_shift,x_pos,y_pos)
+    angle = angle or 0
+    x_label = x_label or "$x$"
+    y_label = y_label or "$y$"
+    x_pos = x_pos or 0
+    y_pos = y_pos or 1
+    origin_shift = origin_shift or Z(0, 0)
+    g:Savematrix()
+    g:Shift(origin_shift)
+    if angle ~= 0 then g:Rotate(angle) end
+    g:Labelangle(angle)
+    g:Dline({0, 1}, {draw_options="-Latex,thick", label=x_label, anchor1d=x_pos, pos="E"})
+    g:Dline({0, i}, {draw_options="-Latex,thick", label=y_label, anchor1d=y_pos, pos="N"})
+    g:Dparametric(right_branch, {t = {-2.5, 2.5}, nbdots = 100,draw_options = opt})
+    g:Dparametric(left_branch, {t = {-2.5, 2.5}, nbdots = 100,draw_options = opt})
+    g:Dline({0, Z(1, 1/2)}, "dashed,"..opt)
+    g:Dline({0, Z(1, -1/2)}, "dashed,"..opt)
+    g:Dlabel("$O$",0, {pos="SW"})
+    g:Restorematrix()
+    g:Labelangle(0)
+end
+plot_hyperbola("teal")
+
+plot_hyperbola("magenta",45,"$x'$","$y'$",Z(-2,2))
+
+plot_hyperbola("cyan",-65,"$x''$","$y''$",Z(1,1),0,0)
+g:Show()
+\end{luadraw}
+\end{document}

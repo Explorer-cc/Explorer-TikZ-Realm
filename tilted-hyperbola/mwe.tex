@@ -1,0 +1,39 @@
+% https://ask.latexstudio.net/ask/question/18056.html
+\documentclass[border=1cm]{standalone}
+% \usepackage[times]{fontsetup}
+\usepackage[mini]{tkz-euclide}
+\usepackage{tkz-elements}
+\begin{document}
+\directlua{
+    z.p0 = point(-2, 2)
+    local a, b = 2, 1
+    L.axis = line(z.p0, z.p0 + point(2, 2))
+    local c = math.sqrt(a * a + b * b)
+    z.F1 = L.axis:report(c)
+    z.F2 = L.axis:report(-c)
+    CO.H = conic(HY_bifocal(z.F1, z.F2, a))
+    z.V1 = CO.H.vertex
+    z.V2 = z.V1:symmetry(z.p0)
+    PA.H1 = CO.H:points(-10, 10, 100)
+    PA.H2 = CO.H:points(-10, 10, 100, "swap")
+    L.A1, L.A2 = CO.H:asymptotes()
+    z.asym1u, z.asym1v = L.A1:get()
+    z.asym2u, z.asym2v = L.A2:get()
+    z.xpos = point(2, 6)
+    z.xneg = point(-6, -2)
+    z.ypos = point(-6, 6)
+    z.yneg = point(3, -3)
+}
+    \begin{tikzpicture}[myarrow/.style={-latex,thick}]
+    \tkzGetNodes
+    \path[use as bounding box] (-6,-3) rectangle (3,6);
+    \draw[myarrow] (-7,0) -- (4,0);
+    \draw[myarrow] (0,-4) -- (0,6);
+    \draw[myarrow] (xneg) -- (xpos);
+    \draw[myarrow] (yneg) -- (ypos);
+    \tkzDrawCoordinates[smooth,magenta](PA.H1)
+    \tkzDrawCoordinates[smooth,magenta](PA.H2)
+    \tkzDrawSegments[dashed](V1,V2)
+    \tkzDrawLines[dashed,cyan,add=15 and 15](asym1u,asym1v asym2u,asym2v)
+    \end{tikzpicture}
+\end{document}
