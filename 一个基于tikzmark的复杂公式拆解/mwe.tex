@@ -1,0 +1,54 @@
+% https://pubs.ams.org/BULL/2025-62-03/S0273-0979-2025-01865-0
+\documentclass{article}
+\usepackage[showframe]{geometry}
+\usepackage{amsmath,amssymb}
+% \usepackage[times]{fontsetup}%<-
+\usepackage{fourier-otf}
+\usepackage{fixdif}
+\usepackage{tikz}
+\usetikzlibrary{tikzmark}
+\usepackage{lipsum}
+\usepackage{hyperref}
+\counterwithin{equation}{section}
+\begin{document}
+\addtocounter{section}{2}
+\section{Introduction}
+\lipsum[2][1-5]
+\addtocounter{equation}{11}
+\begin{equation}\label{eq:residue}
+    x^2+y^2=z^2
+\end{equation}
+\lipsum[2][1-5]
+\begin{gather*}\\[.5cm]
+-\Pi \frac{F_2 x}{\theta_1 x} \mathop{\tikzmarknode{U1}{\sum}} \frac{f_1(x,y)}{\chi' y} \frac{\delta \theta y}{\theta y}
+\quad+\quad
+\mathop{\tikzmarknode{U2}{\sum{}'}} \nu \frac{\d^{\nu-1}}{\d x^{\nu-1}}
+\left\{\frac{F_2 x}{\theta_1^{(\nu)} x}\mathop{\tikzmarknode{U3}{\sum}} \frac{f_1(x,y)}{\chi' y} \frac{\delta \theta y}{\theta y}\right\}
+\quad
+\text{evaluate deritive at \tikzmarknode{U4}{$x=\beta_j$}}\\[2.75cm]
+-\Pi \mathop{\tikzmarknode{D1}{\sum}}_{\ell=1}^n f(x,y^{(\ell)}) \frac{\delta \theta y^{(\ell)}}{\theta y^{(\ell)}}
+\quad+\quad
+\underbrace{%
+    \left.\mathop{\tikzmarknode{D2}{\sum}}_{j=1}^\alpha \frac{1}{(\nu_j-1)!}
+    \left(\frac{\d^{\nu_j-1}}{\d x^{\nu_j-1}}
+    \tikzmarknode{tmp1}{\frac{(x-\beta_j)^{\nu_j}}{{f_2(x)}}}
+    \mathop{\tikzmarknode{D3}{\sum}}_{\ell=1}^n 
+    \tikzmarknode{tmp2}{\frac{f_1(x,y^{(\ell)})}{{\chi'(y^{(\ell)})}}}
+    \frac{\delta \theta y^{(\ell)}}{\theta y^{(\ell)}}\right)
+    \right|_{\tikzmarknode{D4}{x=\beta_j}}\rule[-1.25cm]{0pt}{1.25cm}
+}_{\substack{\\[2pt]\mbox{residue at $x=\beta_j$ by \eqref{eq:residue}}}}
+\end{gather*}
+\begin{tikzpicture}[remember picture,overlay,thick,>=latex] 
+  \node at ([xshift=-.5cm,yshift=1.25cm]U1) {$y\to y^{(\ell)},1\leq\ell\leq n$} edge[->] ([yshift=.15cm]U1.north); 
+  \node at ([xshift=-.5cm,yshift=1.2cm]U2) {$\nu\to\nu_j,1\leq j\leq\alpha$} edge[->] ([yshift=.15cm]U2.north); 
+  \node at ([xshift=+.5cm,yshift=1.25cm]U3) {$y\to y^{(\ell)},1\leq\ell\leq n$} edge[->] ([yshift=.15cm]U3.north); 
+  \draw[->] ([yshift=-.15cm]U1.south) -- node[right=3pt] {$\displaystyle\begin{aligned}F_2x&=F_0(x)\\\theta_1x&=f_2(x)F_0(x)\vphantom{\frac{f_1(x,y)}{f_2(x)\chi'(y)}}\\f(x,y)&=\frac{f_1(x,y)}{f_2(x)\chi'(y)}\end{aligned}$} ([yshift=.3cm]D1.north); 
+\draw[->] ([yshift=-.15cm]U2.south) -- node[pos=0.75,right=6pt,anchor=west] {$\displaystyle \theta_1^{(\nu_j)} x = \nu_j! \frac{f_2(x)F_0(x)}{(x-\beta_j)^{\nu_j}}$} ([yshift=.3cm]D2.north); 
+\draw[->] ([yshift=-.15cm]U3.south) -- ([yshift=.3cm]D3.north); 
+\draw[->] ([yshift=-.15cm]U4.south) -- ([yshift=.15cm]D4.north); 
+\node[below=.85cm,inner sep=0.5pt] (tmp) at (D3) {$f(x,y^{(\ell)})$};
+\draw[->] (tmp.north west) -- ([yshift=-1pt]tmp1.south);
+\draw[->] (tmp.north east) -- ([yshift=-1pt]tmp2.south);
+\end{tikzpicture}
+\lipsum[2]
+\end{document}
