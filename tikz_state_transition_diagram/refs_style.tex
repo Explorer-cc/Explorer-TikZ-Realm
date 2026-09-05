@@ -1,0 +1,65 @@
+\tikzset{
+  base box/.style={%
+    draw=black,
+    fill=white,
+    minimum width=2.2cm,
+    minimum height=0.9cm,
+    align=center,
+  },
+  terminal node/.style={%
+    ellipse,
+    base box,
+    minimum width=1.8cm,
+    minimum height=0.9cm,
+    font=\ttfamily,
+    inner sep=0pt
+  },
+  asm box/.style={%
+    base box
+  },
+  diamond node/.style={%
+    diamond,
+    base box,
+    aspect=2.444,
+    inner sep=0pt
+  },
+  conditional box/.style={
+    trapezium,base box,
+    trapezium stretches=true,
+    shape aspect=2.444,
+    trapezium left angle=70,
+    trapezium right angle=110,
+    minimum height=0.9cm,
+    inner sep=0pt
+  },
+  asm state/.style 2 args={%
+    label={[font=\ttfamily, inner sep=1.5pt, anchor=south east]north east:#2},
+    label={[font=, inner sep=1.5pt, anchor=south west]north west:#1}
+  },
+  asm dstate/.style 2 args={
+    label={[font=\ttfamily, inner sep=1.5pt, anchor=center, xshift=0.3cm, yshift=0.3cm]north east:#2},
+    label={[font=, inner sep=1.5pt, anchor=center, xshift=-0.3cm, yshift=0.3cm]north west:#1}
+  },
+  branch font/.style={
+    font=\sffamily,
+    fill=white,
+    inner sep=1pt
+  }
+}
+
+\begin{tikzpicture}[node distance=1cm,auto,thick,>=Stealth]
+    \node[asm box, asm state={$P$}{00}] (P) {$c_1$};
+    \node[diamond node, below=of P] (X) {$X$};
+    \node[conditional box, below=of X] (c2) {$c_2$};
+    \node[asm box, asm state={$R$}{10}, below=of c2] (R) {};
+    \node[asm box, asm state={$Q$}{11}, right=of c2] (Q) {};
+    \draw[->] ([yshift=1cm]P.north) -- (P.north)coordinate[pos=0.5](m);
+    \draw[->] (P) -- (X);
+    \draw[->] (X) -- (c2);
+    \draw[->] (c2) -- (R);
+    \draw[->] (R.south) -- ([yshift=-8mm]R.south)coordinate(a);
+    \draw (X.south) node[branch font, below left=1pt] {0};
+    \draw[->] (X.east) node[branch font, above right=1pt] {1} -| (Q);
+    \draw[->] (Q) -- (a -| Q);
+    \draw[->] (a -| Q) -- ++ (-6,0) |- (m);
+\end{tikzpicture}

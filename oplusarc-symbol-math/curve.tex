@@ -1,0 +1,23 @@
+% Source - https://tex.stackexchange.com/a/766094
+% Posted by Marijn
+% Retrieved 2026-09-03, License - CC BY-SA 4.0
+
+\documentclass{article}
+\usepackage{etoolbox}
+\usepackage{curve2e}
+\def\arrowshift{0}
+\makeatletter
+\patchcmd{\@VArc}{\vector(\@xnum,\@ynum){0}}{\vector(\@xnum,\@ynum){\arrowshift}}{}{}
+\begin{document}
+
+\linethickness{1pt}
+\begin{picture}(40,40)
+  \VectorArc(20,20)(0:15){270}
+\end{picture}
+
+\begin{picture}(40,40)
+  \def\arrowshift{4}
+  \VectorArc(20,20)(0:15){270}
+\end{picture}
+
+\end{document}

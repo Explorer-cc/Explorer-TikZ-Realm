@@ -1,0 +1,70 @@
+% https://tex.stackexchange.com/a/766131
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% https://tex.stackexchange.com/a/765922
+% https://tex.stackexchange.com/a/766094
+
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{etoolbox}
+\usepackage[pstarrows]{curve2e}
+\usepackage{xcolor}
+
+% a general purpose macro https://tex.stackexchange.com/a/480801/4427
+\newcommand{\xmathpalette}[2]{\mathchoice
+  {#1\displaystyle\textfont{#2}}%
+  {#1\textstyle\textfont{#2}}%
+  {#1\scriptstyle\scriptfont{#2}}%
+  {#1\scriptscriptstyle\scriptscriptfont{#2}}%
+}
+
+\let\origoplus\oplus
+% https://tex.stackexchange.com/a/766094/322482
+\def\arrowshift{0}
+\makeatletter
+\patchcmd{\@VArc}{\vector(\@xnum,\@ynum){0}}{\vector(\@xnum,\@ynum){\arrowshift}}{}{}
+\newdimen\oplusarc@dim
+
+\newcommand{\oplusarc}{%
+  \mathbin{%
+    \vphantom{\origoplus}%
+    \mkern1.2mu
+    \xmathpalette\newoplusarc@\origoplus
+    \mkern1.2mu
+  }%
+}
+\newcommand{\newoplusarc@}[3]{%
+  \begingroup
+  \sbox\z@{$#1\m@th#3$}%
+  \oplusarc@dim=\dimeval{\ht\z@+\dp\z@}%
+  \unitlength=0.065\oplusarc@dim%
+  \def\pIIe@CAW{0.1\oplusarc@dim}%
+  \smash{\vcenter{\hbox{%
+    \begin{picture}(7,18)(0,-9)%
+    \def\arrowshift{2}%
+    \linethickness{\ifx#1\scriptscriptstyle 0.8\else0.7\fi\fontdimen8#2 3}%
+    \VectorArc(0,0)(45:7){260}%{270} %
+    \Line(-3,0)(3,0)%
+    \Line(0,-3)(0,3)%
+    \end{picture}%
+  }}}%
+  \endgroup
+}
+
+\makeatother
+
+\begin{document}
+
+$\origoplus \oplusarc$
+$\scriptstyle\origoplus \oplusarc$
+$\scriptscriptstyle\origoplus \oplusarc$
+
+\fboxsep=0pt
+\fboxrule=0.1pt
+
+\indent\rlap{\fbox{$\origoplus$}}{\color{red}\fbox{$\oplusarc$}}
+
+$A \oplus B$, \quad $X_{i \oplus j}$
+
+$A \oplusarc B$, \quad $X_{i \oplusarc j}$
+
+\end{document}

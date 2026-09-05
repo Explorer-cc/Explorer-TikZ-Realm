@@ -1,0 +1,78 @@
+% Source - https://tex.stackexchange.com/a/765922
+% Posted by egreg
+% Retrieved 2026-09-03, License - CC BY-SA 4.0
+
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{newpx}
+\usepackage{pict2e}
+
+% a general purpose macro https://tex.stackexchange.com/a/480801/4427
+\newcommand{\xmathpalette}[2]{\mathchoice
+  {#1\displaystyle\textfont{#2}}%
+  {#1\textstyle\textfont{#2}}%
+  {#1\scriptstyle\scriptfont{#2}}%
+  {#1\scriptscriptstyle\scriptscriptfont{#2}}%
+}
+
+% for measuring
+\let\origoplus\oplus
+\let\origbigoplus\bigoplus
+
+\makeatletter
+\renewcommand{\oplus}{%
+  \mathbin{%
+    \mkern0.5mu
+    \xmathpalette\newoplus@\origoplus
+    \mkern0.5mu
+  }%
+}
+\newcommand{\newoplus@}[3]{%
+  \begingroup
+  \sbox\z@{$#1\m@th#3$}%
+  \dimen@=\dimeval{\ht\z@+\dp\z@}%
+  \vcenter{\hbox{%
+    \begin{picture}(\dimen@,\dimen@)
+    \ifx#3\origbigoplus
+      \ifx#1\displaystyle
+        \linethickness{1.2\fontdimen8#2 3}
+      \else
+        \linethickness{\fontdimen8#2 3}
+      \fi
+    \else
+      \linethickness{0.85\fontdimen8#2 3}
+    \fi
+    \put(0.5\dimen@,0.5\dimen@){\circle{0.95\dimen@}}
+    \Line(0.1\dimen@,0.5\dimen@)(0.9\dimen@,0.5\dimen@)
+    \Line(0.5\dimen@,0.1\dimen@)(0.5\dimen@,0.9\dimen@)
+    \end{picture}%
+  }}%
+  \endgroup
+}
+
+\renewcommand{\bigoplus}{%
+  \mathop{%
+    \mkern0.5mu
+    \xmathpalette\newoplus@\origbigoplus
+    \mkern0.5mu
+  }\slimits@
+}
+
+\makeatother
+
+\begin{document}
+
+$\origoplus \oplus$
+$\scriptstyle\origoplus \oplus$
+$\scriptscriptstyle\origoplus \oplus$
+
+\fboxsep=0pt
+\fboxrule=0.1pt
+
+\fbox{$\origoplus$} \fbox{$\oplus$}
+
+$\origbigoplus\bigoplus$
+
+$\displaystyle\origbigoplus_{k=1}^n \bigoplus_{k=1}^n$
+
+\end{document}

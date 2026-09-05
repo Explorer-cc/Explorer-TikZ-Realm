@@ -1,0 +1,19 @@
+% https://tex.stackexchange.com/a/766094
+
+\documentclass{standalone}
+\usepackage{etoolbox}
+\usepackage[pstarrows]{curve2e}
+\def\arrowshift{0}
+\makeatletter
+\patchcmd{\@VArc}{\vector(\@xnum,\@ynum){0}}{\vector(\@xnum,\@ynum){\arrowshift}}{}{}
+\begin{document}
+
+\linethickness{0.75pt}
+\begin{picture}(40,40)
+  \def\arrowshift{2}
+  \VectorArc(20,20)(45:7){270}
+  \Line(17,20)(23,20)
+  \Line(20,17)(20,23)
+\end{picture}
+
+\end{document}
