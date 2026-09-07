@@ -1,0 +1,166 @@
+% https://tex.stackexchange.com/a/766161
+\documentclass[tikz,border=8pt]{standalone}
+\definecolor{ink}{HTML}{62506F}
+\definecolor{ivory}{HTML}{FFFDFB}
+\definecolor{lilac}{HTML}{B9A3E7}
+\definecolor{rose}{HTML}{F4ABC8}
+\definecolor{sky}{HTML}{A9DCEB}
+\definecolor{mint}{HTML}{B9E5D5}
+\definecolor{gold}{HTML}{F5CE86}
+\definecolor{halo}{HTML}{F5F0FB}
+
+% Four-point star: x, y, size, color.
+\newcommand{\sparkle}[4]{%
+  \begin{scope}[shift={(#1,#2)},scale=#3]
+    \fill[#4] (0,1)
+      .. controls (.12,.23) and (.23,.12) .. (1,0)
+      .. controls (.23,-.12) and (.12,-.23) .. (0,-1)
+      .. controls (-.12,-.23) and (-.23,-.12) .. (-1,0)
+      .. controls (-.23,.12) and (-.12,.23) .. (0,1);
+  \end{scope}%
+}
+
+\begin{document}
+\begin{tikzpicture}[
+  x=1.25cm,y=1.25cm,
+  line cap=round,line join=round,
+  outline/.style={draw=ink,line width=1.35pt},
+  pony/.style={outline,fill=ivory}
+]
+  \path[use as bounding box] (-4.25,-2.1) rectangle (4.05,4.9);
+
+  % A soft backdrop and ground shadow.
+  \fill[halo] (-.1,1.35) circle[radius=3.15];
+  \fill[lilac!20] (-.25,-1.66) ellipse[x radius=2.2,y radius=.19];
+  \sparkle{-2.65}{3.55}{.29}{gold}
+  \sparkle{-3.65}{1.65}{.18}{rose}
+  \sparkle{3.4}{3.65}{.23}{lilac}
+  \sparkle{3.35}{.65}{.28}{gold}
+  \sparkle{2.55}{-.65}{.15}{rose}
+  \foreach \x/\y in {-1.75/4.1,-3.5/2.6,3.65/2.8,2.85/-.05}
+    \fill[lilac!65] (\x,\y) circle[radius=.045];
+
+  % Flowing tail, behind the body.
+  \path[outline,fill=lilac]
+    (-1.8,1.1)
+    .. controls (-2.8,1.8) and (-3.65,1.15) .. (-3.45,.25)
+    .. controls (-3.3,-.4) and (-3.75,-.65) .. (-3.8,-.63)
+    .. controls (-3.1,-1.04) and (-2.55,-.55) .. (-2.66,.12)
+    .. controls (-2.75,.65) and (-2.18,.63) .. (-1.98,.53)
+    -- cycle;
+  \draw[rose,line width=6pt]
+    (-2.17,1.09) .. controls (-3.05,1.39) and (-3.31,.94) .. (-3.11,.27)
+    .. controls (-2.99,-.11) and (-3.1,-.44) .. (-3.36,-.57);
+  \draw[sky,line width=4pt]
+    (-2.22,.87) .. controls (-2.85,1.05) and (-2.96,.72) .. (-2.88,.3)
+    .. controls (-2.74,-.1) and (-2.86,-.47) .. (-3.11,-.64);
+
+  % The two far legs, shaded lavender.
+  \path[outline,fill=lilac!22]
+    (-1.35,.15) -- (-.95,-1.43)
+    .. controls (-.9,-1.64) and (-.62,-1.64) .. (-.47,-1.58)
+    -- (-.23,-1.5) -- (-.62,.18) -- cycle;
+  \path[outline,fill=lilac!22]
+    (.63,.13) -- (1.05,-1.37)
+    .. controls (1.1,-1.57) and (1.3,-1.61) .. (1.5,-1.5)
+    -- (1.66,-1.4) -- (1.22,.52) -- cycle;
+  \path[outline,fill=lilac]
+    (-1.02,-1.18) -- (-.95,-1.43)
+    .. controls (-.9,-1.64) and (-.62,-1.64) .. (-.47,-1.58)
+    -- (-.23,-1.5) -- (-.3,-1.21) -- cycle;
+  \path[outline,fill=lilac]
+    (.98,-1.14) -- (1.05,-1.37)
+    .. controls (1.1,-1.57) and (1.3,-1.61) .. (1.5,-1.5)
+    -- (1.66,-1.4) -- (1.58,-1.08) -- cycle;
+
+  % Ear and striped golden horn, behind the head.
+  \path[pony] (1.12,3.12)
+    .. controls (.86,3.48) and (.97,3.99) .. (1.1,4.03)
+    .. controls (1.5,3.81) and (1.64,3.38) .. (1.55,3.17) -- cycle;
+  \path[fill=rose!75] (1.18,3.39)
+    .. controls (1.08,3.56) and (1.1,3.75) .. (1.13,3.78)
+    .. controls (1.33,3.61) and (1.39,3.46) .. (1.37,3.32) -- cycle;
+  \path[outline,fill=gold] (2.04,3.15) -- (2.94,4.62) -- (2.57,3.03) -- cycle;
+  \begin{scope}
+    \clip (2.04,3.15) -- (2.94,4.62) -- (2.57,3.03) -- cycle;
+    \foreach \y in {3.33,3.61,3.89,4.17,4.45}
+      \draw[ink!55,line width=.8pt] (1.9,\y) -- ++(1.3,-.3);
+  \end{scope}
+
+  % One continuous silhouette: rump, legs, belly, neck, and head.
+  \path[pony]
+    (-1.42,1.3)
+    .. controls (-2.12,1.29) and (-2.42,.76) .. (-2.17,.02)
+    -- (-2.04,-1.43)
+    .. controls (-2.02,-1.64) and (-1.8,-1.69) .. (-1.6,-1.64)
+    -- (-1.29,-1.6) -- (-1.35,-.24)
+    .. controls (-.93,-.52) and (-.2,-.52) .. (.3,-.22)
+    -- (.34,-1.43)
+    .. controls (.35,-1.62) and (.53,-1.68) .. (.74,-1.65)
+    -- (1.08,-1.61) -- (1.11,.13)
+    .. controls (1.5,.48) and (1.61,1.09) .. (1.76,1.67)
+    .. controls (2.16,1.49) and (2.7,1.49) .. (3.08,1.73)
+    .. controls (3.37,1.91) and (3.37,2.22) .. (3.09,2.35)
+    -- (2.79,2.49)
+    .. controls (2.68,2.95) and (2.39,3.33) .. (1.91,3.34)
+    .. controls (1.22,3.39) and (.9,2.86) .. (.63,2.2)
+    -- (.21,1.28)
+    .. controls (-.37,1.43) and (-.99,1.36) .. (-1.42,1.3)
+    -- cycle;
+
+  % Gentle shading, a belly highlight, and near hooves.
+  \path[fill=lilac!12]
+    (-1.31,-.1) .. controls (-.72,-.3) and (-.14,-.27) .. (.35,-.02)
+    .. controls (.06,-.46) and (-.83,-.53) .. (-1.31,-.1);
+  \path[outline,fill=rose!65]
+    (-2.06,-1.24) -- (-2.04,-1.43)
+    .. controls (-2.02,-1.64) and (-1.8,-1.69) .. (-1.6,-1.64)
+    -- (-1.29,-1.6) -- (-1.3,-1.24) -- cycle;
+  \path[outline,fill=rose!65]
+    (.335,-1.24) -- (.34,-1.43)
+    .. controls (.35,-1.62) and (.53,-1.68) .. (.74,-1.65)
+    -- (1.08,-1.61) -- (1.085,-1.24) -- cycle;
+
+  % A wavy rainbow mane, draped over the neck.
+  \path[outline,fill=lilac]
+    (2.15,3.32)
+    .. controls (1.65,3.86) and (.7,3.62) .. (.57,3.02)
+    .. controls (.1,2.87) and (.07,2.39) .. (.32,2.15)
+    .. controls (-.2,1.96) and (-.2,1.43) .. (.07,1.23)
+    .. controls (-.18,.93) and (-.07,.63) .. (-.34,.53)
+    .. controls (.25,.37) and (.84,.7) .. (.84,1.13)
+    .. controls (1.3,1.37) and (1.32,1.91) .. (1.12,2.1)
+    .. controls (1.49,2.32) and (1.45,2.72) .. (1.39,2.92)
+    .. controls (1.61,3.23) and (1.87,3.06) .. (2.15,3.32)
+    -- cycle;
+  \draw[rose,line width=8pt]
+    (1.75,3.38)
+    .. controls (1.06,3.61) and (.76,3.08) .. (.85,2.8)
+    .. controls (.42,2.52) and (.89,2.3) .. (.64,2.02)
+    .. controls (.14,1.67) and (.7,1.45) .. (.46,1.11)
+    .. controls (.33,.92) and (.24,.83) .. (.14,.8);
+  \draw[sky,line width=5pt]
+    (1.83,3.27)
+    .. controls (1.24,3.4) and (.99,3.04) .. (1.08,2.75)
+    .. controls (1.17,2.46) and (.74,2.36) .. (.9,2.1)
+    .. controls (1.15,1.71) and (.56,1.54) .. (.66,1.25);
+  \draw[mint,line width=2.5pt]
+    (1.84,3.23)
+    .. controls (1.36,3.31) and (1.16,3.03) .. (1.25,2.8);
+
+  % Happy face: closed eye, eyelashes, blush, nostril, and smile.
+  \fill[rose!55] (2.36,2.17) ellipse[x radius=.23,y radius=.14];
+  \draw[ink,line width=1.65pt]
+    (1.94,2.66) .. controls (2.08,2.44) and (2.29,2.46) .. (2.43,2.66);
+  \draw[ink,line width=1.1pt]
+    (2.32,2.54) -- (2.4,2.45)
+    (2.42,2.64) -- (2.53,2.6);
+  \fill[ink] (3.03,2.13) ellipse[x radius=.045,y radius=.06];
+  \draw[ink,line width=1pt]
+    (2.82,1.84) .. controls (2.96,1.8) and (3.11,1.85) .. (3.2,1.95);
+
+  % A tiny flank star.
+  \sparkle{-1.24}{.61}{.24}{gold}
+  \sparkle{-.84}{.82}{.09}{rose}
+\end{tikzpicture}
+\end{document}
