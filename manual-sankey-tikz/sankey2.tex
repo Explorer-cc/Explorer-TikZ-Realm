@@ -1,0 +1,293 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{luacode}
+\usepackage{fourier-otf}
+
+\begin{filecontents*}[overwrite]{nodes2.csv}
+id,label,color,side
+AKT3,AKT3,95/179/108,left
+TNF,TNF,107/95/179,left
+RPS6KB1,RPS6KB1,224/108/108,left
+CASP3,CASP3,108/202/200,left
+BCL2,BCL2,179/95/152,left
+JUN,JUN,200/150/108,left
+RELA,RELA,108/150/200,left
+MAPK1,MAPK1,200/108/150,left
+IL6,IL6,150/200/108,left
+MTOR,MTOR,150/108/200,left
+PIK3CA,PIK3CA,200/200/108,left
+AKT1,AKT1,108/108/200,left
+TP53,TP53,200/108/108,left
+VEGFA,VEGFA,108/200/150,left
+MAPK3,MAPK3,180/108/180,left
+PTEN,PTEN,108/180/108,left
+MDM2,MDM2,180/150/108,left
+GSK3B,GSK3B,108/150/180,left
+IGF1,IGF1,150/180/108,left
+HIF1A,HIF1A,150/108/180,left
+NFKB1,NFKB1,180/180/108,left
+CDKN1A,CDKN1A,108/108/180,left
+CCND1,CCND1,180/108/150,left
+CHEK2,CHEK2,108/202/202,left
+IGFBP3,IGFBP3,202/108/202,left
+PRKAA1,PRKAA1,202/202/108,left
+PI3K,PI3K-Akt signaling pathway,91/155/213,right
+MAPK,MAPK signaling pathway,237/125/49,right
+HIF1,HIF-1 signaling pathway,255/192/0,right
+mTOR,mTOR signaling pathway,112/173/71,right
+Apoptosis,Apoptosis,91/155/213,right
+AMPK,AMPK signaling pathway,237/125/49,right
+TNFsig,TNF signaling pathway,255/192/0,right
+p53,p53 signaling pathway,112/173/71,right
+\end{filecontents*}
+
+\begin{filecontents*}[overwrite]{flows2.csv}
+source,target,value
+AKT3,PI3K,1
+AKT3,MAPK,1
+AKT3,HIF1,1
+AKT3,mTOR,1
+TNF,MAPK,1
+TNF,Apoptosis,1
+TNF,TNFsig,1
+RPS6KB1,PI3K,1
+RPS6KB1,MAPK,1
+RPS6KB1,mTOR,1
+CASP3,PI3K,1
+CASP3,Apoptosis,1
+BCL2,PI3K,1
+BCL2,MAPK,1
+BCL2,Apoptosis,1
+JUN,PI3K,1
+JUN,MAPK,1
+RELA,PI3K,1
+RELA,MAPK,1
+RELA,Apoptosis,1
+RELA,TNFsig,1
+MAPK1,PI3K,1
+MAPK1,MAPK,1
+MAPK1,mTOR,1
+IL6,PI3K,1
+IL6,MAPK,1
+IL6,HIF1,1
+MTOR,PI3K,1
+MTOR,MAPK,1
+MTOR,mTOR,1
+PIK3CA,PI3K,1
+PIK3CA,mTOR,1
+AKT1,PI3K,1
+AKT1,MAPK,1
+AKT1,HIF1,1
+AKT1,mTOR,1
+TP53,PI3K,1
+TP53,MAPK,1
+TP53,Apoptosis,1
+TP53,p53,1
+VEGFA,PI3K,1
+VEGFA,MAPK,1
+VEGFA,HIF1,1
+MAPK3,PI3K,1
+MAPK3,MAPK,1
+MAPK3,mTOR,1
+PTEN,PI3K,1
+PTEN,mTOR,1
+MDM2,PI3K,1
+MDM2,p53,1
+GSK3B,PI3K,1
+GSK3B,MAPK,1
+GSK3B,mTOR,1
+IGF1,PI3K,1
+IGF1,MAPK,1
+IGF1,HIF1,1
+IGF1,mTOR,1
+HIF1A,PI3K,1
+HIF1A,HIF1,1
+HIF1A,mTOR,1
+NFKB1,PI3K,1
+NFKB1,Apoptosis,1
+NFKB1,TNFsig,1
+CDKN1A,PI3K,1
+CDKN1A,p53,1
+CCND1,PI3K,1
+CCND1,MAPK,1
+CHEK2,p53,1
+IGFBP3,p53,1
+PRKAA1,AMPK,1
+PRKAA1,mTOR,1
+\end{filecontents*}
+
+\begin{luacode*}
+function parse_csv(filename)
+    local file = io.open(filename, "r")
+    local lines = {}
+    local header = {}
+    local first = true
+    
+    for line in file:lines() do
+        if first then
+            for field in line:gmatch("[^,]+") do
+                table.insert(header, field)
+            end
+            first = false
+        else
+            local row = {}
+            local i = 1
+            for field in line:gmatch("[^,]+") do
+                row[header[i]] = field
+                i = i + 1
+            end
+            table.insert(lines, row)
+        end
+    end
+    file:close()
+    return lines
+end
+
+nodes_data = parse_csv("nodes2.csv")
+flows_data = parse_csv("flows2.csv")
+
+nodes = {}
+for _, node in ipairs(nodes_data) do
+    nodes[node.id] = {
+        id = node.id,
+        label = node.label,
+        color = node.color,
+        side = node.side,
+        total_flow = 0,
+        flows_out = {},
+        flows_in = {}
+    }
+end
+
+for _, flow in ipairs(flows_data) do
+    local value = tonumber(flow.value)
+    local source = nodes[flow.source]
+    local target = nodes[flow.target]
+    
+    source.total_flow = source.total_flow + value
+    target.total_flow = target.total_flow + value
+    
+    table.insert(source.flows_out, {target = flow.target, value = value})
+    table.insert(target.flows_in, {source = flow.source, value = value})
+end
+
+left_nodes = {}
+right_nodes = {}
+for _, node in pairs(nodes) do
+    if node.side == "left" then
+        table.insert(left_nodes, node)
+    else
+        table.insert(right_nodes, node)
+    end
+end
+
+table.sort(left_nodes, function(a, b) return a.total_flow > b.total_flow end)
+table.sort(right_nodes, function(a, b) return a.total_flow < b.total_flow end)
+
+local x_left = -8
+local x_right = 8
+local node_width = 0.3
+local scale = 0.15
+local spacing = 0.3
+
+function layout_nodes(node_list, start_y)
+    local y = start_y
+    for _, node in ipairs(node_list) do
+        node.height = node.total_flow * scale
+        node.y_bottom = y
+        node.y_center = y + node.height / 2
+        node.y_top = y + node.height
+        y = node.y_top + spacing
+    end
+end
+
+layout_nodes(left_nodes, -10)
+layout_nodes(right_nodes, -10)
+
+flows_layout = {}
+
+for _, node in ipairs(left_nodes) do
+    local y_current = node.y_top
+    
+    table.sort(node.flows_out, function(a, b)
+        return nodes[a.target].y_center > nodes[b.target].y_center
+    end)
+    
+    for _, flow in ipairs(node.flows_out) do
+        local height = flow.value * scale
+        local target_node = nodes[flow.target]
+        
+        local target_y_current = target_node.y_bottom
+        for _, in_flow in ipairs(target_node.flows_in) do
+            if in_flow.source == node.id then
+                break
+            end
+            target_y_current = target_y_current + in_flow.value * scale
+        end
+        
+        table.insert(flows_layout, {
+            source = node.id,
+            target = flow.target,
+            color = target_node.color,
+            source_y1 = y_current,
+            source_y2 = y_current - height,
+            target_y1 = target_y_current,
+            target_y2 = target_y_current + height,
+            width = height
+        })
+        
+        y_current = y_current - height
+    end
+end
+
+function render_sankey()
+    for _, node in pairs(nodes) do
+        local r, g, b = node.color:match("(%d+)/(%d+)/(%d+)")
+        tex.print(string.format("\\definecolor{%s}{RGB}{%s,%s,%s}", 
+            node.id .. "color", r, g, b))
+    end
+    
+    for _, flow in ipairs(flows_layout) do
+        local y_source = (flow.source_y1 + flow.source_y2) / 2
+        local y_target = (flow.target_y1 + flow.target_y2) / 2
+        tex.print(string.format(
+            "\\draw[line width=%.2fmm,%s,opacity=0.7] (%f,%f) to[out=0,in=180] (%f,%f);",
+            flow.width * 10,
+            flow.target .. "color",
+            x_left + node_width, y_source,
+            x_right - node_width, y_target
+        ))
+    end
+    
+    for _, node in ipairs(left_nodes) do
+        tex.print(string.format(
+            "\\fill[%s] (%f,%f) rectangle (%f,%f);",
+            node.id .. "color",
+            x_left, node.y_top,
+            x_left + node_width, node.y_bottom
+        ))
+        tex.print(string.format(
+            "\\node[anchor=east,font=\\tiny] at (%f,%f) {%s};",
+            x_left - 0.1, node.y_center, node.label
+        ))
+    end
+    
+    for _, node in ipairs(right_nodes) do
+        tex.print(string.format(
+            "\\fill[%s] (%f,%f) rectangle (%f,%f);",
+            node.id .. "color",
+            x_right - node_width, node.y_top,
+            x_right, node.y_bottom
+        ))
+        tex.print(string.format(
+            "\\node[anchor=west,font=\\tiny] at (%f,%f) {%s};",
+            x_right + 0.1, node.y_center, node.label
+        ))
+    end
+end
+\end{luacode*}
+
+\begin{document}
+\begin{tikzpicture}
+    \directlua{render_sankey()}
+\end{tikzpicture}
+\end{document}

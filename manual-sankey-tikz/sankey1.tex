@@ -1,0 +1,206 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{luacode}
+\usepackage{fourier-otf}
+
+\begin{filecontents*}[overwrite]{nodes1.csv}
+id,label,color,side
+G1,Gene1,31/119/180,left
+G2,Gene2,255/127/14,left
+G3,Gene3,44/160/44,left
+G4,Gene4,214/39/40,left
+G5,Gene5,148/103/189,left
+P1,Pathway Alpha,140/86/75,right
+P2,Pathway Beta,227/119/194,right
+P3,Pathway Gamma,127/127/127,right
+\end{filecontents*}
+
+\begin{filecontents*}[overwrite]{flows1.csv}
+source,target,value
+G1,P1,12
+G1,P2,8
+G2,P1,15
+G2,P3,6
+G3,P2,10
+G3,P3,7
+G4,P1,5
+G4,P2,9
+G5,P2,11
+G5,P3,13
+\end{filecontents*}
+
+\begin{luacode*}
+function parse_csv(filename)
+    local file = io.open(filename, "r")
+    local lines = {}
+    local header = {}
+    local first = true
+    
+    for line in file:lines() do
+        if first then
+            for field in line:gmatch("[^,]+") do
+                table.insert(header, field)
+            end
+            first = false
+        else
+            local row = {}
+            local i = 1
+            for field in line:gmatch("[^,]+") do
+                row[header[i]] = field
+                i = i + 1
+            end
+            table.insert(lines, row)
+        end
+    end
+    file:close()
+    return lines
+end
+
+nodes_data = parse_csv("nodes1.csv")
+flows_data = parse_csv("flows1.csv")
+
+nodes = {}
+for _, node in ipairs(nodes_data) do
+    nodes[node.id] = {
+        id = node.id,
+        label = node.label,
+        color = node.color,
+        side = node.side,
+        total_flow = 0,
+        flows_out = {},
+        flows_in = {}
+    }
+end
+
+for _, flow in ipairs(flows_data) do
+    local value = tonumber(flow.value)
+    local source = nodes[flow.source]
+    local target = nodes[flow.target]
+    
+    source.total_flow = source.total_flow + value
+    target.total_flow = target.total_flow + value
+    
+    table.insert(source.flows_out, {target = flow.target, value = value})
+    table.insert(target.flows_in, {source = flow.source, value = value})
+end
+
+left_nodes = {}
+right_nodes = {}
+for _, node in pairs(nodes) do
+    if node.side == "left" then
+        table.insert(left_nodes, node)
+    else
+        table.insert(right_nodes, node)
+    end
+end
+
+table.sort(left_nodes, function(a, b) return a.total_flow > b.total_flow end)
+table.sort(right_nodes, function(a, b) return a.total_flow > b.total_flow end)
+
+local x_left = -5
+local x_right = 5
+local node_width = 0.3
+local scale = 0.1
+local spacing = 0.5
+
+function layout_nodes(node_list, start_y)
+    local y = start_y
+    for _, node in ipairs(node_list) do
+        node.height = node.total_flow * scale
+        node.y_top = y
+        node.y_center = y - node.height / 2
+        node.y_bottom = y - node.height
+        y = node.y_bottom - spacing
+    end
+end
+
+layout_nodes(left_nodes, 5)
+layout_nodes(right_nodes, 5)
+
+flows_layout = {}
+
+for _, node in ipairs(left_nodes) do
+    local y_current = node.y_top
+    
+    table.sort(node.flows_out, function(a, b)
+        return nodes[a.target].y_center > nodes[b.target].y_center
+    end)
+    
+    for _, flow in ipairs(node.flows_out) do
+        local height = flow.value * scale
+        local target_node = nodes[flow.target]
+        
+        local target_y_current = target_node.y_top
+        for _, in_flow in ipairs(target_node.flows_in) do
+            if in_flow.source == node.id then
+                break
+            end
+            target_y_current = target_y_current - in_flow.value * scale
+        end
+        
+        table.insert(flows_layout, {
+            source = node.id,
+            target = flow.target,
+            color = node.color,
+            source_y1 = y_current,
+            source_y2 = y_current - height,
+            target_y1 = target_y_current,
+            target_y2 = target_y_current - height,
+            width = height
+        })
+        
+        y_current = y_current - height
+    end
+end
+
+function render_sankey()
+    for _, node in pairs(nodes) do
+        local r, g, b = node.color:match("(%d+)/(%d+)/(%d+)")
+        tex.print(string.format("\\definecolor{%s}{RGB}{%s,%s,%s}", 
+            node.id .. "color", r, g, b))
+    end
+    
+    for _, flow in ipairs(flows_layout) do
+        local y_source = (flow.source_y1 + flow.source_y2) / 2
+        local y_target = (flow.target_y1 + flow.target_y2) / 2
+        tex.print(string.format(
+            "\\draw[line width=%.2fmm,%s,opacity=0.7] (%f,%f) to[out=0,in=180] (%f,%f);",
+            flow.width * 10,
+            flow.source .. "color",
+            x_left + node_width, y_source,
+            x_right - node_width, y_target
+        ))
+    end
+    
+    for _, node in ipairs(left_nodes) do
+        tex.print(string.format(
+            "\\fill[%s] (%f,%f) rectangle (%f,%f);",
+            node.id .. "color",
+            x_left, node.y_top,
+            x_left + node_width, node.y_bottom
+        ))
+        tex.print(string.format(
+            "\\node[anchor=east] at (%f,%f) {\\small %s};",
+            x_left - 0.1, node.y_center, node.label
+        ))
+    end
+    
+    for _, node in ipairs(right_nodes) do
+        tex.print(string.format(
+            "\\fill[%s] (%f,%f) rectangle (%f,%f);",
+            node.id .. "color",
+            x_right - node_width, node.y_top,
+            x_right, node.y_bottom
+        ))
+        tex.print(string.format(
+            "\\node[anchor=west] at (%f,%f) {\\small %s};",
+            x_right + 0.1, node.y_center, node.label
+        ))
+    end
+end
+\end{luacode*}
+
+\begin{document}
+\begin{tikzpicture}
+    \directlua{render_sankey()}
+\end{tikzpicture}
+\end{document}

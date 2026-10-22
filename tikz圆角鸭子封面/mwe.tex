@@ -1,0 +1,41 @@
+\documentclass{article}
+\usepackage{lipsum}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usetikzlibrary{calc}
+\usepackage[paperwidth=16.51cm, paperheight=24.77cm]{geometry}
+    \def\maketitle{%
+    \newgeometry{margin=0pt}
+    \begin{titlepage}
+            \begin{tikzpicture}[remember picture, overlay, line join=round]
+                \coordinate (A) at ($(current page.north west)!0.2!(current page.north east)$);
+                \draw[line width=.75cm,brown,rounded corners=1cm] (A) |- ++(2cm,-7cm) coordinate (B);
+                \coordinate (C) at (B-|current page.east);
+                \coordinate (D) at ($(current page.south west)!0.1!(current page.south east)$);
+                \coordinate (tmpA) at ([yshift=12cm]D);
+                \coordinate (tmpB) at ([xshift=-9cm]C);
+                \draw[line width=.75cm,magenta,line cap=rect] (B) -- ++(0,-2cm);
+
+                %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                % Clip the image to the lower-right side of the cyan border.
+                \begin{scope}
+                    % Extend below the page to keep rounded bottom corners off-page.
+                    \clip[rounded corners=1cm]
+                        (C) -- (tmpB) -- (tmpA) -- ([yshift=-1cm]D)
+                        [sharp corners] -- ([yshift=-1cm]current page.south east) -- cycle;
+                    % Center horizontally; preserve aspect ratio and crop excess width.
+                    \node[anchor=south,inner sep=0pt] at ($(D)!0.5!(current page.south east)$)
+                        {\includegraphics[height=\dimexpr\paperheight-7cm\relax]{example-image-duck}};
+                \end{scope}
+                %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+                \draw[line width=.75cm,cyan,rounded corners=1cm] (C) -- (tmpB) -- (tmpA) -- (D);
+            \end{tikzpicture}
+        \end{titlepage}
+    \restoregeometry
+    }
+\begin{document}
+\maketitle
+\end{document}
+
+

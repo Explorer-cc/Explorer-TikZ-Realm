@@ -1,0 +1,9 @@
+id,label,color,side
+G1,Gene1,31/119/180,left
+G2,Gene2,255/127/14,left
+G3,Gene3,44/160/44,left
+G4,Gene4,214/39/40,left
+G5,Gene5,148/103/189,left
+P1,Pathway Alpha,140/86/75,right
+P2,Pathway Beta,227/119/194,right
+P3,Pathway Gamma,127/127/127,right

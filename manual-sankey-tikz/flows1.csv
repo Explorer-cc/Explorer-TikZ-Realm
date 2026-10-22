@@ -1,0 +1,11 @@
+source,target,value
+G1,P1,12
+G1,P2,8
+G2,P1,15
+G2,P3,6
+G3,P2,10
+G3,P3,7
+G4,P1,5
+G4,P2,9
+G5,P2,11
+G5,P3,13
