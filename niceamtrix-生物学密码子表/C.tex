@@ -1,0 +1,157 @@
+% Source - https://tex.stackexchange.com/a/766890
+% Posted by F. Pantigny
+% Retrieved 2026-10-07, License - CC BY-SA 4.0
+
+\documentclass{article}
+\usepackage{geometry}
+\usepackage{nicematrix}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathreplacing,calligraphy}
+
+\NiceMatrixOptions{xdots/horizontal-labels}
+\tikzset
+{
+    nicematrix/brace/.style =
+      {
+        decoration =
+          {
+            calligraphic brace ,
+            amplitude = 0.4 em ,
+            raise = -0.4 em
+          } ,
+        line width = 0.1 em ,
+        decorate
+      }
+  }
+
+\begin{document}
+
+\sffamily
+\NiceMatrixOptions { xdots/horizontal-labels , cell-space-limits = 2pt }
+
+\newbox{\UU}\savebox{\UU}{
+\begin{NiceTabular}{cl}
+    UUU & \Vbrace{2}{Phe} \\ UUC \\ UUA & \Vbrace{2}{Leu} \\ UUG
+\end{NiceTabular}
+}
+
+\newbox{\UC}\savebox{\UC}{
+\begin{NiceTabular}{cl}
+    UCU & \Vbrace{4}{Ser} \\ UCC \\ UCA \\ UCG
+\end{NiceTabular}
+}
+
+\newbox{\UA}\savebox{\UA}{
+\begin{NiceTabular}{cl}
+    UAU & \Vbrace{2}{Tyr} \\ UAC \\ UAA & \color{red} STOP\\ UAG & \color{red} STOP
+\end{NiceTabular}
+}
+
+\newbox{\UG}\savebox{\UG}{
+\begin{NiceTabular}{cl}
+    UGU & \Vbrace{2}{Cys} \\ UGC \\ UGA & \color{red} STOP\\ UGG & Trp
+\end{NiceTabular}
+}
+
+\newbox{\CU}\savebox{\CU}{
+\begin{NiceTabular}{cl}
+    CUU & \Vbrace{4}{Leu} \\ CUC \\ CUA \\ CUG \\
+\end{NiceTabular}
+}
+
+\newbox{\CC}\savebox{\CC}{
+\begin{NiceTabular}{cl}
+    CCU & \Vbrace{4}{Pro} \\ CCC \\ CCA \\ CCG \\
+\end{NiceTabular}
+}
+
+\newbox{\CA}\savebox{\CA}{
+\begin{NiceTabular}{cl}
+    CAU & \Vbrace{2}{His} \\ CAC \\ CAA & \Vbrace{2}{Gln} \\ CAG \\
+\end{NiceTabular}
+}
+
+\newbox{\CG}\savebox{\CG}{
+\begin{NiceTabular}{cl}
+    CGU & \Vbrace{4}{Arg} \\ CGC \\ CGA \\ CGG \\
+\end{NiceTabular}
+}
+
+\newbox{\AU}\savebox{\AU}{
+\begin{NiceTabular}{cl}
+    AUU & \Vbrace{3}{Ile} \\ AUC \\ AUA \\ AUG & Met \\
+\end{NiceTabular}
+}
+
+\newbox{\AC}\savebox{\AC}{
+\begin{NiceTabular}{cl}
+    ACU & \Vbrace{4}{Thr} \\ ACC \\ ACA \\ ACG \\
+\end{NiceTabular}
+}
+
+\newbox{\AAA}\savebox{\AAA}{
+\begin{NiceTabular}{cl}
+    AAU & \Vbrace{2}{Asn} \\ AAC \\ AAA & \Vbrace{2}{Lys} \\ AAG \\
+\end{NiceTabular}
+}
+
+\newbox{\AG}\savebox{\AG}{
+\begin{NiceTabular}{cl}
+    AGU & \Vbrace{2}{Ser} \\ AGC \\ AGA & \Vbrace{2}{Arg} \\ AGG \\
+\end{NiceTabular}
+}
+
+\newbox{\GU}\savebox{\GU}{
+\begin{NiceTabular}{cl}
+    GUU & \Vbrace{4}{Val} \\ GUC \\ GUA \\ GUG \\
+\end{NiceTabular}
+}
+
+\newbox{\GC}\savebox{\GC}{
+\begin{NiceTabular}{cl}
+    GCU & \Vbrace{4}{Ala} \\ GCC \\ GCA \\ GCG \\
+\end{NiceTabular}
+}
+
+\newbox{\GA}\savebox{\GA}{
+\begin{NiceTabular}{cl}
+    GAU & \Vbrace{2}{Asp} \\ GAC \\ GAA & \Vbrace{2}{Glu} \\ GAG \\
+\end{NiceTabular}
+}
+
+\newbox{\GG}\savebox{\GG}{
+\begin{NiceTabular}{cl}
+    GGU & \Vbrace{4}{Gly} \\ GGC \\ GGA \\ GGG \\
+\end{NiceTabular}
+}
+
+
+\begin{center}
+\NiceMatrixOptions{width-of-false += 2pt, cell-space-limits = 5pt}
+\begin{NiceTabular} [corners,hvlines,first-row]
+  { 
+    >{\columncolor{teal!60}} w{c}{18pt} 
+    F *{4}{w{l}{25mm}F} 
+    >{\columncolor{teal!60}} w{c}{18pt}
+  }
+\CodeBefore
+  \arraycolor{yellow!35}
+\Body
+&& \Block{1-7}{\bfseries \Large Second letter}  \\
+\rowcolor{teal!60}
+&& \rule[-6pt]{0pt}{15pt} \Block[c]{}{U} && \Block[c]{}{C} && \Block[c]{}{A} && \Block[c]{}{G} \\ \FalseRow
+U && \usebox{\UU} && \usebox{\UC} && \usebox{\UA} && \usebox{\UG} && \Block{}{U\\C\\A\\G} \\ \FalseRow
+C && \usebox{\CU} && \usebox{\CC} && \usebox{\CA} && \usebox{\CG} && \Block{}{U\\C\\A\\G} \\ \FalseRow
+A && \usebox{\AU} && \usebox{\AC} && \usebox{\AAA} && \usebox{\AG} && \Block{}{U\\C\\A\\G} \\ \FalseRow
+G && \usebox{\GU} && \usebox{\GC} && \usebox{\GA} && \usebox{\GG} && \Block{}{U\\C\\A\\G}  
+\CodeAfter
+  \begin{tikzpicture}
+    \node[font=\sffamily\bfseries\Large,rotate=90,anchor=south]
+      at ([xshift=-8pt]6-|1) {First Letter};
+    \node[font=\sffamily\bfseries\Large,rotate=-90,anchor=south]
+      at ([xshift=+8pt]6-|last) {Third Letter};
+  \end{tikzpicture}
+\end{NiceTabular}
+\end{center}
+
+\end{document}

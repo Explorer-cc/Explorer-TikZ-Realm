@@ -1,0 +1,118 @@
+\documentclass{article}
+\usepackage{nicematrix}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\newcommand{\PanelWidth}{65pt}
+\newcommand{\CellGap}{6pt}
+\newcommand{\CellPadding}{3pt}
+\newlength{\CodonLineHeight}
+\setlength{\CodonLineHeight}{14pt}
+
+\newcommand{\GroupLabel}[2]{%
+  \hspace{1pt}%
+  \parbox[c][\dimexpr#1\CodonLineHeight\relax][c]{26pt}{%
+    \raggedright\small\bfseries#2%
+  }%
+}
+
+\newcommand{\ChartCell}[3][\dimexpr4\CodonLineHeight+16pt\relax]{%
+  \parbox[c][\dimexpr#1+\CellGap\relax][c]{\dimexpr#2+\CellGap+\CellPadding*2\relax}{%
+    \centering
+    \parbox[c][#1][c]{#2}{\centering#3}%
+  }%
+}
+\newcommand{\CodonLines}[1]{%
+  \begingroup
+  \setlength{\tabcolsep}{0pt}%
+  \begin{tabular}{@{}>{\rule[-.3\CodonLineHeight]{0pt}{\CodonLineHeight}}c@{}}%
+    #1
+  \end{tabular}%
+  \endgroup
+}
+\newcommand{\BraceGroup}[2]{%
+  \hbox{\parbox[c][\dimexpr#1\CodonLineHeight\relax][c]{10pt}{%
+    \centering
+    \raisebox{-2pt}[0pt][0pt]{%
+      \(\nulldelimiterspace=0pt
+        \smash{\left.\vcenter{\hbox{%
+          \rule{0pt}{\dimexpr#1\CodonLineHeight-8pt\relax}%
+        }}\right\}}%
+      \)%
+    }%
+  }\GroupLabel{#1}{#2}}%
+}
+\newcommand{\BraceBlank}[2]{%
+  \hbox{%
+    \parbox[c][\dimexpr#1\CodonLineHeight\relax][c]{10pt}{\mbox{}}%
+    \GroupLabel{#1}{#2}%
+  }%
+}
+\newcommand{\CodonPanel}[2]{%
+  \ChartCell{\PanelWidth}{%
+    \CodonLines{#1}\hspace{2pt}%
+    \parbox[c][\dimexpr4\CodonLineHeight\relax][c]{37pt}{%
+      \offinterlineskip#2%
+    }%
+  }%
+}
+\newcommand{\RowIndex}[1]{{%
+  \renewcommand{\CellPadding}{0pt}%
+  \ChartCell{18pt}{#1}%
+}}
+\newcommand{\ColumnIndex}[1]{\ChartCell[18pt]{\PanelWidth}{#1}}
+\newcommand{\ThirdIndex}[1]{\RowIndex{\CodonLines{#1}}}
+\begin{document}\sffamily
+\begin{center}
+\setlength{\tabcolsep}{0pt}
+\setlength{\extrarowheight}{0pt}
+\begin{NiceTabular}{@{}cccccc@{}}[corners,cell-space-limits=0pt]
+\CodeBefore
+  \TikzEveryCell{offset=\dimexpr\CellGap/2\relax,fill=teal!60}
+  \begin{tikzpicture}
+    \foreach \r/\rn in {2/3,3/4,4/5,5/6}
+      \foreach \c/\cn in {2/3,3/4,4/5,5/6}
+        \fill[yellow!35]
+          ([xshift=\dimexpr\CellGap/2\relax,yshift=-\dimexpr\CellGap/2\relax]\r-|\c)
+          rectangle
+          ([xshift=-\dimexpr\CellGap/2\relax,yshift=\dimexpr\CellGap/2\relax]\rn-|\cn);
+  \end{tikzpicture}
+\Body
+  & \ColumnIndex{U} & \ColumnIndex{C} & \ColumnIndex{A} & \ColumnIndex{G} \\
+\RowIndex{U}
+& \CodonPanel{UUU\\UUC\\UUA\\UUG}{\BraceGroup{2}{Phe}\BraceGroup{2}{Leu}}
+& \CodonPanel{UCU\\UCC\\UCA\\UCG}{\BraceGroup{4}{Ser}}
+& \CodonPanel{UAU\\UAC\\UAA\\UAG}{\BraceGroup{2}{Tyr}\BraceBlank{1}{\textcolor{red!70!black}{STOP}}\BraceBlank{1}{\textcolor{red!70!black}{STOP}}}
+& \CodonPanel{UGU\\UGC\\UGA\\UGG}{\BraceGroup{2}{Cys}\BraceBlank{1}{\textcolor{red!70!black}{STOP}}\BraceBlank{1}{Trp}}
+& \ThirdIndex{U\\C\\A\\G} \\
+\RowIndex{C}
+& \CodonPanel{CUU\\CUC\\CUA\\CUG}{\BraceGroup{4}{Leu}}
+& \CodonPanel{CCU\\CCC\\CCA\\CCG}{\BraceGroup{4}{Pro}}
+& \CodonPanel{CAU\\CAC\\CAA\\CAG}{\BraceGroup{2}{His}\BraceGroup{2}{Gln}}
+& \CodonPanel{CGU\\CGC\\CGA\\CGG}{\BraceGroup{4}{Arg}}
+& \ThirdIndex{U\\C\\A\\G} \\
+\RowIndex{A}
+& \CodonPanel{AUU\\AUC\\AUA\\AUG}{\BraceGroup{3}{Ile}\BraceBlank{1}{\textcolor{blue!75!black}{Met}}}
+& \CodonPanel{ACU\\ACC\\ACA\\ACG}{\BraceGroup{4}{Thr}}
+& \CodonPanel{AAU\\AAC\\AAA\\AAG}{\BraceGroup{2}{Asn}\BraceGroup{2}{Lys}}
+& \CodonPanel{AGU\\AGC\\AGA\\AGG}{\BraceGroup{2}{Ser}\BraceGroup{2}{Arg}}
+& \ThirdIndex{U\\C\\A\\G} \\
+\RowIndex{G}
+& \CodonPanel{GUU\\GUC\\GUA\\GUG}{\BraceGroup{4}{Val}}
+& \CodonPanel{GCU\\GCC\\GCA\\GCG}{\BraceGroup{4}{Ala}}
+& \CodonPanel{GAU\\GAC\\GAA\\GAG}{\BraceGroup{2}{Asp}\BraceGroup{2}{Glu}}
+& \CodonPanel{GGU\\GGC\\GGA\\GGG}{\BraceGroup{4}{Gly}}
+& \ThirdIndex{U\\C\\A\\G} \\
+\CodeAfter
+   \TikzEveryCell{offset=\dimexpr\CellGap/2\relax,draw}
+  \begin{tikzpicture}
+    \node[font=\sffamily\bfseries\Large,anchor=south]
+      at ([yshift=+8pt]$(1-|2)!0.5!(1-|6)$) {Second Letter};
+    \node[font=\sffamily\bfseries\Large,rotate=90,anchor=south]
+      at ([xshift=-8pt]$(2-|1)!0.5!(6-|1)$) {First Letter};
+    \node[font=\sffamily\bfseries\Large,rotate=-90,anchor=south]
+      at ([xshift=+8pt]$(2-|7)!0.5!(6-|7)$) {Third Letter};
+  \end{tikzpicture}
+\end{NiceTabular}
+\end{center}
+
+\end{document}

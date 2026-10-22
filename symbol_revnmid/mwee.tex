@@ -1,0 +1,30 @@
+% https://tex.stackexchange.com/a/123546
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\makeatletter
+\providecommand{\nmid}{}
+\providecommand{\revnmid}{}
+\renewcommand\nmid{\mathrel{\mathpalette\thiel@nmid\relax}}
+\newcommand{\thiel@nmid}[2]{%
+  \ooalign{%
+    \hidewidth\rotatebox[origin=c]{40}{$\m@th#1-$}\hidewidth\cr
+    $\m@th#1|$\cr}%
+}
+\renewcommand\revnmid{\mathrel{\mathpalette\thiel@revnmid\relax}}
+\newcommand{\thiel@revnmid}[2]{%
+  \ooalign{%
+    \hidewidth\rotatebox[origin=c]{-40}{$\m@th#1-$}\hidewidth\cr
+    $\m@th#1|$\cr}%
+}
+\makeatother
+\begin{document}
+\begin{gather*}
+a\mid b\\
+a\nmid b\\
+x_{\nmid_{(a\nmid b)}}\\
+a\revnmid b\\
+x_{\revnmid_{(a\revnmid b)}}
+\end{gather*}
+\end{document}

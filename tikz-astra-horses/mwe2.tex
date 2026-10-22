@@ -1,0 +1,254 @@
+\documentclass[tikz,border=3.14pt]{standalone}
+\definecolor{bgTop}{RGB}{227,201,228}
+\definecolor{bgMid}{RGB}{231,197,229}
+\definecolor{bgBottom}{RGB}{221,204,228}
+\definecolor{coat}{RGB}{246,194,230}
+\definecolor{coatline}{RGB}{226,137,202}
+\definecolor{hairline}{RGB}{111,17,143}
+\definecolor{violetTop}{RGB}{192,147,211}
+\definecolor{violetBottom}{RGB}{113,12,169}
+\definecolor{pinkTop}{RGB}{236,169,218}
+\definecolor{pinkBottom}{RGB}{189,28,163}
+\definecolor{forelockTop}{RGB}{209,157,228}
+\definecolor{forelockBottom}{RGB}{101,0,164}
+\definecolor{maneTop}{RGB}{187,0,153}
+\definecolor{maneBottom}{RGB}{223,137,202}
+\definecolor{cream}{RGB}{244,243,187}
+\definecolor{creamLight}{RGB}{255,253,222}
+\definecolor{gold}{RGB}{255,232,128}
+\definecolor{goldline}{RGB}{212,177,67}
+\definecolor{gem}{RGB}{155,79,184}
+\definecolor{gemLight}{RGB}{190,140,211}
+\definecolor{gemDark}{RGB}{120,56,151}
+\definecolor{eyeline}{RGB}{69,55,65}
+\definecolor{irisTop}{RGB}{75,0,115}
+\definecolor{irisBottom}{RGB}{199,153,219}
+\begin{document}
+\begin{tikzpicture}[x=.75bp,y=-.75bp,line cap=round,line join=round,
+  hair/.style={draw=hairline,line width=2.7bp},
+  skin/.style={draw=coatline,line width=2.55bp},
+  jewelry/.style={draw=goldline,line width=2.7bp}]
+\path[use as bounding box] (0,0) rectangle (275,485);
+\clip (0,0) rectangle (275,485);
+\shade[top color=bgTop,middle color=bgMid,bottom color=bgBottom]
+  (0,0) rectangle (275,485);
+
+% Back mane
+\path[shade,top color=violetTop,bottom color=violetBottom,hair]
+  (-18,154) .. controls (0,105) and (57,97) .. (111,106)
+  .. controls (166,113) and (233,131) .. (267,175)
+  .. controls (293,209) and (296,272) .. (280,323)
+  .. controls (262,374) and (221,422) .. (223,466)
+  .. controls (223,477) and (226,484) .. (229,493)
+  -- (-24,493) -- cycle;
+\begin{scope}
+\clip
+  (206,134) .. controls (239,144) and (265,166) .. (280,190)
+  .. controls (295,223) and (295,277) .. (280,323)
+  .. controls (262,374) and (221,422) .. (223,466)
+  .. controls (223,477) and (226,484) .. (229,493)
+  -- (163,493) -- (158,349) -- (192,181) -- cycle;
+\fill[creamLight!75!white] (150,130) rectangle (300,495);
+\shade[top color=creamLight!75!white,bottom color=cream]
+  (150,265) rectangle (300,340);
+\fill[cream] (150,340) rectangle (300,495);
+\end{scope}
+\path[shade,top color=maneTop,bottom color=maneBottom]
+  (215,187) .. controls (249,199) and (257,234) .. (251,272)
+  .. controls (249,311) and (229,348) .. (211,381)
+  .. controls (187,423) and (179,458) .. (185,493)
+  -- (127,493) -- (112,345) -- (199,223) -- cycle;
+\path[shade,top color=violetBottom,bottom color=violetTop]
+  (105,340) -- (161,350)
+  .. controls (159,374) and (150,399) .. (144,421)
+  .. controls (141,433) and (140,441) .. (141,446)
+  -- (118,428) -- cycle;
+\path[shade,top color=pinkTop,bottom color=pinkBottom]
+  (-15,313) .. controls (8,341) and (37,360) .. (45,392)
+  .. controls (54,428) and (46,469) .. (34,494)
+  -- (13,494) .. controls (22,456) and (11,428) .. (-15,399)
+  -- cycle;
+\path[fill=cream]
+  (-11,237) .. controls (0,260) and (8,287) .. (16,309)
+  .. controls (37,349) and (53,375) .. (54,413)
+  .. controls (56,438) and (49,460) .. (38,477)
+  .. controls (44,449) and (45,426) .. (41,403)
+  .. controls (37,369) and (14,352) .. (-6,326) -- cycle;
+
+% Face and neck
+\path[fill=coat,skin]
+  (66,151) .. controls (105,178) and (167,197) .. (222,208)
+  .. controls (230,244) and (218,288) .. (201,304)
+  .. controls (195,310) and (188,314) .. (179,318)
+  .. controls (184,323) and (193,325) .. (192,331)
+  .. controls (184,344) and (168,361) .. (155,364)
+  .. controls (140,366) and (124,354) .. (112,348)
+  .. controls (113,379) and (128,419) .. (137,440)
+  -- (143,492) -- (39,492)
+  .. controls (53,462) and (58,438) .. (56,409)
+  .. controls (55,377) and (44,349) .. (31,323)
+  .. controls (12,288) and (3,252) .. (4,217)
+  .. controls (3,194) and (6,176) .. (8,161)
+  .. controls (5,136) and (8,108) .. (21,88)
+  .. controls (27,78) and (34,76) .. (42,81)
+  .. controls (59,90) and (67,119) .. (66,151);
+\draw[hair]
+  (5,170) .. controls (0,198) and (2,240) .. (10,269)
+  .. controls (15,290) and (23,312) .. (31,326)
+  .. controls (49,356) and (57,382) .. (56,415)
+  .. controls (56,441) and (49,469) .. (39,485);
+\draw[skin] (28,111) .. controls (20,121) and (21,139) .. (25,150);
+\draw[skin]
+  (33,311) .. controls (49,331) and (64,342) .. (90,343)
+  .. controls (100,342) and (110,345) .. (116,352)
+  (148,340) .. controls (147,350) and (150,360) .. (157,362)
+  (159,333) -- (158,330)
+  (178,315) .. controls (181,321) and (188,322) .. (193,320);
+
+% Near eye
+\begin{scope}
+\clip
+  (43,207) .. controls (78,218) and (108,254) .. (131,269)
+  .. controls (125,282) and (122,297) .. (120,307)
+  .. controls (106,304) and (93,306) .. (77,301)
+  .. controls (50,297) and (35,278) .. (36,248)
+  .. controls (36,230) and (40,216) .. (43,207);
+\fill[white] (29,200) rectangle (142,315);
+\shade[top color=irisTop,bottom color=irisBottom]
+  (53,211) .. controls (81,215) and (111,245) .. (120,269)
+  .. controls (119,291) and (107,307) .. (82,303)
+  .. controls (51,303) and (39,281) .. (40,257)
+  .. controls (38,234) and (45,216) .. (53,211);
+\fill[black]
+  (70,224) .. controls (86,226) and (114,247) .. (115,268)
+  .. controls (113,292) and (100,304) .. (84,302)
+  .. controls (64,301) and (53,283) .. (54,270)
+  .. controls (62,254) and (66,235) .. (70,224);
+\fill[white]
+  (65,227) .. controls (72,225) and (78,230) .. (76,238)
+  .. controls (73,250) and (63,262) .. (53,265)
+  .. controls (46,266) and (47,257) .. (51,247)
+  .. controls (54,238) and (60,230) .. (65,227);
+\fill[white] (73,267) ellipse [x radius=2.8,y radius=4.8];
+\end{scope}
+\draw[draw=eyeline,line width=2.25bp]
+  (43,207) .. controls (36,230) and (35,255) .. (39,270)
+  .. controls (43,289) and (59,299) .. (77,301)
+  .. controls (94,306) and (108,304) .. (120,307)
+  .. controls (122,294) and (125,280) .. (131,269);
+\draw[draw=eyeline,line width=2.7bp]
+  (39,209) .. controls (27,207) and (14,200) .. (12,195)
+  (36,213) .. controls (24,210) and (15,207) .. (12,205)
+  (35,238) .. controls (28,236) and (23,241) .. (19,244)
+  (35,255) .. controls (29,254) and (24,259) .. (21,261)
+  (37,272) -- (29,274);
+\draw[black,line width=3.8bp]
+  (43,207) .. controls (78,218) and (108,254) .. (131,269)
+  .. controls (140,273) and (143,264) .. (143,255);
+
+% Far eye
+\path[fill=white,draw=eyeline,line width=2.25bp]
+  (217,213) .. controls (208,220) and (202,233) .. (198,246)
+  .. controls (194,259) and (187,267) .. (177,271)
+  -- (178,307) .. controls (199,307) and (214,283) .. (217,253)
+  .. controls (219,236) and (219,222) .. (217,213);
+\shade[top color=irisTop,bottom color=irisBottom]
+  (201,235) .. controls (205,253) and (201,285) .. (191,299)
+  .. controls (188,303) and (182,305) .. (179,303)
+  -- (178,273) .. controls (189,263) and (195,249) .. (201,235);
+\fill[black]
+  (200,238) .. controls (201,256) and (193,284) .. (179,296)
+  -- (178,273) .. controls (188,264) and (194,250) .. (200,238);
+\fill[white,opacity=.8] (190,274) ellipse [x radius=4.1,y radius=2.1];
+\draw[black,line width=2.7bp]
+  (217,213) .. controls (208,220) and (202,233) .. (198,246)
+  .. controls (194,259) and (188,268) .. (179,272)
+  .. controls (177,273) and (176,268) .. (176,264);
+
+% Forelock
+\begin{scope}
+\clip
+  (63,107) .. controls (108,101) and (165,112) .. (201,133)
+  .. controls (238,144) and (266,169) .. (282,200)
+  -- (282,244)
+  .. controls (250,225) and (231,216) .. (218,212)
+  .. controls (195,204) and (173,205) .. (150,196)
+  .. controls (112,182) and (85,165) .. (67,151) -- cycle;
+\shade[top color=forelockTop,bottom color=forelockBottom,shading angle=55]
+  (59,104) rectangle (285,245);
+\path[shade,top color=pinkTop,bottom color=pinkBottom]
+  (121,108) .. controls (181,113) and (241,137) .. (275,190)
+  .. controls (282,201) and (283,217) .. (282,229)
+  .. controls (251,203) and (222,181) .. (196,161)
+  .. controls (163,132) and (140,119) .. (121,108);
+\path[shade,top color=creamLight,bottom color=cream]
+  (163,118) .. controls (210,127) and (249,145) .. (274,184)
+  -- (287,214) -- (285,233)
+  .. controls (249,174) and (213,147) .. (163,118);
+\end{scope}
+\draw[hair,line width=3.5bp]
+  (63,107) .. controls (108,101) and (165,112) .. (201,133)
+  .. controls (238,144) and (266,169) .. (282,200)
+  -- (282,244)
+  .. controls (250,225) and (231,216) .. (218,212)
+  .. controls (195,204) and (173,205) .. (150,196)
+  .. controls (112,182) and (85,165) .. (67,151);
+
+% Horn; clip folds and redraw the outline
+\begin{scope}
+\clip
+  (145,125) .. controls (183,89) and (228,44) .. (268,22)
+  .. controls (245,61) and (219,107) .. (187,155)
+  .. controls (172,147) and (155,135) .. (145,125) -- cycle;
+\fill[coat] (140,20) rectangle (270,160);
+\draw[skin,line cap=butt]
+  (157,113.58) .. controls (154,123) and (156,135) .. (163,139.94)
+  (174,97.40) .. controls (168,116) and (176,144) .. (189.66,151)
+  (192,80.62) .. controls (188,97) and (193,119) .. (207.70,123)
+  (213,61.95) .. controls (207,76) and (215,92) .. (224.94,95)
+  (235,44.02) .. controls (228,56) and (233,66) .. (240.44,69)
+  (253,31.13) .. controls (248,39) and (251,44) .. (254.52,45);
+\end{scope}
+\draw[skin]
+  (145,125) .. controls (183,89) and (228,44) .. (268,22)
+  .. controls (245,61) and (219,107) .. (187,155)
+  .. controls (172,147) and (155,135) .. (145,125) -- cycle;
+
+% Crown, aligned to the reference
+\path[fill=gold,jewelry]
+  (127,81) .. controls (123,66) and (109,57) .. (97,60)
+  .. controls (80,60) and (79,74) .. (83,86)
+  .. controls (88,99) and (104,103) .. (120,100)
+  -- (124,115) .. controls (129,124) and (135,127) .. (141,129)
+  .. controls (151,124) and (155,118) .. (158,114) -- (163,102)
+  .. controls (178,101) and (192,89) .. (193,78)
+  .. controls (193,63) and (178,57) .. (166,63)
+  .. controls (158,66) and (156,75) .. (156,81)
+  -- (148,38) -- (133,37) -- cycle;
+\draw[draw=goldline,line width=2.25bp]
+  (109,96) .. controls (113,83) and (106,70) .. (99,75)
+  (164,97) .. controls (160,83) and (170,72) .. (177,75);
+\path[fill=gold!95!white]
+  (135,40) -- (138,40) -- (140,80)
+  .. controls (137,81) and (133,83) .. (131,86) -- cycle;
+\draw[draw=gold!75!white,line width=2.25bp]
+  (88,72) .. controls (97,63) and (110,68) .. (117,78)
+  (160,78) .. controls (168,65) and (179,65) .. (185,74);
+\path[shade,top color=gemLight,bottom color=gemDark,
+  draw=gemDark,line width=1.5bp]
+  (138.5,23) ellipse [x radius=18,y radius=14];
+\fill[gemLight!85!white] (138.5,19) ellipse [x radius=10,y radius=3.4];
+\path[fill=gem,draw=gemDark,line width=1.2bp]
+  (142,86) -- (152,104) -- (142,120) -- (132,105) -- cycle;
+\fill[gemLight] (142,89) -- (148,102) -- (135,102) -- cycle;
+\fill[gemDark] (133,106) -- (149,106) -- (142,118) -- cycle;
+
+% Collar
+\path[fill=gold,jewelry]
+  (42,459) .. controls (51,457) and (62,477) .. (73,483)
+  .. controls (84,480) and (93,469) .. (104,477)
+  .. controls (111,480) and (115,489) .. (121,487)
+  .. controls (132,480) and (139,461) .. (142,447)
+  -- (143,497) -- (31,497) -- cycle;
+\end{tikzpicture}
+\end{document}

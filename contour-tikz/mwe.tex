@@ -1,0 +1,36 @@
+\documentclass[tikz,border=3pt]{standalone}
+\usepackage{lete-sans-math}
+\usetikzlibrary{bending,arrows.meta,decorations.markings,ext.arrows,ext.arrows-plus}
+\tikzset{
+    middle arrow/.style={
+        semithick,postaction={decorate},
+        decoration={markings,mark=at position #1 with {\arrow**{ext_Centered Stealth[bend]}}}
+    },middle arrow/.default={0.5}
+}
+\begin{document}
+\begin{tikzpicture}[>=Stealth]
+    \def\ang{17.5}\def\R{2.5}
+    \pgfmathsetmacro{\r}{2*\R*sin(\ang/2)}
+    \draw[thick,fill=gray!30]
+        ({\R-\r},0) coordinate (A)
+        arc (180:{90+\ang/2}:\r) coordinate (B)
+        arc (\ang:{90-\ang}:\R) coordinate (C) 
+        arc ({-\ang/2}:{-180+\ang/2}:\r) coordinate (D) 
+        arc ({90+\ang}:{180-\ang}:\R) coordinate (E) 
+        arc ({90-\ang/2}:0:\r) coordinate (F) 
+        -- cycle;
+    \path[middle arrow=0.4] (F) -- (A);
+    \path[middle arrow] (A) arc (180:{90+\ang/2}:\r);
+    \path[middle arrow] (B) arc (\ang:{90-\ang}:\R);
+    \path[middle arrow=0.6] (C) arc ({-\ang/2}:{-180+\ang/2}:\r);
+    \path[middle arrow] (D) arc ({90+\ang}:{180-\ang}:\R);
+    \path[middle arrow] (E) arc ({90-\ang/2}:0:\r);
+    \fill[radius=2pt] 
+        (-\R,0) circle[] node[below] {$(-1,0)$}
+        (+\R,0) circle[] node[below] {$(1,0)$}
+        (0,+\R) circle[] node[above] {$(0,1)$}
+        ;
+    \draw[->] (-3,0) -- (3,0) node[right] {$\Re$};
+    \draw[->] (0,-.5) node[above left] {$O$} -- (0,3.5) node[above] {$\Im$};
+\end{tikzpicture}
+\end{document}

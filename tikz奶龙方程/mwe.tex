@@ -1,0 +1,22 @@
+\documentclass[tikz,border=3pt]{standalone}
+\usetikzlibrary{arrows.meta}
+\definecolor{myyellow}{RGB}{245, 207, 74}
+\definecolor{mygreen}{RGB}{25, 86, 20}
+\begin{document}
+\begin{tikzpicture}[>=Stealth,thick,line cap=round,line join=round]
+\draw[inner color=myyellow,outer color=myyellow!80] (-2.085,-1.810)
+.. controls (-1.446,-1.051) and (-1.006,-0.071) .. (-1.996,0.81)
+.. controls (-1.663,1.221) and (-2.069,1.668) .. (-1.155,2.327)
+.. controls (-0.551,2.763) and (0.338,2.599) .. (0.68,2.445)
+.. controls (0.908,2.341) and (1.345,2.056) .. (1.676,1.225)
+.. controls (1.859,0.765) and (2.063,0.355) .. (2.553,-0.323)
+.. controls (2.963,-0.89) and (3.218,-1.322) .. (3.401,-1.810) --cycle;
+\draw[fill=mygreen!85] (-1.667,1.802)
+.. controls (-1.779,1.829) and (-2.151,1.565) .. (-1.848,1.182) -- cycle;
+\draw[fill] (-1.74,1.599)
+.. controls (-1.956,1.747) and (-2.028,1.379) .. (-1.844,1.178);
+\draw (-1.85,0.671) -- ++(1,0);
+\draw[fill=mygreen!85] (-0.637,1.657) circle[radius=.55cm];
+\draw[ultra thick,fill] (-0.425,1.661) circle[radius=8pt];
+\end{tikzpicture}
+\end{document}

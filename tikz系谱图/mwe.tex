@@ -1,0 +1,54 @@
+\documentclass[tikz,border=5pt]{standalone}
+\usepackage[fontset=ubuntu]{ctex}
+\usepackage{lete-sans-math}
+\usetikzlibrary{positioning,patterns,patterns.meta,calc}
+\newcommand*{\join}[4]{%
+    \coordinate (xtmp) at ($(#1.center)!0.5!(#2.center)$);
+    \coordinate (ytmp) at ($(#1.center)!0.6!(#3.center)$);
+    \coordinate (tmp) at (xtmp|-ytmp);
+    \draw (tmp) |- (#1) (tmp) |- (#2) (tmp) -| (#3) (tmp) -| (#4);
+}
+\begin{document}
+\begin{tikzpicture}[
+    common/.style={draw,semithick,inner sep=0pt,minimum size=1.5em},
+    male/.style 2 args={common,rectangle,label={[inner xsep=0pt,scale=.75]#2},#1},
+    female/.style 2 args={common,circle,label={[inner xsep=0pt,scale=.75,yshift=3pt]#2},#1},
+    on grid,node distance=1.5cm and 2cm,
+]
+\node[male={fill}{above left:$1$}] (N1) {};
+\node[right = of N1, female={fill}{above right:$2$}] (N2) {};
+\node[right = of N2, female={}{above left:$3$}] (N3) {};
+\node[right = of N3, male={pattern={horizontal lines},pattern color=magenta}{above right:$4$}] (N4) {};
+\node[below = of N4, male={}{above right:$9$}] (N9) {};
+\node[left = of N9, female={pattern={horizontal lines}}{above left:$8$}] (N8) {};
+\node[left = of N8, male={pattern={vertical lines},pattern color=magenta}{above right:$7$}] (N7) {};
+\node[left = of N7, female={pattern={horizontal lines}}{above left:$6$}] (N6) {};
+\node[left = of N6, male={pattern={vertical lines},pattern color=magenta}{above left:$5$}] (N5) {};
+\node[below = of N5, female={pattern={horizontal lines}}{above left:$10$}] (N10) {};
+\node[right = of N10, male={pattern={horizontal lines}}{above right:$11$}] (N11) {};
+\node[right = of N11, male={fill}{above left:$12$}] (N12) {};
+\node[right = of N12, female={fill}{above right:$13$}] (N13) {};
+\join{N1}{N2}{N6}{N7}
+\join{N3}{N4}{N8}{N9}
+\join{N5}{N6}{N10}{N11}
+\join{N7}{N8}{N12}{N13}
+
+\begin{scope}[xshift=1cm,yshift=-5cm,yscale=0.8]
+    \node[male={}{}] at (-3,.5) {};
+    \node[female={}{}] at (-1.75,.5) {};
+    \node[font=\sffamily\small,anchor=west] at (-1,.5) {正常男女};
+    \node[male={pattern={vertical lines},pattern color=magenta}{}] at (-3,-.5) {};
+    \node[female={pattern={vertical lines},pattern color=magenta}{}] at (-1.75,-.5) {};
+    \node[font=\sffamily\small,anchor=west] at (-1,-.5) {乙病男女};
+    %%%%%%%%%
+    \node[male={pattern={horizontal lines}}{}] at (1.5,.5) {};
+    \node[female={pattern={horizontal lines}}{}] at (2.75,.5) {};
+    \node[font=\sffamily\small,anchor=west] at (3.5,.5) {甲病男女};
+    \node[male={fill}{}] at (1.5,-.5) {};
+    \node[female={fill}{}] at (2.75,-.5) {};
+    \node[font=\sffamily\small,anchor=west] at (3.5,-.5) {两病兼患男女};
+\end{scope}
+
+\end{tikzpicture}
+
+\end{document}

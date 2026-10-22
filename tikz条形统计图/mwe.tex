@@ -1,0 +1,21 @@
+\documentclass[tikz,border=3.14pt]{standalone}
+\usepackage[fontset=fandol]{ctex}
+\usepackage[times]{fontsetup}
+\begin{document}
+\begin{tikzpicture}[semithick,line join=round,yscale=0.75,every node/.style={scale=0.75}]
+\draw[-latex] (0.5,0) -- (4,0) node[below] {评分};
+\draw[-latex] (0,0) -- (0,5) node[right] {频率};
+\draw (0,0) node[below left=-2pt] {$O$} -- ++(0.15,0) -- ++(0.05,0.1) -- ++(0.05,-0.225) -- (0.3,0) -- (0.5,0);
+\foreach \i[count=\j] in {10,20,40,25,5}{
+    \draw ({0.5*\j},0) rectangle ({0.5*\j+0.5},\i/10);
+    \ifnum\i<30\relax
+        \def\ylabel{\fpeval{\i/1000}}
+    \else
+        \def\ylabel{a}
+    \fi
+    \draw[dashed] (0,{\i/10}) node[left,anchor=east] {$\ylabel$} -- ({0.5*\j},{\i/10});
+}
+\foreach \x in {1,...,6}{\node[below] at ({\x/2},0) {\fpeval{10*\x+40}};}
+\end{tikzpicture}
+
+\end{document}

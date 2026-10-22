@@ -1,0 +1,124 @@
+% Native TikZ reconstruction of example-image.png; no embedded raster.
+% Compile: pdflatex -interaction=nonstopmode -halt-on-error kitty.tex
+% Canvas and pale pink background follow the 1235 x 1235 Kitty reference.
+% PNG: pdftoppm -scale-to-x 1440 -scale-to-y 1440 -png -singlefile kitty.pdf kitty
+% Pixel PNG: magick kitty.png -filter box -resize 180x180! -filter point -resize 1440x1440! kitty-pixel.png
+% Five passes: outline, head/bow, face, outfit/background, final contours.
+% Background corrected from purple drafts to reference pink in pass 4.
+\documentclass[tikz,border=0pt]{standalone}
+\definecolor{background}{RGB}{255,240,240}
+\definecolor{outline}{RGB}{35,23,20}
+\definecolor{bow}{RGB}{215,18,46}
+\definecolor{blue}{RGB}{14,110,184}
+\definecolor{stripe}{RGB}{233,69,89}
+\definecolor{nose}{RGB}{242,231,37}
+\begin{document}
+\begin{tikzpicture}[x=0.5pt,y=-0.5pt,
+  contour/.style={draw=outline,line width=16pt,line cap=round,line join=round},
+  detail/.style={draw=outline,line width=11pt,line cap=round,line join=round}]
+\path[use as bounding box] (0,0) rectangle (1235,1235);
+\clip (0,0) rectangle (1235,1235);
+\fill[background] (0,0) rectangle (1235,1235);
+% Feet sit behind the blue outfit.
+\path[contour,fill=white,line width=14pt]
+  (365,1027) .. controls (299,1020) and (226,1046) .. (229,1106)
+  .. controls (225,1158) and (279,1174) .. (339,1173)
+  -- (480,1174) -- (470,1040) -- cycle;
+\path[contour,fill=white,line width=14pt]
+  (776,937) .. controls (846,880) and (919,904) .. (958,951)
+  .. controls (1005,1003) and (1000,1083) .. (968,1129)
+  .. controls (939,1176) and (887,1180) .. (802,1176)
+  -- (738,1086) -- cycle;
+% Main outfit and small striped shoulder insert.
+\path[contour,fill=blue,line width=14pt]
+  (470,788) .. controls (474,855) and (419,934) .. (381,1016)
+  .. controls (356,1075) and (371,1130) .. (406,1156)
+  .. controls (439,1179) and (493,1176) .. (546,1177)
+  -- (803,1177)
+  .. controls (804,1061) and (788,931) .. (752,809)
+  -- cycle;
+\begin{scope}
+\clip (651,808) -- (751,811) -- (780,909)
+  .. controls (712,900) and (673,863) .. (651,808);
+\fill[stripe] (640,800) rectangle (790,920);
+\fill[white] (640,852) rectangle (790,865);
+\end{scope}
+\path[contour,line width=14pt] (651,808) .. controls (672,866) and (708,896) .. (780,909);
+% White paw below a striped sleeve.
+\path[contour,fill=white,line width=14pt]
+  (478,979) .. controls (469,1040) and (486,1099) .. (531,1124)
+  .. controls (572,1146) and (609,1128) .. (635,1095)
+  .. controls (678,1094) and (693,1059) .. (663,1019)
+  -- (660,979) -- cycle;
+\begin{scope}
+\clip (478,984) .. controls (476,915) and (520,852) .. (568,852)
+  .. controls (623,852) and (663,908) .. (660,984) -- cycle;
+\fill[stripe] (460,840) rectangle (680,1000);
+\fill[white] (460,893) rectangle (680,906);
+\fill[white] (460,932) rectangle (680,946);
+\end{scope}
+\path[contour,line width=14pt]
+  (478,984) .. controls (476,915) and (520,852) .. (568,852)
+  .. controls (623,852) and (663,908) .. (660,984) -- cycle;
+% Head: ears and cheeks share one continuous contour.
+\path[contour,fill=white,line width=15pt]
+  (223,316)
+  .. controls (195,249) and (199,150) .. (249,101)
+  .. controls (278,77) and (383,112) .. (430,142)
+  .. controls (437,147) and (443,144) .. (454,142)
+  .. controls (559,123) and (666,121) .. (777,116)
+  .. controls (842,82) and (921,64) .. (967,71)
+  .. controls (1006,86) and (1014,161) .. (1013,218)
+  .. controls (1035,325) and (1060,414) .. (1054,517)
+  .. controls (1054,652) and (1004,731) .. (914,775)
+  .. controls (804,829) and (573,828) .. (431,798)
+  .. controls (316,777) and (252,736) .. (216,674)
+  .. controls (149,568) and (168,420) .. (223,316) -- cycle;
+\path[contour,line width=12pt] (223,316) -- (250,286);
+% Bow: large left loop, right loop, folds, then central knot.
+\path[contour,fill=bow,line width=14pt]
+  (822,183)
+  .. controls (815,118) and (770,46) .. (722,48)
+  .. controls (669,45) and (630,108) .. (612,164)
+  .. controls (591,219) and (595,265) .. (627,290)
+  .. controls (658,314) and (718,302) .. (760,278)
+  -- cycle;
+\path[contour,fill=bow,line width=14pt]
+  (885,219)
+  .. controls (946,190) and (1015,195) .. (1045,227)
+  .. controls (1080,266) and (1052,336) .. (1016,372)
+  .. controls (982,410) and (940,425) .. (907,407)
+  .. controls (880,393) and (859,365) .. (849,337)
+  -- cycle;
+\path[detail,fill=bow]
+  (791,185) .. controls (762,157) and (728,168) .. (721,195)
+  .. controls (709,226) and (732,247) .. (757,250) -- cycle;
+\path[detail,fill=bow]
+  (910,268) .. controls (948,269) and (963,301) .. (947,321)
+  .. controls (934,340) and (902,332) .. (887,321) -- cycle;
+\path[contour,fill=bow,line width=12pt] (837,262) ellipse[x radius=75,y radius=77];
+% Eyes and yellow nose; Hello Kitty has no mouth.
+\path[fill=outline]
+  (394,522) .. controls (416,520) and (425,536) .. (425,561)
+  .. controls (425,586) and (415,605) .. (393,605)
+  .. controls (371,605) and (362,590) .. (362,567)
+  .. controls (362,541) and (372,523) .. (394,522) -- cycle;
+\path[fill=outline]
+  (843,522) .. controls (865,522) and (874,539) .. (874,563)
+  .. controls (874,588) and (863,605) .. (842,605)
+  .. controls (820,605) and (811,589) .. (811,565)
+  .. controls (811,539) and (820,522) .. (843,522) -- cycle;
+\path[detail,fill=nose,line width=10pt]
+  (624,610) .. controls (650,610) and (664,620) .. (664,637)
+  .. controls (664,653) and (648,663) .. (624,663)
+  .. controls (600,663) and (585,653) .. (585,637)
+  .. controls (585,620) and (600,610) .. (624,610) -- cycle;
+% Three whiskers on either side.
+\path[detail] (78,534) .. controls (134,523) and (190,519) .. (246,525);
+\path[detail] (133,640) .. controls (174,625) and (215,619) .. (251,613);
+\path[detail] (165,755) .. controls (204,725) and (255,696) .. (301,685);
+\path[detail] (989,503) .. controls (1043,489) and (1104,489) .. (1156,493);
+\path[detail] (1004,584) .. controls (1044,584) and (1092,597) .. (1133,603);
+\path[detail] (967,668) .. controls (1006,673) and (1056,702) .. (1097,721);
+\end{tikzpicture}
+\end{document}

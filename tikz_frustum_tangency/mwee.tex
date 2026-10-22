@@ -1,0 +1,40 @@
+% https://www.zhihu.com/question/2079317040611997368
+\documentclass[border=3.14pt]{standalone}
+\usepackage[mini]{tkz-euclide}
+\usepackage{tkz-elements}
+\tkzSetUpLine[semithick]%
+\usepackage{fourier-otf}
+\begin{document}
+\begin{tikzpicture}
+    \directlua{
+        init_elements()
+        z.Oa, z.Va, z.Ca = point(0,1),point(1,1),point(0, 1+0.3)
+        z.Ob, z.Vb, z.Cb = point(0,-1), point(2,-1), point(0,-1+0.6)
+        CO.up = conic:new(EL_points(z.Oa, z.Va, z.Ca))
+        CO.down = conic:new(EL_points(z.Ob, z.Vb, z.Cb))
+        L.e1, L.e2 = CO.up:common_tangent(CO.down)
+        z.Ta, z.Tb, z.Tc, z.Td = L.e1.pa, L.e1.pb, L.e2.pa, L.e2.pb
+        PA.up = CO.up:points(0,1,60)
+        z.A = point(-2,-1)
+        z.B = point(2,-1)
+        z.A1 = point(-1,1)
+        z.B1 = point(1,1)
+        z.C1 = CO.up:point(1/6)
+        PA.down = CO.down:points(0,1,60)
+    }
+    \tkzGetNodes
+    \tkzDrawCoordinates[semithick,smooth](PA.up)
+    \tkzDrawCoordinates[semithick,smooth](PA.down)
+    \tkzDrawSegments(Ta,Tc Tb,Td)
+    \tkzDrawSegments[dashed](A,B A,C1)
+    \tkzDrawSegments(A1,B1)
+    \tkzDrawPoints[fill=black](C1,Oa,Ob)
+    \tkzLabelPoint[left](A){$A$}
+    \tkzLabelPoint[right](B){$B$}
+    \tkzLabelPoint[above left=-3pt](A1){$A_1$}
+    \tkzLabelPoint[above right=-3pt](B1){$B_1$}
+    \tkzLabelPoint[above](C1){$C_1$}
+    \tkzLabelPoint[above](Oa){$O_1$}
+    \tkzLabelPoint[below](Ob){$O$}
+\end{tikzpicture}
+\end{document}

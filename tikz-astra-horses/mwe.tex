@@ -1,0 +1,307 @@
+\documentclass[tikz,border=3.14pt]{standalone}
+\definecolor{body}{RGB}{171,229,253}
+\definecolor{bodyline}{RGB}{132,190,224}
+\definecolor{hairline}{RGB}{79,158,187}
+\definecolor{cyan}{RGB}{62,178,219}
+\definecolor{green}{RGB}{109,217,98}
+\definecolor{lime}{RGB}{127,214,84}
+\definecolor{yellow}{RGB}{255,246,178}
+\definecolor{tailyellow}{RGB}{255,252,179}
+\definecolor{orange}{RGB}{242,119,75}
+\definecolor{red}{RGB}{244,61,81}
+\definecolor{purple}{RGB}{109,55,149}
+\definecolor{irisTop}{RGB}{180,45,157}
+\definecolor{irisBottom}{RGB}{253,87,174}
+\definecolor{mask}{RGB}{44,45,39}
+\definecolor{bill}{RGB}{158,159,151}
+\definecolor{billshade}{RGB}{137,140,131}
+\definecolor{billline}{RGB}{83,88,82}
+\definecolor{water}{RGB}{141,193,208}
+\definecolor{waterlight}{RGB}{179,214,220}
+\begin{document}
+\begin{tikzpicture}[x=.75bp,y=-.75bp,
+  line cap=round,line join=round,
+  outline/.style={draw=bodyline,line width=3.75bp},
+  hair/.style={draw=hairline,line width=3bp}]
+\path[use as bounding box] (0,0) rectangle (898,633);
+\clip (0,0) rectangle (898,633);
+\fill[white] (0,0) rectangle (898,633);
+
+% Water
+\path[fill=waterlight,even odd rule]
+  (0,568) .. controls (0,538) and (105,515) .. (244,512)
+  .. controls (451,498) and (659,506) .. (767,523)
+  .. controls (849,533) and (898,551) .. (898,576)
+  .. controls (898,623) and (691,660) .. (450,660)
+  .. controls (208,660) and (0,614) .. (0,568) -- cycle
+  (17,568) .. controls (17,542) and (111,522) .. (245,519)
+  .. controls (451,506) and (658,513) .. (766,529)
+  .. controls (841,539) and (880,553) .. (880,576)
+  .. controls (880,616) and (681,648) .. (450,648)
+  .. controls (217,648) and (17,609) .. (17,568) -- cycle;
+\path[fill=water,even odd rule]
+  (50,563) .. controls (50,540) and (116,525) .. (223,522)
+  .. controls (416,509) and (652,519) .. (757,539)
+  .. controls (798,545) and (825,557) .. (825,574)
+  .. controls (825,604) and (657,625) .. (449,625)
+  .. controls (233,625) and (50,597) .. (50,563) -- cycle
+  (70,560) .. controls (70,544) and (133,533) .. (224,530)
+  .. controls (417,518) and (650,525) .. (756,545)
+  .. controls (794,551) and (815,560) .. (815,574)
+  .. controls (815,598) and (649,613) .. (449,613)
+  .. controls (241,613) and (70,590) .. (70,560) -- cycle;
+
+% Tail
+\path[fill=purple,hair]
+  (485,400) .. controls (525,369) and (563,335) .. (605,338)
+  .. controls (679,328) and (751,387) .. (788,483)
+  .. controls (766,447) and (738,420) .. (707,407)
+  .. controls (736,453) and (752,509) .. (753,558)
+  .. controls (706,569) and (644,571) .. (595,573)
+  .. controls (583,491) and (558,435) .. (485,411) -- cycle;
+\path[fill=cyan]
+  (486,400) .. controls (526,367) and (564,343) .. (593,344)
+  .. controls (654,342) and (704,375) .. (737,415)
+  .. controls (725,407) and (712,401) .. (702,400)
+  .. controls (735,452) and (744,507) .. (739,561)
+  .. controls (694,569) and (641,571) .. (595,573)
+  .. controls (583,491) and (558,435) .. (486,411) -- cycle;
+\path[fill=green]
+  (487,400) .. controls (530,366) and (565,347) .. (599,352)
+  .. controls (679,353) and (724,438) .. (725,564)
+  .. controls (680,570) and (635,572) .. (595,573)
+  .. controls (583,491) and (558,435) .. (487,411) -- cycle;
+\path[fill=tailyellow]
+  (487,400) .. controls (526,378) and (560,373) .. (590,379)
+  .. controls (654,389) and (690,471) .. (693,567)
+  .. controls (658,570) and (628,572) .. (595,573)
+  .. controls (583,491) and (558,435) .. (487,411) -- cycle;
+\path[fill=orange]
+  (501,411) .. controls (537,392) and (575,395) .. (603,412)
+  .. controls (647,439) and (669,495) .. (671,569)
+  .. controls (645,572) and (618,573) .. (595,573)
+  .. controls (583,491) and (558,435) .. (501,411) -- cycle;
+\path[fill=red]
+  (516,422) .. controls (548,424) and (582,445) .. (601,475)
+  .. controls (622,507) and (634,540) .. (635,572)
+  -- (595,573) .. controls (583,495) and (561,447) .. (516,422);
+\draw[hair] (485,400)
+  .. controls (525,369) and (563,335) .. (605,338)
+  .. controls (679,328) and (751,387) .. (788,483);
+\draw[draw=hairline,line width=2.25bp]
+  (702,400) .. controls (725,439) and (741,502) .. (739,561);
+
+% Body
+\path[fill=body,outline]
+  (243,581) .. controls (215,552) and (208,527) .. (212,486)
+  .. controls (208,441) and (220,405) .. (239,375)
+  .. controls (252,351) and (235,323) .. (211,301)
+  .. controls (186,280) and (174,247) .. (178,219)
+  .. controls (174,179) and (204,152) .. (245,129)
+  .. controls (291,102) and (342,94) .. (376,72)
+  .. controls (397,50) and (413,31) .. (429,31)
+  .. controls (450,43) and (462,87) .. (452,134)
+  .. controls (447,185) and (452,253) .. (442,307)
+  .. controls (433,343) and (422,375) .. (416,399)
+  .. controls (439,397) and (466,401) .. (485,409)
+  .. controls (509,423) and (523,450) .. (528,482)
+  .. controls (531,514) and (531,554) .. (508,581) -- cycle;
+\draw[draw=bodyline,line width=3bp]
+  (377,74) .. controls (370,98) and (361,118) .. (358,129)
+  (419,142) .. controls (418,156) and (412,171) .. (409,177);
+
+% Wing
+\draw[outline]
+  (397,440) .. controls (433,425) and (478,418) .. (500,424)
+  .. controls (509,433) and (508,454) .. (501,473)
+  .. controls (487,499) and (450,547) .. (415,563);
+\draw[outline]
+  (400,459) .. controls (438,452) and (478,434) .. (500,424)
+  (398,473) .. controls (421,471) and (442,474) .. (451,481)
+  .. controls (476,469) and (499,449) .. (507,437)
+  (448,523) .. controls (470,506) and (488,488) .. (500,474);
+\path[fill=body,outline]
+  (341,454) .. controls (315,465) and (307,483) .. (308,514)
+  .. controls (306,545) and (319,568) .. (344,574)
+  .. controls (368,580) and (396,574) .. (415,563)
+  .. controls (442,548) and (452,518) .. (451,481)
+  .. controls (442,474) and (421,471) .. (398,473);
+
+% Mane
+\path[fill=cyan,hair]
+  (444,179) .. controls (450,234) and (451,281) .. (438,331)
+  .. controls (418,389) and (404,456) .. (392,524)
+  .. controls (370,505) and (352,487) .. (350,463)
+  .. controls (348,445) and (347,432) .. (345,428)
+  .. controls (323,449) and (308,476) .. (299,513)
+  .. controls (298,459) and (301,415) .. (313,381)
+  .. controls (326,343) and (347,308) .. (371,280)
+  .. controls (404,241) and (430,207) .. (444,179);
+\path[fill=purple]
+  (442,281) .. controls (439,321) and (425,355) .. (413,389)
+  .. controls (401,432) and (395,479) .. (392,520)
+  .. controls (370,502) and (358,484) .. (358,466)
+  .. controls (358,425) and (378,387) .. (408,348)
+  .. controls (429,321) and (436,300) .. (442,281);
+\path[fill=lime]
+  (444,179) .. controls (437,232) and (417,279) .. (400,306)
+  .. controls (380,339) and (345,375) .. (315,400)
+  .. controls (328,372) and (339,347) .. (343,326)
+  .. controls (330,332) and (316,333) .. (301,330)
+  .. controls (341,313) and (374,278) .. (401,236)
+  .. controls (420,211) and (435,191) .. (444,179);
+\draw[draw=hairline,line width=3bp]
+  (444,179) .. controls (423,223) and (392,273) .. (366,298)
+  .. controls (337,327) and (302,343) .. (246,341);
+\draw[white,line width=5.25bp]
+  (249,348) .. controls (275,350) and (303,341) .. (326,334);
+\draw[outline]
+  (240,373) .. controls (260,376) and (284,371) .. (298,365);
+
+% Far eye
+\path[fill=white,draw=bodyline,line width=2.25bp]
+  (157,198) .. controls (174,208) and (181,230) .. (179,249)
+  .. controls (177,273) and (166,299) .. (153,304)
+  .. controls (141,287) and (139,268) .. (138,245)
+  .. controls (137,225) and (140,211) .. (157,198);
+\shade[top color=irisTop,bottom color=irisBottom]
+  (150,204) .. controls (167,203) and (176,226) .. (173,249)
+  .. controls (170,277) and (159,298) .. (153,303)
+  .. controls (142,287) and (140,266) .. (140,242)
+  .. controls (137,224) and (140,210) .. (150,204);
+\fill[black]
+  (147,212) .. controls (156,210) and (161,226) .. (161,242)
+  .. controls (162,260) and (159,277) .. (151,288)
+  .. controls (143,279) and (142,253) .. (142,236)
+  .. controls (141,223) and (143,215) .. (147,212);
+\draw[black,line width=4.5bp]
+  (137,229) -- (122,227)
+  (137,246) -- (127,246);
+\fill[white]
+  (153,217) .. controls (159,217) and (159,244) .. (156,252)
+  .. controls (149,251) and (147,225) .. (153,217);
+\draw[draw=mask,line width=3bp]
+  (158,198) .. controls (173,209) and (179,229) .. (180,243);
+
+% Face
+\path[fill=mask,draw=black,line width=3.375bp]
+  (161,310) .. controls (163,293) and (164,276) .. (168,266)
+  .. controls (168,254) and (179,242) .. (190,244)
+  .. controls (209,245) and (221,256) .. (231,269)
+  .. controls (231,283) and (231,307) .. (231,327)
+  -- (246,343) -- (150,332) -- cycle;
+\path[fill=white,draw=body!75!bodyline,line width=2.25bp]
+  (225,237) .. controls (225,206) and (243,173) .. (268,170)
+  .. controls (287,167) and (304,177) .. (316,194)
+  .. controls (333,212) and (335,248) .. (330,275)
+  .. controls (327,301) and (314,318) .. (288,320)
+  .. controls (264,322) and (244,309) .. (236,286)
+  .. controls (228,268) and (224,251) .. (225,237);
+\shade[top color=irisTop,bottom color=irisBottom]
+  (250,180) .. controls (273,179) and (298,203) .. (305,230)
+  .. controls (310,253) and (304,281) .. (289,297)
+  .. controls (277,309) and (258,313) .. (245,302)
+  .. controls (232,292) and (225,267) .. (225,244)
+  .. controls (222,218) and (232,188) .. (250,180);
+\path[fill=white,opacity=.24]
+  (280,250) .. controls (291,251) and (302,251) .. (309,250)
+  -- (309,258) .. controls (299,257) and (288,257) .. (279,257) -- cycle;
+\fill[black]
+  (243,199) .. controls (259,193) and (275,200) .. (277,218)
+  .. controls (281,240) and (274,267) .. (262,282)
+  .. controls (249,295) and (236,290) .. (228,274)
+  .. controls (222,263) and (223,238) .. (225,224)
+  .. controls (229,210) and (234,201) .. (243,199);
+\fill[white]
+  (265,202) .. controls (274,203) and (276,214) .. (275,224)
+  .. controls (275,234) and (271,241) .. (264,240)
+  .. controls (256,239) and (251,232) .. (251,222)
+  .. controls (251,211) and (256,203) .. (265,202);
+\fill[white] (245,253) ellipse [x radius=4.2,y radius=6.4];
+\draw[black,line width=4.5bp]
+  (226,224) .. controls (229,202) and (244,173) .. (268,170)
+  .. controls (287,167) and (304,177) .. (316,194);
+\path[fill=black]
+  (303,181) .. controls (315,179) and (322,173) .. (328,164)
+  .. controls (327,177) and (320,187) .. (312,191) -- cycle
+  (320,205) .. controls (329,208) and (338,200) .. (344,194)
+  .. controls (342,207) and (332,216) .. (325,216) -- cycle
+  (330,228) .. controls (343,232) and (352,230) .. (360,225)
+  .. controls (354,238) and (343,243) .. (331,241) -- cycle;
+
+% Forelock
+\begin{scope}
+\clip
+  (48,240) .. controls (86,195) and (116,150) .. (131,101)
+  .. controls (98,113) and (79,136) .. (69,157)
+  .. controls (57,101) and (110,59) .. (167,32)
+  .. controls (143,32) and (115,41) .. (84,52)
+  .. controls (146,13) and (219,-4) .. (271,7)
+  .. controls (316,11) and (352,39) .. (377,71)
+  .. controls (371,83) and (368,91) .. (366,99)
+  .. controls (318,109) and (268,140) .. (226,196)
+  -- (237,143) .. controls (199,176) and (165,199) .. (129,213)
+  .. controls (101,225) and (73,234) .. (48,240);
+\fill[orange] (0,0) rectangle (400,245);
+\path[fill=red]
+  (84,52) .. controls (146,13) and (219,-4) .. (271,7)
+  .. controls (305,10) and (334,25) .. (351,45)
+  .. controls (317,23) and (275,25) .. (239,34)
+  .. controls (188,43) and (136,62) .. (100,91)
+  .. controls (81,107) and (68,121) .. (60,139)
+  .. controls (66,94) and (113,58) .. (167,32)
+  .. controls (143,32) and (115,41) .. (84,52);
+\path[fill=yellow]
+  (211,170) .. controls (220,117) and (272,63) .. (335,41)
+  .. controls (351,51) and (365,62) .. (377,71)
+  .. controls (371,83) and (368,91) .. (366,99)
+  .. controls (318,109) and (268,140) .. (226,196)
+  -- (237,143) -- cycle;
+\end{scope}
+\draw[hair]
+  (48,240) .. controls (86,195) and (116,150) .. (131,101)
+  .. controls (98,113) and (79,136) .. (69,157)
+  .. controls (57,101) and (110,59) .. (167,32)
+  .. controls (143,32) and (115,41) .. (84,52)
+  .. controls (146,13) and (219,-4) .. (271,7)
+  .. controls (316,11) and (352,39) .. (377,71)
+  .. controls (371,83) and (368,91) .. (366,99)
+  .. controls (318,109) and (268,140) .. (226,196)
+  -- (237,143) .. controls (199,176) and (165,199) .. (129,213)
+  .. controls (101,225) and (73,234) .. (48,240);
+\draw[draw=hairline,line width=2.25bp]
+  (237,143) .. controls (224,173) and (215,199) .. (216,219);
+
+% Bill
+\path[fill=billshade,draw=billline,line width=3.75bp]
+  (70,350) .. controls (84,336) and (112,330) .. (139,317)
+  .. controls (157,309) and (165,300) .. (172,291)
+  .. controls (183,277) and (203,295) .. (219,311)
+  .. controls (230,325) and (241,333) .. (249,340)
+  .. controls (260,346) and (226,372) .. (204,377)
+  .. controls (177,383) and (143,391) .. (119,389)
+  .. controls (95,389) and (74,376) .. (69,359)
+  .. controls (67,356) and (68,353) .. (70,350);
+\path[fill=bill]
+  (70,350) .. controls (84,336) and (112,330) .. (139,317)
+  .. controls (157,309) and (165,300) .. (172,291)
+  .. controls (183,277) and (203,295) .. (219,311)
+  .. controls (230,325) and (238,331) .. (242,335)
+  .. controls (236,349) and (200,370) .. (169,376)
+  .. controls (132,383) and (87,375) .. (69,354) -- cycle;
+\draw[draw=billline,line width=3.75bp]
+  (69,354) .. controls (87,375) and (132,383) .. (169,376)
+  .. controls (200,370) and (236,349) .. (242,335)
+  (70,350) .. controls (84,336) and (112,330) .. (139,317)
+  .. controls (157,309) and (165,300) .. (172,291)
+  .. controls (183,277) and (203,295) .. (219,311)
+  .. controls (230,325) and (241,333) .. (249,340);
+\draw[draw=billline,line width=3bp] (199,330) -- (207,321);
+
+% Front ripple
+\draw[draw=waterlight,line width=5.25bp]
+  (215,540) .. controls (171,540) and (130,542) .. (130,549)
+  .. controls (130,570) and (307,583) .. (485,581)
+  .. controls (610,583) and (721,573) .. (756,557);
+\end{tikzpicture}
+\end{document}

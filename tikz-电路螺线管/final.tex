@@ -1,0 +1,25 @@
+% https://www.zhihu.com/question/2096589046894090024/answer/2096642835009233108
+\documentclass[tikz,border=5pt]{standalone}
+\usepackage[fontset=fandol]{ctex}
+\newcommand\mypath{%
+    (-0.307,-0.635)%
+    .. controls (-0.421,-0.613) and (-0.502,-0.572) .. (-0.309,-0.52)
+    .. controls (-0.104,-0.466) and (0.102,-0.411) .. (0.307,-0.357)
+    .. controls (0.507,-0.304) and (0.379,-0.258) .. (0.305,-0.253)
+}%
+\begin{document}
+\begin{tikzpicture}[thick,line join=round]
+    % \draw[gray!25,thick] (-3,-3) grid (2,3);
+    \draw[dashed] (.5,0) circle[x radius=.6,y radius=1.5];
+    \draw[] (1.25,0) -- ++(.2,0) -- ++(-.1,.5) -- (1.25,0) -- ++(.1,-.5) -- (1.45,0) -- cycle;
+    \draw[fill=white] (-.3,1) rectangle (.3,-1);
+    \draw[] (-.3,+.8) -- (-1.5,+.8) -- node[draw,fill=white,rectangle,text width=\ccwd,scale=0.75] {电\\[-.5ex]源\\[-3ex]\phantom{x}} (-1.5,-.8) -- (.3,-.8);
+    \draw[] (.3,-0.8).. controls (0.458,-0.8) and (0.349,-0.709) .. (0.297,-0.697);
+    \foreach \nn in {0,...,3}{\draw[yshift=\fpeval{0.35*\nn} cm] \mypath;}
+    \path 
+        (0,1.25) node[scale=0.8] {N}
+        (-1.65,.65) node[left=-4pt,scale=0.6] {(\;\quad\;)}
+        (-1.65,-.65) node[left=-4pt,scale=0.6] {(\;\quad\;)}
+    ;
+\end{tikzpicture}
+\end{document}

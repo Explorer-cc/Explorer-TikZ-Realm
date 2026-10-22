@@ -1,0 +1,46 @@
+% https://tex.stackexchange.com/a/767115
+\documentclass[margin=5pt,tikz]{standalone}
+\usetikzlibrary{arrows.meta}
+\usepackage{tkz-euclide}
+\begin{document}
+\pgfmathsetmacro{\R}{2.0}
+\pgfmathsetmacro{\a}{1.9}
+\pgfmathsetmacro{\b}{sqrt(\R^2 - \a^2) + \R}
+\pgfmathsetmacro{\x}{\R+(sqrt(2)*sqrt(\R*(2*\R-\b)) +\b -2*\R)-\b}
+\begin{tikzpicture}[scale=1.5,font=\footnotesize,>={Triangle[length=0pt 2*4,width=0pt 4]}]
+
+%% Coordinates on the main segment
+\coordinate[label=below:$M$] (M) at (0,0); 
+\coordinate[label=below:$O$] (O) at (-\R,0); 
+\coordinate[label=below:$A$] (A) at (\R,0); 
+\coordinate[label=below:$C$] (C) at (\R-\b,0); 
+
+\draw[] (O) -- (A);
+\coordinate[label=below:$X$] (X) at (\x,0); 
+\foreach \P in {C,M,X,A}{%
+    \path[shorten <=1em] 
+        (\P) -- ++(0,-1.125)
+        coordinate[pos=0.3] (\P-1) 
+        coordinate[pos=0.6] (\P-2)
+        coordinate[pos=0.8] (\P-3) 
+        coordinate[pos=1.0] (\P-4) 
+        ;
+    \draw[fill=black!1] (\P) circle (1.5pt);
+}%
+\draw[fill=black!1] (O) circle (1.5pt);
+% 
+% \foreach \P in {C,M,X,A}{%
+%     \foreach \i in {1,...,4}{
+%         \node[circle,fill,inner sep=1pt] at (\P-\i) {};
+%     }
+% }
+\tkzDrawSegment[draw=none,dim={$a$,-4pt,{inner xsep=2pt,scale=.75}}](C-1,X-1)
+\tkzDrawSegment[draw=none,dim={$R$,-4pt,{inner xsep=2pt,scale=.75}}](M-2,A-2)
+\tkzDrawSegment[draw=none,dim={$x$,-4pt,{scale=.75}}](M-3,X-3)
+\tkzDrawSegment[draw=none,dim={$b$,-4pt,{inner xsep=2pt,scale=.75}}](C-4,A-4)
+\draw[cyan,semithick,shorten >=-8pt] (C-1) -- (C-4);
+\draw[cyan,semithick,shorten <=-3pt,shorten >=1pt] (M-2) -- (M-4);
+\draw[cyan,semithick,shorten >=1pt] (X-1) -- (X-4);
+\draw[cyan,semithick,shorten >=-8pt] (A-1) -- (A-4);
+\end{tikzpicture}
+\end{document}

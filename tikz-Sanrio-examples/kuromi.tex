@@ -1,0 +1,131 @@
+\documentclass[tikz]{standalone}
+\definecolor{background}{RGB}{174,159,218}
+\definecolor{outline}{RGB}{47,39,32}
+\definecolor{hood}{RGB}{63,53,57}
+\definecolor{face}{RGB}{229,229,239}
+\definecolor{skull}{RGB}{218,145,192}
+\definecolor{pink}{RGB}{205,78,162}
+\begin{document}
+\begin{tikzpicture}[x=0.5pt,y=-0.5pt,
+  contour/.style={draw=outline,line width=9pt,line cap=round,line join=round},
+  hoodline/.style={contour,line width=10.5pt},
+  fine/.style={draw=outline,line width=5pt,line cap=round,line join=round}]
+\path[use as bounding box] (0,0) rectangle (1176,1568);
+\clip (0,0) rectangle (1176,1568);
+\fill[background] (0,0) rectangle (1176,1568);
+% Body and rear collar bell, behind the head and arm.
+\path[contour,fill=pink,line width=5.5pt] (343,1039) circle[radius=24];
+\path[contour,fill=face,line width=8pt]
+  (432,977) .. controls (510,965) and (615,959) .. (676,990)
+  .. controls (709,1030) and (735,1066) .. (771,1095)
+  .. controls (812,1133) and (807,1174) .. (790,1220)
+  .. controls (775,1260) and (759,1291) .. (762,1339)
+  .. controls (763,1369) and (741,1387) .. (710,1386)
+  -- (630,1381)
+  .. controls (617,1398) and (600,1394) .. (575,1390)
+  .. controls (530,1386) and (471,1390) .. (435,1384)
+  .. controls (408,1380) and (394,1362) .. (399,1336)
+  .. controls (403,1306) and (425,1289) .. (449,1283)
+  .. controls (446,1250) and (461,1224) .. (474,1200)
+  .. controls (420,1143) and (390,1041) .. (432,977) -- cycle;
+% Left ear, then the hood and right ear as a single silhouette.
+\path[hoodline,fill=hood]
+  (211,211) -- (381,366)
+  .. controls (392,379) and (388,392) .. (380,402)
+  -- (183,529) -- (126,490)
+  .. controls (115,482) and (115,471) .. (121,455)
+  -- cycle;
+\path[hoodline,fill=hood]
+  (617,411)
+  .. controls (522,380) and (433,383) .. (352,412)
+  .. controls (251,448) and (184,513) .. (147,595)
+  .. controls (103,685) and (108,785) .. (145,861)
+  .. controls (189,944) and (295,986) .. (427,985)
+  .. controls (524,991) and (625,969) .. (700,932)
+  .. controls (787,890) and (843,828) .. (854,747)
+  .. controls (866,677) and (844,608) .. (817,558)
+  -- (899,526)
+  .. controls (914,520) and (917,508) .. (918,486)
+  .. controls (925,382) and (924,269) .. (921,181)
+  -- (636,326)
+  .. controls (622,333) and (617,344) .. (618,362)
+  -- (617,457);
+\path[hoodline] (817,558) -- (787,565);
+\path[contour,fill=hood,line width=6pt] (211,186) circle[radius=35];
+\path[contour,fill=hood,line width=5.5pt] (930,155) circle[radius=39];
+% Collar, under the face and above the body.
+\path[contour,fill=hood,line width=7pt]
+  (481,976) -- (675,941) -- (754,986)
+  .. controls (707,1002) and (656,997) .. (606,981)
+  -- (579,1067) -- cycle;
+\path[contour,fill=pink,line width=5.5pt] (775,987) circle[radius=24];
+% White mask: asymmetric upper edge is essential to the expression.
+\path[contour,fill=face]
+  (224,720)
+  .. controls (209,718) and (184,739) .. (171,755)
+  .. controls (142,792) and (141,828) .. (153,862)
+  .. controls (177,929) and (257,972) .. (359,980)
+  .. controls (458,992) and (566,970) .. (623,951)
+  .. controls (667,937) and (682,909) .. (682,875)
+  .. controls (682,824) and (653,781) .. (605,750)
+  .. controls (574,729) and (515,704) .. (483,694)
+  .. controls (472,690) and (467,698) .. (453,708)
+  -- (354,775)
+  .. controls (341,784) and (330,780) .. (317,774)
+  -- cycle;
+% Pink skull badge.
+\path[fill=skull]
+  (291,693)
+  .. controls (249,694) and (224,676) .. (224,637)
+  .. controls (223,580) and (269,543) .. (324,543)
+  .. controls (381,543) and (428,580) .. (430,627)
+  .. controls (433,670) and (407,690) .. (367,692)
+  -- (366,714) -- (347,714) -- (346,694)
+  .. controls (346,688) and (336,688) .. (336,694)
+  -- (336,714) -- (324,714) -- (324,694)
+  .. controls (324,688) and (314,688) .. (314,694)
+  -- (314,714) -- (293,714) -- cycle;
+\path[fill=hood,rotate around={-14:(267,646)}]
+  (267,646) ellipse[x radius=18,y radius=25];
+\path[fill=hood,rotate around={12:(382,643)}]
+  (382,643) ellipse[x radius=19,y radius=25];
+% Slanted eyes and lashes.
+\path[fill=outline]
+  (206,774) -- (276,816)
+  .. controls (269,854) and (239,868) .. (215,858)
+  .. controls (188,848) and (185,813) .. (206,774) -- cycle;
+\path[fill=outline]
+  (469,793) .. controls (500,778) and (530,757) .. (548,745)
+  .. controls (570,773) and (575,811) .. (555,837)
+  .. controls (535,859) and (497,851) .. (479,825)
+  .. controls (471,813) and (469,802) .. (469,793) -- cycle;
+\path[fine,line width=4.5pt] (210,787) .. controls (200,780) and (195,771) .. (193,764);
+\path[fine,line width=4.5pt] (201,800) .. controls (192,791) and (186,785) .. (185,780);
+\path[fine,line width=4.5pt] (538,757) .. controls (548,747) and (555,738) .. (557,730);
+\path[fine,line width=4.5pt] (550,770) .. controls (560,761) and (566,753) .. (570,747);
+\path[fine,fill=skull] (323,872) ellipse[x radius=21,y radius=16];
+\path[fine,line width=4.5pt] (323,918) .. controls (341,941) and (379,936) .. (391,909);
+% Bent foreground arm and its curled paw.
+\path[contour,fill=face,line width=8pt]
+  (554,1046)
+  .. controls (517,1014) and (474,975) .. (437,977)
+  .. controls (390,977) and (357,1022) .. (357,1070)
+  .. controls (357,1110) and (376,1151) .. (409,1161)
+  .. controls (427,1167) and (446,1160) .. (461,1150)
+  .. controls (434,1158) and (428,1178) .. (440,1198)
+  .. controls (463,1236) and (507,1215) .. (527,1185)
+  .. controls (548,1157) and (546,1127) .. (528,1106)
+  .. controls (508,1081) and (475,1070) .. (451,1080);
+\path[contour,fill=pink,line width=5.5pt] (575,1067) circle[radius=24];
+\path[contour,line width=8pt] (631,1376)
+  .. controls (630,1339) and (634,1303) .. (660,1285);
+% Arrow tail.
+\path[contour,fill=hood,line width=8pt]
+  (756,1143)
+  .. controls (821,1168) and (888,1134) .. (912,1051)
+  -- (877,1032) -- (970,957) -- (989,1075) -- (958,1068)
+  .. controls (928,1148) and (854,1198) .. (775,1177)
+  .. controls (749,1173) and (742,1165) .. (746,1153)
+  .. controls (747,1147) and (751,1143) .. (756,1143) -- cycle;
+\end{tikzpicture}
+\end{document}

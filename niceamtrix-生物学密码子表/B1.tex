@@ -1,0 +1,17 @@
+\documentclass{article}
+\usepackage{nicematrix}
+\usepackage{makecell}
+\usepackage{tikz}
+\begin{document}\sffamily
+
+\begin{NiceTabular}{cccccc}[corners]
+  & U & C & A & G \\
+U & \makecell{UUU\\UUC\\UUA\\UUG} & \makecell{UCU\\UCC\\UCA\\UCG} & \makecell{UAU\\UAC\\UAA\\UAG} & \makecell{UGU\\UGC\\UGA\\UGG} & \makecell{U\\C\\A\\G} \\
+C & \makecell{CUU\\CUC\\CUA\\CUG} & \makecell{CCU\\CCC\\CCA\\CCG} & \makecell{CAU\\CAC\\CAA\\CAG} & \makecell{CGU\\CGC\\CGA\\CGG} & \makecell{U\\C\\A\\G} \\
+A & \makecell{AUU\\AUC\\AUA\\AUG} & \makecell{ACU\\ACC\\ACA\\ACG} & \makecell{AAU\\AAC\\AAA\\AAG} & \makecell{AGU\\AGC\\AGA\\AGG} & \makecell{U\\C\\A\\G} \\
+G & \makecell{GUU\\GUC\\GUA\\GUG} & \makecell{GCU\\GCC\\GCA\\GCG} & \makecell{GAU\\GAC\\GAA\\GAG} & \makecell{GGU\\GGC\\GGA\\GGG} & \makecell{U\\C\\A\\G} \\
+\CodeAfter
+   \TikzEveryCell{offset=1pt,draw}
+\end{NiceTabular}
+
+\end{document}

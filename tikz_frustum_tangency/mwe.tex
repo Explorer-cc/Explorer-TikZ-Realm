@@ -1,0 +1,37 @@
+% https://www.zhihu.com/question/2079317040611997368
+\documentclass{standalone}
+\usepackage[3d]{luadraw}
+\usepackage[svgnames]{xcolor}
+\usepackage{fourier-otf}
+\begin{document}
+    \begin{luadraw}{name=frustum}
+    local ld = luadraw
+    local pt3d, cpx = ld.pt3d, ld.cpx
+    local M, Mc, Ms = pt3d.M, pt3d.Mc, pt3d.Ms
+    local Origin, vecI, vecJ, vecK = pt3d.Origin, pt3d.vecI, pt3d.vecJ, pt3d.vecK
+    local g = ld.graph3d:new{
+        window3d = {-5,5,-5,5,-5,5},window = {-3,3,-2,2},
+        viewdir = {0,75},size={8,8}
+    }
+    local O1, O = vecK, -vecK
+    local R, r = 2, 1
+    local C1 = Mc(r,150*ld.deg,1)
+    local A,B = M(0,-2,-1), M(0,2,-1)
+    local A1,B1 = M(0,-1,1), M(0,1,1)
+    ld.Hiddenlinestyle = "dashed"
+    g:Dfrustum(O,2,1,O1, {color=""})
+    g:Dpolyline3d({{A,C1},{A,B}},"dashed")
+    g:Dpolyline3d({A1,B1})
+    g:Ddots3d({O1,O,C1})
+    g:Dlabel3d(
+        "$A$",A,{pos="W"},
+        "$A_1$",A1,{},
+        "$B$",B,{pos="E"},
+        "$B_1$",B1,{},
+        "$C_1$",C1,{pos="N"},
+        "$O_1$",O1,{},
+        "$O$",O,{pos="S"}
+    )
+    g:Show()
+\end{luadraw}
+\end{document}

@@ -1,0 +1,36 @@
+\documentclass[tikz,border=5pt]{standalone}
+\usepackage{lete-sans-math}%
+\usetikzlibrary{bending,arrows.meta,decorations.markings,ext.arrows,ext.arrows-plus}
+\tikzset{
+    middle arrow/.style={
+        semithick,postaction={decorate},
+        decoration={markings,mark=at position #1 with {\arrow**{ext_Centered Stealth[bend]}}}
+        % decoration={markings,mark=at position #1 with {\arrow{ext_Centered Stealth}}}
+    },middle arrow/.default={0.5}
+}
+\begin{document}
+\begin{tikzpicture}[>=Stealth]
+    \def\angA{87.5}\def\angB{70}\def\R{2.5}
+    \pgfmathsetmacro{\r}{\R*cos(\angA)/cos(\angB)}
+    \draw[thick,fill=gray!30] 
+        (-\R,0) -- (\R,0)
+        arc (0:\angA:\R) coordinate (tmp1)
+        -- ++(0,-1.45) coordinate (tmp2)
+        arc (\angB:{-180-\angB}:\r)
+        -- ({180-\angA}:\R) coordinate (tmp3)
+        arc ({180-\angA}:180:\R)
+        -- cycle;
+    \fill (tmp2) ++({\angB+180}:\r) coordinate (C) circle (2pt);
+    \path[middle arrow=0.6]  (-\R,0) -- (\R,0);
+    \path[middle arrow]  (\R,0) arc (0:\angA:\R);
+    \path[middle arrow=0.7]  (tmp1) -- (tmp2);
+    \path[middle arrow=0.75] (tmp2) arc (\angB:{-180-\angB}:\r);
+    %%%%%%%%%%%
+    % \coordinate (tmp) at ([xshift=-\r cm]C);
+    % \path[middle arrow] ([yshift=-1cm]tmp) --  ([yshift=+1cm]tmp);
+    %%%%%%%%%%%
+    \path[middle arrow] (tmp3) arc ({180-\angA}:180:\R);
+    \draw[->] (-3,0) -- (3,0) node[below] {$\Re$};
+    \draw[->] (0,-.5) -- (0,3) node[left] {$\Im$};
+\end{tikzpicture}
+\end{document}

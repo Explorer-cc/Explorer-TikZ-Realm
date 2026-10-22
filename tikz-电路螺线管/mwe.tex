@@ -1,0 +1,19 @@
+\documentclass[tikz,border=5pt]{standalone}
+\newcommand\mypath{%
+    (-0.307,-0.635)%
+    .. controls (-0.421,-0.613) and (-0.502,-0.572) .. (-0.309,-0.52)
+    .. controls (-0.104,-0.466) and (0.102,-0.411) .. (0.307,-0.357)
+    .. controls (0.507,-0.304) and (0.379,-0.258) .. (0.305,-0.253);
+}%
+\begin{document}
+\begin{tikzpicture}[very thick]
+    \draw[gray!25,thick] (-3,-3) grid (2,3);
+    \draw (-.3,1) rectangle (.3,-1);
+    \draw[magenta] (-1,-.8) -- (.3,-.8) (-1,+.8) -- (-.3,+.8);
+    \draw[magenta] (.3,-0.8).. controls (0.458,-0.8) and (0.349,-0.709) .. (0.297,-0.697);
+    \draw[cyan] \mypath;
+    \draw[cyan,yshift=.35cm] \mypath;
+    \draw[cyan,yshift=.7cm] \mypath;
+    \draw[cyan,yshift=1.05cm] \mypath;
+\end{tikzpicture}
+\end{document}

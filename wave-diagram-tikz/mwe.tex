@@ -1,0 +1,98 @@
+% https://tex.stackexchange.com/a/767209
+\documentclass[tikz,border=5pt]{standalone}
+\usetikzlibrary{quotes}
+\usepackage{amsmath}
+\usepackage{fouriernc}
+\tikzset{seqpath/start/.initial={0,0},start/.style={seqpath/start={#1}}}
+\ExplSyntaxOn
+\msg_new:nnn {seqpath} {step} {Unknown~step~`#1';~use~H,~U,~or~D.}
+\NewDocumentCommand \DrawSeqPath { O{} m }
+  {
+    \begin{scope}[#1]
+      \coordinate (seqpath-current) at (\pgfkeysvalueof{/tikz/seqpath/start});
+      \__seqpath_step:w #2 \q_stop
+    \end{scope}
+  }
+\NewDocumentCommand \__seqpath_step:w { m }
+  {
+    \token_if_eq_meaning:NNF #1 \q_stop
+      {
+        \peek_meaning_ignore_spaces:NTF \c_group_begin_token
+          {\__seqpath_edge:nn {#1}}
+          {\__seqpath_edge:nn {#1}{1}}
+      }
+  }
+\NewDocumentCommand \__seqpath_edge:nn { m m O{} }
+  {
+    \str_case:nnF {#1}
+      {
+        {H}{\path ([shift={(#2,0)}]seqpath-current) coordinate (seqpath-next);}
+        {U}{\path ([shift={(#2,0)}]seqpath-current~|-~0,1) coordinate (seqpath-next);}
+        {D}{\path ([shift={(#2,0)}]seqpath-current~|-~0,-1) coordinate (seqpath-next);}
+      }
+      {\msg_fatal:nnn {seqpath} {step} {#1}}
+    \path (seqpath-current) edge[draw,#3] (seqpath-next);
+    \coordinate (seqpath-current) at (seqpath-next);
+    \__seqpath_step:w
+  }
+\ExplSyntaxOff
+
+\begin{document}
+\begin{tikzpicture}[
+    x=1cm,y=0.5cm,thick,line cap=round,
+    tt/.style={ultra thick,solid},
+    every node/.style={font=\small,inner sep=2pt}
+]
+  \clip (0,-9) rectangle (22,9);
+
+  \DrawSeqPath[start={2,1},magenta,yshift=3.5cm,dashed]{
+    H[tt]D{2}H[tt]
+  }
+
+  \DrawSeqPath[start={0,-1},teal,yshift=2cm]{
+    H[tt,"$K_{\text{ab}}$" below]
+    UH{3}H[tt]
+    DH[tt]
+    UH{4}
+    DH[tt]
+    UH{4}
+    DH[tt]
+  }
+
+  \DrawSeqPath[blue,yshift=1cm]{
+    H{2}H["$K_{\text{bc}}$" below]H{19}
+  }
+
+  \DrawSeqPath[start={-2,-1},magenta,dashed]{
+    U{4}H[tt]
+    D{2}H[tt,"$K_{\text{ca}}$" below]
+    U{3}H[tt]
+    D{2}H[tt]
+    U{3}H[tt]
+    D{2}H[tt]
+    U{4}
+  }
+
+  \DrawSeqPath[start={0,-1},teal,yshift=-1.5cm]{
+    H[tt]
+    UH{3}H[tt]
+    DH[tt]
+    UH{3}H[tt]
+    DH[tt]
+    UH{3}H[tt]
+    DH[tt]
+  }
+
+  \DrawSeqPath[blue,yshift=-2.5cm]{H{22}}
+
+  \DrawSeqPath[start={2,1},magenta,yshift=-3.5cm,dashed]{
+    H[tt]D{2}
+    H[tt]U{3}
+    H[tt]D{2}
+    H[tt]U{3}
+    H[tt]D{2}
+    H[tt]U{4}
+  }
+\end{tikzpicture}
+\end{document}
+

@@ -1,0 +1,34 @@
+omp
+
+- 分析要复刻这幅图 [Image #1, 865x691] 最好的方法是什么，只做分析
+- 但是定位是极其不方便的
+- 相比于 `\TikzEveryCell`，我看不到任何优点
+- 但是在NiceTabular的框架里，我很难做到正确的间距控制
+- 帮我在现在的基础上改
+- 现在希望增加 大的右括号，这有什么好方法吗？分析分析
+- 用方法一吧，尝试实现一下
+- 花括号有点太大了，能否缩小一点？
+- 帮我加上大括号右边的部分
+- 还是不太好，目前的大括号上面太高了，下面太低了，希望整体下移2pt
+- 希望每个cell内部的左侧和右侧都能新增一些距离
+- 目前第一行和第一列和最后一列的短边的长度是不是不一样？分析分析？
+- 告诉我第一列的宽度和第一行的高度是怎么控制的？
+- 那为什么看上去不一样大？
+- 第一列和最后一列不用加左右两侧的3pt
+- 第一行， 第一列，最后一列用 teal!75的颜色染色，16个格子用yellow!50染色，看看怎么做最方便，先分析再实现
+- Analyze the best way to reproduce this image [Image #1, 865x691]. Analysis only; do not implement anything yet.
+- However, positioning is extremely inconvenient.
+- I cannot see any advantages over `\TikzEveryCell`.
+- However, I find it difficult to control spacing correctly within the `NiceTabular` framework.
+- Modify the existing version.
+- I would now like to add large right braces. What would be a good approach? Analyze the options.
+- Use the first approach and try implementing it.
+- The braces are a little too large. Could you make them slightly smaller?
+- Add the content to the right of the braces.
+- It still does not look quite right: the braces extend too high at the top and too low at the bottom. Shift them downward by `2pt` as a whole.
+- Add some padding on both the left and right sides inside each cell.
+- Are the short sides of the cells in the first row, first column, and last column currently different lengths? Analyze this.
+- Explain how the first-column width and first-row height are controlled.
+- Then why do they look different in size?
+- Do not add the extra `3pt` of padding on either side of the cells in the first and last columns.
+- Fill the first row, first column, and last column with `teal!75`, and the 16 main cells with `yellow!50`. Find the simplest way to do this; analyze it first, then implement it.

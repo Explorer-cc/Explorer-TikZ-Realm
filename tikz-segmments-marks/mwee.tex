@@ -1,0 +1,103 @@
+% https://tex.stackexchange.com/a/767135
+\documentclass[tikz,border=5pt]{standalone}
+\usepackage{fourier-otf}
+\usetikzlibrary{calc,arrows.meta}
+\ExplSyntaxOn
+\keys_define:nn { cis / marksegment }
+  {
+    offset      .dim_set:N = \l_cis_offset_dim,
+    offset     .initial:n = 10pt,
+    bar-length  .dim_set:N = \l_cis_bar_length_dim,
+    bar-length .initial:n = 5pt,
+    bar-style   .tl_set:N  = \l_cis_bar_style_tl,
+    bar-style  .initial:n = {thin},
+    arrow       .tl_set:N  = \l_cis_arrow_tl,
+    arrow      .initial:n = {Stealth-Stealth},
+    arrow-style .tl_set:N  = \l_cis_arrow_style_tl,
+    arrow-style.initial:n = {thin},
+    node-style  .tl_set:N  = \l_cis_node_style_tl,
+    node-style .initial:n = {fill=white,inner~sep=1.5pt},
+  }
+
+\cs_new_protected:Npn \cis_mark_segment:nnnn #1#2#3#4
+  {
+    \group_begin:
+    \keys_set:nn { cis / marksegment } {#1}
+    \use:e
+      {
+        \exp_not:N \path
+          coordinate~(cis@from)~at~($~(#2)!\dim_use:N \l_cis_offset_dim!90\c_colon_str(#3)~$)
+          coordinate~(cis@to)~at~($~(#3)!\dim_use:N \l_cis_offset_dim!-90\c_colon_str(#2)~$);
+        \exp_not:N \draw [
+          \exp_not:V \l_cis_arrow_tl,
+          \exp_not:V \l_cis_arrow_style_tl
+        ]
+          (cis@from) -- (cis@to)
+          node [midway, \exp_not:V \l_cis_node_style_tl] {\exp_not:n {#4}};
+      }
+    \dim_compare:nNnF \l_cis_bar_length_dim = \c_zero_dim
+      {
+        \use:e
+          {
+            \exp_not:N \draw [\exp_not:V \l_cis_bar_style_tl]
+              ($~(cis@from)!\dim_eval:n { \l_cis_bar_length_dim / 2 }!90\c_colon_str(cis@to)~$) --
+              ($~(cis@from)!-\dim_eval:n { \l_cis_bar_length_dim / 2 }!90\c_colon_str(cis@to)~$);
+            \exp_not:N \draw [\exp_not:V \l_cis_bar_style_tl]
+              ($~(cis@to)!\dim_eval:n { \l_cis_bar_length_dim / 2 }!-90\c_colon_str(cis@from)~$) --
+              ($~(cis@to)!-\dim_eval:n { \l_cis_bar_length_dim / 2 }!-90\c_colon_str(cis@from)~$);
+          }
+      }
+    \group_end:
+  }
+
+\NewDocumentCommand \marksegment { O{} m m m }
+  {
+    \cis_mark_segment:nnnn {#1} {#2} {#3} {#4}
+  }
+\ExplSyntaxOff
+
+\begin{document}
+\begin{tikzpicture}
+  \coordinate (O) at (0,0);
+  \coordinate (A) at (5,0);
+  \coordinate (B) at (2,0);
+  \coordinate (C) at (3.5,0);
+
+  \draw (O) -- (A);
+  \foreach \p/\mypos in {O/left,A/right,B/below,C/below}
+  {
+    \fill (\p) circle (1.5pt);
+    \node[\mypos] at (\p) {$\p$};
+  }
+
+  \marksegment[
+    offset=-15pt,
+    arrow={Latex-Latex}
+  ]{O}{B}{$d_1$}
+  \marksegment[
+    offset=-25pt,
+    arrow={-Stealth},
+    arrow-style={blue},
+    bar-style={thick,black},
+    node-style={yshift=5pt,scale=.75}
+  ]{B}{C}{$d_2$}
+  \marksegment[
+    offset=-35pt,
+    arrow={{Triangle[length=0pt 2*4,width=0pt 4]}-},
+    arrow-style={red,densely dashed},
+    bar-style={red},
+    node-style={draw=black,solid,fill=white,inner xsep=5pt,inner ysep=0pt}
+  ]{O}{C}{$d_3$}
+  \marksegment[
+    offset=15pt,
+    arrow={-},
+    arrow-style={gray},
+    bar-style={blue,very thick},
+    bar-length=8pt
+   ]{O}{A}{$L$}
+
+  \foreach \p in {O,A,B,C}{
+    \draw[ultra thin,teal] ([yshift=-1.5cm]\p) -- ([yshift=1cm]\p);
+  }
+\end{tikzpicture}
+\end{document}

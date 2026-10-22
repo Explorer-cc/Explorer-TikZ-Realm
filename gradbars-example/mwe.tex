@@ -1,0 +1,56 @@
+% https://tex.stackexchange.com/q/64035
+\documentclass{article}
+\usepackage[sansdefault]{fontsetup}
+\usepackage{geometry}
+\usepackage{gradbars}
+\usepackage{booktabs}
+\renewcommand{\arraystretch}{1.3}
+\newcommand{\barwidth}{3cm}
+\gradbarssetup{min=0,max=100,height=3ex,label=none,width=\barwidth}
+\newcommand{\tablebar}[3]{%
+  \rlap{\gradbar[fill=gradient,left color=#1,right color=#2]{#3}}%
+  \makebox[\barwidth][r]{\raisebox{-1.5pt}{#3\%}\hspace{3pt}}%
+}
+\newcolumntype{G}{>{\collectcell{\tablebar{gradbarsBlue}{gradbarsBlueLight}}}l<{\endcollectcell}}
+\newcolumntype{H}{>{\collectcell{\tablebar{gradbarsTeal}{gradbarsTealLight}}}l<{\endcollectcell}}
+\pagestyle{empty}
+\begin{document}
+\noindent%
+\begin{center}%
+\begin{tabular}{@{}lGGH@{}}
+\toprule
+  & \multicolumn{1}{c}{\textbf{Essential (E)}}
+  & \multicolumn{1}{c}{\textbf{Occurred (O)}}
+  & \multicolumn{1}{c}{\textbf{(E / O)}} \\
+\midrule
+  Probing for ownership      & 16 & 30 & 52 \\
+  Summit                     &  1 &  2 & 50 \\
+  Probing for expertise      & 17 & 34 & 49 \\
+  Code review                & 30 & 66 & 46 \\
+  Triaging                   & 32 & 69 & 46 \\
+  Rapid-fire email           & 13 & 33 & 38 \\
+  Infrequent direct email    & 18 & 49 & 37 \\
+  Shotgun emails             &  7 & 19 & 37 \\
+  Drop by your office        & 23 & 64 & 36 \\
+  IM discussion              & 11 & 32 & 35 \\
+  Phone                      &  7 & 20 & 33 \\
+  Meetings w/remote part.    &  4 & 12 & 33 \\
+  Huddle                     &  2 &  6 & 33 \\
+  Air time in status meeting &  8 & 27 & 29 \\
+  Close-reopen               &  4 & 13 & 29 \\
+  Broadcasting emails        & 10 & 35 & 27 \\
+  Referring to the spec      &  6 & 24 & 24 \\
+  While we're there          &  3 & 14 & 21 \\
+  Rapid-fire (in public)     &  1 &  5 & 20 \\
+  Follow-up bugs filed       &  3 & 18 & 16 \\
+  Deep collaboration         &  3 & 22 & 13 \\
+  Snowballing threads        &  2 & 16 & 13 \\
+  Two birds with one stone   &  1 & 17 &  6 \\
+  Ownership avoidance        &  1 & 28 &  3 \\
+  Ignored fix/diagnosis      &  0 &  9 &  0 \\
+  Video conferences          &  0 &  3 &  0 \\
+  Unexpected contribution    &  0 &  9 &  0 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{document}
